@@ -24,7 +24,7 @@ Pure, deterministic statutory tax calculation engine with subpaths for Thailand 
 
 ## Releasing
 
-Versions are computed, never edited by hand (`package.json` says `0.0.0-development` on purpose). `scripts/version.ts` reads the last `vX.Y.Z` git tag and the conventional commit messages since then:
+Versions are computed, never edited by hand (`package.json` says `0.0.0-development` on purpose). The shared publish workflow (`trajectonomics/cicd`) reads the last `vX.Y.Z` git tag and the conventional commit messages since then:
 
 | Commits since last release | Bump |
 | --- | --- |
@@ -36,13 +36,6 @@ Versions are computed, never edited by hand (`package.json` says `0.0.0-developm
 - **Stable, on demand:** Actions → Release → Run workflow (on `main`). It publishes `<next>` under `latest`, tags `vX.Y.Z`, and creates a GitHub release with generated notes. The bump input overrides the computed one; pick `major` to cut 1.0.0.
 
 PR titles must be conventional commits (enforced by the `PR title` check) because squash-merge commit subjects become the basis for version calculation.
-
-Preview the next version locally:
-
-```bash
-bun scripts/version.ts --channel alpha
-bun scripts/version.ts --channel stable
-```
 
 ## License
 
