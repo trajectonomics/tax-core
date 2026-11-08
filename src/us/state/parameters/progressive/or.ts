@@ -8,6 +8,7 @@ import type { UsStateParameters } from "../types"
 export const US_2026_STATE_OR: UsStateParameters = defineState({
 	code: "OR",
 	name: "Oregon",
+	verification: "unconfirmed",
 	type: "progressive",
 	single: [
 		[0, 0.0475],

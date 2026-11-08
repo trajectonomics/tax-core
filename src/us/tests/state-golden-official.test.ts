@@ -4,7 +4,8 @@ import type { UsFilingStatus, UsStateCode } from "../types"
 
 /**
  * Hand-computed worked examples for values corrected against official 2026 state documents
- * (see references/SOURCES.md): the DFA Arkansas formula, Hawaii Announcement 2024-03 and Louisiana RIB 26-005.
+ * (see references/SOURCES.md): the DFA Arkansas formula, Hawaii Announcement 2024-03,
+ * Louisiana RIB 26-005, South Carolina Act 110 of 2026 (H.4216) and Utah S.B. 60.
  */
 interface OfficialExample {
 	readonly state: UsStateCode
@@ -39,6 +40,30 @@ const EXAMPLES: readonly OfficialExample[] = [
 		expectedTax: 2227.5,
 		label: "LA head of household with the joint-size deduction",
 		filingStatus: "head_of_household",
+	},
+	{
+		// South Carolina Act 110: 15,000 SCIAD below the 40,000 start, so 1.99% x 25,000.
+		state: "SC",
+		wages: 40_000,
+		expectedTax: 497.5,
+		label: "SC 1.99% band with the full SCIAD",
+	},
+	{
+		// South Carolina Act 110: reduction 15,000 x 20,000 / 55,000 = 5,454.55 floored to
+		// 5,450, so 60,000 - 9,550 = 50,450 taxable: 1.99% x 30,000 + 5.21% x 20,450.
+		state: "SC",
+		wages: 60_000,
+		expectedTax: 1662.45,
+		label: "SC SCIAD phase-out inside the 55,000 band",
+	},
+	{
+		// South Carolina Act 110 joint: reduction 30,000 x 70,000 / 110,000 = 19,090.91 floored
+		// to 19,090, so 150,000 - 10,910 = 139,090 taxable: 597 + 5.21% x 109,090.
+		state: "SC",
+		wages: 150_000,
+		expectedTax: 6280.59,
+		label: "SC joint SCIAD phase-out",
+		filingStatus: "married_filing_jointly",
 	},
 	{
 		// Utah S.B. 60 (2026 GS): rate 4.45% (was 4.5%). Single 100,000 wages:

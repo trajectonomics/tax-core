@@ -19,3 +19,7 @@ export const US_2026_STATE_PARAMETERS: Record<UsStateCode, UsStateParameters> = 
 ])
 
 export type { UsStateParameters, UsStateSurtax } from "./types"
+export {
+	US_STATE_VERIFICATION_LEVELS,
+	type UsStateVerification,
+} from "./verification"

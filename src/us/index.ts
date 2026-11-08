@@ -13,8 +13,10 @@
 export * from "./parameters"
 export {
 	US_2026_STATE_PARAMETERS,
+	US_STATE_VERIFICATION_LEVELS,
 	type UsStateParameters,
 	type UsStateSurtax,
+	type UsStateVerification,
 } from "./state/parameters"
 export { calculateUsTax, us } from "./system"
 export * from "./types"

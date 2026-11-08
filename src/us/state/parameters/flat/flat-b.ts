@@ -9,6 +9,7 @@ import type { UsStateParameters } from "../types"
 const KENTUCKY: UsStateParameters = defineState({
 	code: "KY",
 	name: "Kentucky",
+	verification: "official",
 	type: "flat",
 	single: [[0, 0.035]],
 	mfj: [[0, 0.035]],
@@ -25,6 +26,7 @@ const KENTUCKY: UsStateParameters = defineState({
 const MASSACHUSETTS: UsStateParameters = defineState({
 	code: "MA",
 	name: "Massachusetts",
+	verification: "reported",
 	type: "flat",
 	single: [[0, 0.05]],
 	mfj: [[0, 0.05]],
@@ -42,6 +44,7 @@ const MASSACHUSETTS: UsStateParameters = defineState({
 const MICHIGAN: UsStateParameters = defineState({
 	code: "MI",
 	name: "Michigan",
+	verification: "reported",
 	type: "flat",
 	single: [[0, 0.0425]],
 	mfj: [[0, 0.0425]],
@@ -60,6 +63,7 @@ const MICHIGAN: UsStateParameters = defineState({
 const MISSISSIPPI: UsStateParameters = defineState({
 	code: "MS",
 	name: "Mississippi",
+	verification: "unconfirmed",
 	type: "flat",
 	single: [[10_000, 0.04]],
 	mfj: [[10_000, 0.04]],
@@ -76,6 +80,7 @@ const MISSISSIPPI: UsStateParameters = defineState({
 const NORTH_CAROLINA: UsStateParameters = defineState({
 	code: "NC",
 	name: "North Carolina",
+	verification: "official",
 	type: "flat",
 	single: [[0, 0.0399]],
 	mfj: [[0, 0.0399]],
@@ -90,6 +95,7 @@ const NORTH_CAROLINA: UsStateParameters = defineState({
 const PENNSYLVANIA: UsStateParameters = defineState({
 	code: "PA",
 	name: "Pennsylvania",
+	verification: "unconfirmed",
 	type: "flat",
 	single: [[0, 0.0307]],
 	mfj: [[0, 0.0307]],
@@ -106,6 +112,7 @@ const PENNSYLVANIA: UsStateParameters = defineState({
 const UTAH: UsStateParameters = defineState({
 	code: "UT",
 	name: "Utah",
+	verification: "official",
 	type: "flat",
 	single: [[0, 0.0445]],
 	mfj: [[0, 0.0445]],

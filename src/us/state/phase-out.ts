@@ -1,4 +1,5 @@
 import { applyPercentage, type TaxSupportedCurrency, toMinorUnits } from "../../core/money"
+import { validateSafeIntegerCount } from "../../core/money/validate"
 import type { UsFilingStatus } from "../types"
 import { UsStateField } from "../types/state-fields"
 import type {
@@ -17,6 +18,12 @@ function cents(
 	return toMinorUnits(amounts[status], currency, UsStateField.PhaseOutThreshold)
 }
 
+function stepCents(step: number, currency: TaxSupportedCurrency): number {
+	const centsPerStep = toMinorUnits(step, currency, UsStateField.PhaseOutReductionStep)
+	validateSafeIntegerCount(centsPerStep, UsStateField.PhaseOutReductionStep, 1)
+	return centsPerStep
+}
+
 function linearReduction(
 	amountCents: number,
 	excessCents: number,
@@ -25,8 +32,10 @@ function linearReduction(
 	currency: TaxSupportedCurrency,
 ): number {
 	const widthCents = cents(rule.width, status, currency)
-	if (excessCents >= widthCents) return amountCents
-	return Math.round((amountCents * excessCents) / widthCents)
+	const step = rule.reductionStep === undefined ? 0 : stepCents(rule.reductionStep, currency)
+	if (excessCents >= widthCents) return step ? Math.floor(amountCents / step) * step : amountCents
+	if (!step) return Math.round((amountCents * excessCents) / widthCents)
+	return Math.floor((amountCents * excessCents) / (widthCents * step)) * step
 }
 
 function steppedReduction(
@@ -57,10 +66,11 @@ function tieredReduction(
 /**
  * Applies a statutory income-based phase-out to a deduction or exemption.
  *
- * Math: linear removes amount x (AGI - start) / width; stepped removes ratePerStep of the
- * amount for each step or fraction above start (capped at 100%); tiered removes
- * rate x (AGI up to second - start) + secondRate x (AGI - second), capped at maxShare of the
- * amount. Nothing is removed at or below the start threshold.
+ * Math: linear removes amount x (AGI - start) / width, rounded down to any `reductionStep`
+ * multiple; stepped removes ratePerStep of the amount for each step or fraction above start
+ * (capped at 100%); tiered removes rate x (AGI up to second - start) + secondRate x (AGI -
+ * second), capped at maxShare of the amount. Nothing is removed at or below the start
+ * threshold.
  * Units: AGI and amounts are integer cents; thresholds are major dollars converted to cents.
  * Throws: TaxValidationError if a threshold cannot be represented as safe integer cents.
  *
@@ -70,7 +80,8 @@ function tieredReduction(
  * @param phaseOut Optional statutory phase-out rule.
  * @param currency Supported statutory currency threaded for minor-unit conversion.
  * @returns The amount still allowed after the phase-out, in integer cents.
- * @statute 36 M.R.S. § 5124-C(2); Minn. Stat. §§ 290.0121 subd. 2, 290.0123 subd. 5.
+ * @statute 36 M.R.S. § 5124-C(2); S.C. Code § 12-6-1140(15); Minn. Stat. §§ 290.0121 subd. 2,
+ * 290.0123 subd. 5.
  */
 export function applyUsStatePhaseOut(
 	amountCents: number,

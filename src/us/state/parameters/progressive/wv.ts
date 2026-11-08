@@ -10,6 +10,7 @@ import type { UsStateParameters } from "../types"
 export const US_2026_STATE_WV: UsStateParameters = defineState({
 	code: "WV",
 	name: "West Virginia",
+	verification: "official",
 	type: "progressive",
 	single: [
 		[0, 0.0211],

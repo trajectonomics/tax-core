@@ -8,6 +8,7 @@ import type { UsStateParameters } from "../types"
 export const US_2026_STATE_ND: UsStateParameters = defineState({
 	code: "ND",
 	name: "North Dakota",
+	verification: "unconfirmed",
 	type: "progressive",
 	single: [
 		[48_475, 0.0195],

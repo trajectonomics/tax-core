@@ -8,6 +8,7 @@ import type { UsStateParameters } from "../types"
 export const US_2026_STATE_RI: UsStateParameters = defineState({
 	code: "RI",
 	name: "Rhode Island",
+	verification: "unconfirmed",
 	type: "progressive",
 	single: [
 		[0, 0.0375],

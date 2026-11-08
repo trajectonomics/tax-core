@@ -1,6 +1,11 @@
 import { describe, expect, it } from "bun:test"
 import { calculateUsTax } from "../index"
-import { US_2026_STATE_PARAMETERS, type UsStateParameters } from "../state/parameters"
+import {
+	US_2026_STATE_PARAMETERS,
+	US_STATE_VERIFICATION_LEVELS,
+	type UsStateParameters,
+	type UsStateVerification,
+} from "../state/parameters"
 import { US_STATE_CODES, type UsFilingStatus } from "../types"
 
 const STATUSES = [
@@ -80,6 +85,26 @@ describe("US State Parameter Registry", () => {
 	it("models the Massachusetts millionaire surtax and California mental health surtax", () => {
 		expect(US_2026_STATE_PARAMETERS.MA.surtax).toEqual({ threshold: 1_107_750, rate: 0.04 })
 		expect(US_2026_STATE_PARAMETERS.CA.surtax).toEqual({ threshold: 1_000_000, rate: 0.01 })
+	})
+
+	it("records a verification level for every state", () => {
+		for (const state of Object.values(US_2026_STATE_PARAMETERS)) {
+			expect(US_STATE_VERIFICATION_LEVELS).toContain(state.verification)
+		}
+	})
+
+	it("keeps the audited verification tally stable", () => {
+		const tally: Record<UsStateVerification, number> = {
+			official: 0,
+			partial: 0,
+			reported: 0,
+			unconfirmed: 0,
+		}
+		// The same counts are published in references/SOURCES.md; update both together.
+		for (const state of Object.values(US_2026_STATE_PARAMETERS)) {
+			tally[state.verification] = (tally[state.verification] ?? 0) + 1
+		}
+		expect(tally).toEqual({ official: 22, partial: 5, reported: 6, unconfirmed: 18 })
 	})
 
 	it("calculates every state through the public US tax seam", () => {

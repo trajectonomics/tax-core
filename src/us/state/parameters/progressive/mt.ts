@@ -8,6 +8,7 @@ import type { UsStateParameters } from "../types"
 export const US_2026_STATE_MT: UsStateParameters = defineState({
 	code: "MT",
 	name: "Montana",
+	verification: "partial",
 	type: "progressive",
 	single: [
 		[0, 0.047],

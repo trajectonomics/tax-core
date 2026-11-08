@@ -8,6 +8,7 @@ import type { UsStateParameters } from "../types"
 export const US_2026_STATE_NM: UsStateParameters = defineState({
 	code: "NM",
 	name: "New Mexico",
+	verification: "unconfirmed",
 	type: "progressive",
 	single: [
 		[0, 0.015],

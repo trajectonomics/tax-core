@@ -8,6 +8,7 @@ import type { UsStateParameters } from "../types"
 export const US_2026_STATE_DC: UsStateParameters = defineState({
 	code: "DC",
 	name: "District of Columbia",
+	verification: "unconfirmed",
 	type: "progressive",
 	single: [
 		[0, 0.04],

@@ -100,6 +100,14 @@ _Avoid_: Withholding tax
 The optional layer that applies one of the 50 state individual income tax systems or the District of Columbia to a federal adjusted gross income starting point, using that state's own standard deduction, personal/dependent exemptions or credits, and statutory bracket table. Nine states impose no wage income tax; the remaining states use either a single flat rate or a graduated schedule, with high-income surtaxes where enacted.
 _Avoid_: Local tax, municipal tax
 
+**State Parameter Verification**:
+The per-state record (`UsStateVerification`) of how far a state's 2026 rates, brackets, deductions and exemptions have been checked against an official document: `official`, `partial`, `reported` or `unconfirmed`, mirrored row by row in `references/SOURCES.md` so a library consumer can see what to trust.
+_Avoid_: Confidence score, accuracy flag
+
+**South Carolina Income Adjusted Deduction (SCIAD)**:
+The post-2025 South Carolina deduction (15,000 USD single and separate, 22,500 USD head of household, 30,000 USD joint) that replaced the federal standard deduction, reduced linearly as federal AGI rises above its start and floored to the next lowest 10 USD.
+_Avoid_: Standard deduction, personal exemption
+
 **State Surtax**:
 An additional statutory rate applied above a state taxable-income threshold on top of the regular state bracket tax, such as the Massachusetts 4% millionaire surtax or the California 1% mental health services surtax.
 _Avoid_: Marginal rate, bracket rate
