@@ -71,6 +71,7 @@
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.5",
 		"@biomejs/biome": "2.6.3",
+		"@trajectonomics/sim": "0.2.0-alpha.4",
 		"@trajectonomics/tooling": "1.1.0",
 		"@types/bun": "^1.4.4",
 		"publint": "^0.3.25",
