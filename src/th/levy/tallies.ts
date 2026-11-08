@@ -7,7 +7,15 @@ import {
 	type ThLevyIncomeLabel,
 } from "./labels"
 
-/** Measure ids of every tally a TH 2026 Levy reads, keyed by the label the caller must use. */
+/**
+ * Measure ids of every tally a TH 2026 Levy reads, keyed by the label the caller must use.
+ *
+ * Purpose: The caller-facing contract between exported labels and emitted Measures.
+ * Math: No arithmetic; ids only.
+ * Units: Tallied amounts are integer satang supplied by the caller.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Sections 40(1)–(8), 47.
+ */
 export interface ThLevyTallies {
 	/** One `gross` tally per assessable income label. */
 	readonly income: Readonly<Record<ThLevyIncomeLabel, string>>

@@ -40,7 +40,8 @@ export function expenseCases(): readonly ThLevyCase[] {
 
 /**
  * Section 40(8) income wholly consumed by an actual expense, so progressive tax is zero and the
- * Section 48(2) minimum gross tax decides the liability around both of its thresholds.
+ * Section 48(2) minimum gross tax decides the liability around both of its thresholds; the
+ * 1,000,001 THB case is the 0.5% half-satang tie (500,000.5 satang rounds up to 500,001).
  */
 export function minimumCases(): readonly ThLevyCase[] {
 	const bahts = [119_999, 120_000, 120_001, 999_999, 1_000_000, 1_000_001]

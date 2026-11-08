@@ -32,7 +32,15 @@ export type ThLevyAllowances = Pick<
 	| "donation1x"
 >
 
-/** Expense election fixed for one electable income item at emit time. */
+/**
+ * Expense election fixed for one electable income item at emit time.
+ *
+ * Purpose: Chooses the standard statutory percentage or an actual substantiated expense.
+ * Math: No arithmetic; selects which expense Measure graph is emitted.
+ * Units: `actualExpense` is THB major units.
+ * Throws: TaxValidationError at emit time if the actual expense is invalid.
+ * @statute Thailand Revenue Code Sections 42 bis, 42 ter, 43–46.
+ */
 export interface ThLevyExpenseChoice {
 	/** Defaults to `"standard"`. */
 	readonly election?: ThExpenseElection | undefined
@@ -43,6 +51,10 @@ export interface ThLevyExpenseChoice {
 /**
  * Expense elections frozen into the Levy, per Section 40 income item with a standard/actual choice.
  *
+ * Purpose: Records which items use the standard statutory percentage and which use actuals.
+ * Math: No arithmetic; each choice selects an emitted Measure branch.
+ * Units: Actual expense amounts are THB major units.
+ * Throws: TaxValidationError at emit time if an actual expense is invalid.
  * @statute Thailand Revenue Code Sections 42 bis, 42 ter, 43–46; Royal Decree No. 11.
  */
 export interface ThLevyExpenseElections {
@@ -78,6 +90,10 @@ export interface ThLevyExpenseElections {
 /**
  * Section 40(4) elections frozen into the Levy. All sources default to `"include"`.
  *
+ * Purpose: Fixes final withholding versus regular-bracket inclusion per source.
+ * Math: No arithmetic; each election selects the withholding a Measure applies.
+ * Units: `dividendCorpTaxRate` is a dimensionless ratio in [0, 1).
+ * Throws: TaxValidationError at emit time if the corporate rate is outside [0, 1).
  * @statute Thailand Revenue Code Sections 40(4), 47 bis, 50(2)(g), 57 ter.
  */
 export interface ThLevySection40_4Elections {
@@ -91,7 +107,15 @@ export interface ThLevySection40_4Elections {
 	readonly dividendCorpTaxRate?: number | undefined
 }
 
-/** Levy identity and Settlement period frozen at emit time. */
+/**
+ * Levy identity and Settlement period frozen at emit time.
+ *
+ * Purpose: Lets a caller name the Levy and override the default filing window.
+ * Math: No arithmetic; identity and calendar dates only.
+ * Units: Not monetary; the dates are month/day pairs.
+ * Throws: Nothing; sim-core's `check()` validates the dates.
+ * @statute Thailand Revenue Code Section 56 (annual return filing period).
+ */
 export interface ThLevyIdentity {
 	/** Levy id, defaulting to `"th-2026-pit"`. */
 	readonly id?: string | undefined
@@ -108,6 +132,7 @@ export interface ThLevyIdentity {
  * expense elections, Section 40(4) elections, and the Levy identity. Income and contribution
  * amounts are not part of the profile; they arrive as Flow tallies at evaluation time.
  * Units: Monetary profile amounts are THB major units.
+ * Throws: TaxValidationError at emit time for any invalid allowance, donation, expense, or rate.
  * @statute Thailand Revenue Code Sections 40, 42 bis, 47, 47 bis, 48(1)–(2), 56.
  */
 export interface ThLevyProfile {

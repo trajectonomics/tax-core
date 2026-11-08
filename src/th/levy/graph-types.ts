@@ -1,4 +1,12 @@
-/** Tally bases sim-core's `tally` Measure reads. Units: dimensionless discriminator. */
+/**
+ * Tally bases sim-core's `tally` Measure reads.
+ *
+ * Purpose: Distinguishes income Flows from contribution Flows at the tally.
+ * Math: No arithmetic; a discriminator only.
+ * Units: Dimensionless.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Sections 40(1)–(8) (gross) and 47 (funded).
+ */
 export const ThLevyTallyBasis = {
 	/** Sums income Flows. */
 	Gross: "gross",
@@ -9,7 +17,15 @@ export const ThLevyTallyBasis = {
 /** Union of {@link ThLevyTallyBasis} values. */
 export type ThLevyTallyBasis = (typeof ThLevyTallyBasis)[keyof typeof ThLevyTallyBasis]
 
-/** Rounding modes sim-core's `scale` Measure accepts; `HalfUp` ties go away from zero. */
+/**
+ * Rounding modes sim-core's `scale` Measure accepts.
+ *
+ * Purpose: Names the three rounding policies embedded in emitted Measures.
+ * Math: `Floor` rounds down, `Ceil` up, and `HalfUp` sends ties away from zero.
+ * Units: Dimensionless.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Sections 47 bis, 48(1), 48(2).
+ */
 export const ThLevyRounding = {
 	Floor: "floor",
 	HalfUp: "halfUp",
@@ -19,7 +35,15 @@ export const ThLevyRounding = {
 /** Union of {@link ThLevyRounding} values. */
 export type ThLevyRounding = (typeof ThLevyRounding)[keyof typeof ThLevyRounding]
 
-/** Recurring calendar date without a year, as sim-core's `MonthDay`. Never February 29. */
+/**
+ * Recurring calendar date without a year, as sim-core's `MonthDay`.
+ *
+ * Purpose: Fixes the Levy period and settlement dates at emit time.
+ * Math: No arithmetic; the date recurs every year and is never February 29.
+ * Units: Month number 1–12 and day number; not a timestamp.
+ * Throws: Nothing; sim-core's `check()` validates the pair.
+ * @statute Thailand Revenue Code Section 56 (annual return filing period).
+ */
 export interface ThLevyMonthDay {
 	/** Month number, 1 to 12. */
 	readonly month: number
@@ -29,7 +53,12 @@ export interface ThLevyMonthDay {
 
 /**
  * One node of the emitted rule graph, restricted to the operation set sim-core evaluates.
+ *
+ * Purpose: Closed union that makes any operation outside sim-core's set a type error.
+ * Math: `const`, `tally`, binary arithmetic, exact `scale`, and `pick` — nothing else.
  * Units: `value` and Measure totals are integer satang; `num`/`den` are dimensionless.
+ * Throws: Nothing at construction; {@link ThLevyGraph.build} checks operands.
+ * @statute Thailand Revenue Code Sections 40, 42 bis, 47, 47 bis, 48(1)–(2).
  */
 export type ThLevyMeasure =
 	| { readonly id: string; readonly op: "const"; readonly value: number }

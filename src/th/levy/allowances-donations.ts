@@ -6,7 +6,15 @@ import type { ThLevyGraph } from "./graph"
 import { rateFlooredToBaht } from "./graph-rates"
 import { ThLevyMeasureId } from "./measure-ids"
 
-/** Donation allowance total and the net taxable income it leaves. */
+/**
+ * Donation allowance total and the net taxable income it leaves.
+ *
+ * Purpose: Names the donation total and the bracket schedule's input.
+ * Math: No arithmetic; ids only.
+ * Units: The referenced Measures are integer satang.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Section 47(7); Royal Decrees No. 428, 558.
+ */
 export interface ThDonationAllowanceMeasures {
 	/** Allowed 2x plus 1x donations. */
 	readonly total: string
@@ -17,6 +25,7 @@ export interface ThDonationAllowanceMeasures {
 /**
  * Emits the Section 47(7) donation allowances against the net income before donations.
  *
+ * Purpose: Reproduces the 2x-then-1x donation caps as Measures.
  * Math: 2x donations are doubled, then `min(doubled, floor(net * 10%))`; 1x donations are
  * `min(amount, floor(remaining net * 10%))`. Taxable income is `max(0, remaining - 1x allowed)`.
  * Units: Profile amounts are THB major units; Measures are integer satang.

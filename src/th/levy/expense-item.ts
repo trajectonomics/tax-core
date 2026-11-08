@@ -5,7 +5,15 @@ import type { ThLevyGraph } from "./graph"
 import { capAt, rateFlooredToBaht, sumMeasures } from "./graph-rates"
 import type { ThLevyExpenseChoice } from "./profile-types"
 
-/** One electable expense deduction: its income tally, election, standard rate, and optional cap. */
+/**
+ * One electable expense deduction: its income tally, election, standard rate, and optional cap.
+ *
+ * Purpose: Describes a single Section 40 expense item for {@link addItemExpense}.
+ * Math: No arithmetic; carries the inputs of one standard-or-actual computation.
+ * Units: `tally` is a Measure id over integer satang; `rate` is dimensionless; `capSatang` is satang.
+ * Throws: Nothing at construction; the emitter validates `actualExpense`.
+ * @statute Thailand Revenue Code Sections 42 bis, 42 ter, 43–46.
+ */
 export interface ThLevyExpenseLine {
 	/** Tally Measure holding the item's assessable income in satang. */
 	readonly tally: string

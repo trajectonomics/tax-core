@@ -7,7 +7,15 @@ import { ThLevyContributionLabel, ThLevyIncomeLabel } from "./labels"
 import { ThLevyMeasureId } from "./measure-ids"
 import type { ThLevyTallies } from "./tallies"
 
-/** Retirement-cluster and ThaiESG allowance Measure ids. */
+/**
+ * Retirement-cluster and ThaiESG allowance Measure ids.
+ *
+ * Purpose: Names the two audited retirement Measures for callers and tests.
+ * Math: No arithmetic; ids only.
+ * Units: The referenced Measures are integer satang.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Section 47; Ministerial Regulations No. 126, 390.
+ */
 export interface ThRetirementAllowanceMeasures {
 	/** Combined retirement cluster after the 500,000 THB ceiling. */
 	readonly cluster: string
@@ -18,11 +26,13 @@ export interface ThRetirementAllowanceMeasures {
 /**
  * Emits the Retirement Cluster and ThaiESG allowances from `funded` tallies.
  *
+ * Purpose: Mirrors the percentage and ceiling caps of both retirement allowances.
  * Math: RMF/SSF/PVD/GPF and pension life insurance are capped at `min(income * rate, ceiling)`
  * (PVD/GPF on Section 40(1) wage, the rest on assessable income); NSF at its flat ceiling; the
  * six are then capped at the 500,000 THB cluster ceiling. ThaiESG is capped at
  * `min(assessable * 30%, 300,000)`.
  * Units: Integer satang Measures.
+ * Throws: TaxValidationError if a statutory ceiling is not valid satang.
  *
  * @param graph Measure graph being built.
  * @param tallies Income and contribution tally ids.

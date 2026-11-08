@@ -11,8 +11,10 @@ import type { ThLevyTallies } from "./tallies"
  * Emits the shared Section 40(1) and 40(2) expense: 50% of their combined income, capped at
  * 100,000 THB.
  *
+ * Purpose: Mirrors the shared employment/service expense deduction as Measures.
  * Math: `min(floor((s1 + s2) * 0.5), 100000)` in whole baht, summed before the percentage.
  * Units: Integer satang Measures.
+ * Throws: Nothing; both tallies are caller-supplied integer satang.
  * @statute Thailand Revenue Code Section 42 bis.
  */
 export function addSection40_1_2Expense(graph: ThLevyGraph, tallies: ThLevyTallies): string {
@@ -34,6 +36,7 @@ export function addSection40_1_2Expense(graph: ThLevyGraph, tallies: ThLevyTalli
  * Emits the Section 40(3) royalty expense: standard 50% capped at 100,000 THB, or actual capped
  * at the royalty income.
  *
+ * Purpose: Mirrors the royalty expense deduction, including its actual-expense election.
  * Math: `min(floor(s3 * 0.5), 100000)` or `min(actual, s3)`.
  * Units: Integer satang Measures.
  * Throws: TaxValidationError if the elected actual expense is invalid.
@@ -57,8 +60,10 @@ export function addSection40_3Expense(
 /**
  * Emits the Section 40(4) expense, statutorily zero.
  *
+ * Purpose: Keeps the expense total's shape identical to the calculator's.
  * Math: `0`.
  * Units: Integer satang.
+ * Throws: Nothing.
  * @statute Thailand Revenue Code Section 40(4).
  */
 export function addSection40_4Expense(graph: ThLevyGraph): string {

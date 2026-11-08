@@ -7,7 +7,15 @@ import { ThLevyMeasureId } from "./measure-ids"
 import type { ThLevyProfile } from "./profile-types"
 import type { ThLevyTallies } from "./tallies"
 
-/** Allowance total and the net taxable income left for the bracket schedule. */
+/**
+ * Allowance total and the net taxable income left for the bracket schedule.
+ *
+ * Purpose: Names the two audited outputs of the allowance pipeline.
+ * Math: No arithmetic; ids only.
+ * Units: The referenced Measures are integer satang.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Section 47.
+ */
 export interface ThAllowanceMeasures {
 	/** Fixed + Retirement Cluster + ThaiESG + donations, after every cap. */
 	readonly total: string

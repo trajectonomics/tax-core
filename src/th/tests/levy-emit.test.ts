@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import type { Levy, Scenario } from "@trajectonomics/sim"
+import type { Levy, MeasureOp, Scenario } from "@trajectonomics/sim"
 import { check } from "@trajectonomics/sim"
 import { TaxValidationError } from "../../core/money"
 import { emitThLevy } from "../levy/emit"
@@ -9,7 +9,16 @@ import type { ThLevyProfile } from "../levy/profile-types"
 import { toSatang } from "../units"
 import { levyValues, simTallies } from "./levy-sim"
 
-const ALLOWED_OPS = ["const", "tally", "add", "sub", "min", "max", "scale", "pick"]
+const ALLOWED_OPS: readonly MeasureOp[] = [
+	"const",
+	"tally",
+	"add",
+	"sub",
+	"min",
+	"max",
+	"scale",
+	"pick",
+]
 const BASELINE = { schemaVersion: 1, balances: [] }
 const TIMELINE = { start: "2026-01-01", horizon: "2026-12-31", resolution: "month" }
 

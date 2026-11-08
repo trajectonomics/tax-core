@@ -80,7 +80,7 @@ function actualCases(): readonly ThLevyCase[] {
 
 const SECTION_40_4: readonly (readonly [string, ThLevyProfile])[] = [
 	["all final", { section40_4: { interest: "final", dividends: "final", digitalAssets: "final" } }],
-	["dividends credit", { section40_4: { dividendCorpTaxRate: 0.2 } }],
+	["credit tie", { section40_4: { dividendCorpTaxRate: 0.2 } }],
 	["interest final", { section40_4: { interest: "final" } }],
 	["digital final", { section40_4: { digitalAssets: "final" } }],
 	["dividends final with rate", { section40_4: { dividends: "final", dividendCorpTaxRate: 0.2 } }],
@@ -91,7 +91,7 @@ function regimeCases(): readonly ThLevyCase[] {
 		makeCase(`regime ${name}`, profile, [
 			[ThLevyIncomeLabel.Section40_4Other, toSatang(100_000)],
 			[ThLevyIncomeLabel.Section40_4Interest, 1010],
-			[ThLevyIncomeLabel.Section40_4Dividends, toSatang(20_000)],
+			[ThLevyIncomeLabel.Section40_4Dividends, name === "credit tie" ? 1010 : toSatang(20_000)],
 			[ThLevyIncomeLabel.Section40_4DigitalAssets, toSatang(30_000)],
 		]),
 	)

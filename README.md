@@ -14,7 +14,7 @@ Pure, deterministic statutory tax calculation engine with subpaths for Thailand 
 
 ## Thailand Levy for sim-core
 
-`@trajectonomics/tax/th` exports `emitThLevy(profile)`, which freezes one TH 2026 taxpayer profile into a [sim-core](https://github.com/trajectonomics/sim-core) `Levy`. The emitted graph uses only `const`, `tally`, `add`, `sub`, `min`, `max`, `scale`, and `pick`, so sim-core evaluates it in exact integer satang without importing this package. The dependency points this way only: the package takes a dev-dependency on `@trajectonomics/sim` for its golden corpus.
+`@trajectonomics/tax/th` exports `emitThLevy(profile)`, which freezes one TH 2026 taxpayer profile into a [sim-core](https://github.com/trajectonomics/sim-core) `Levy`. The emitted graph uses only `const`, `tally`, `add`, `sub`, `min`, `max`, `scale`, and `pick`, so sim-core evaluates it in exact integer satang without importing this package. The dependency points this way only: the package takes a dev-dependency on `@trajectonomics/sim` for its golden corpus. That dependency pins `0.2.0-alpha.4`, the first published version that exports `evaluateMeasures` (the stable `0.1.0` predates it); nothing in the built package imports it.
 
 The profile fixes the filing status, the fixed allowances (personal, spouse, children, parents, disabled care, social security, life/health insurance, parent health insurance, spouse life insurance, mortgage interest, and donation requests), the standard-versus-actual expense elections, the Section 40(4) final-withholding elections with the Section 47 bis corporate rate, and the Levy identity (`id` defaults to `th-2026-pit`, period to 1 January, settlement to 31 March). Income, expense, and contribution amounts are not in the profile: they arrive as Flow tallies under the labels below.
 
@@ -71,7 +71,7 @@ Section 40(4) is split into four labels because each source carries its own fina
 | `allowance.retirement.pension_life` | Pension life insurance premium |
 | `allowance.thai_esg` | ThaiESG contribution |
 
-The golden corpus in `src/th/tests/levy-golden.test.ts` generates over 3,000 deterministic cases — every bracket boundary, every expense and allowance ceiling on both sides, the minimum gross tax thresholds, and half-satang ties — and asserts that eleven audited Measures match `calculateThTax` to the satang for each one.
+The golden corpus in `src/th/tests/levy-golden.test.ts` generates over 3,000 deterministic cases — every bracket boundary, every expense and allowance ceiling on both sides, the minimum gross tax thresholds, and half-satang ties in the brackets, the minimum gross tax, and the Section 47 bis credit — and asserts that eleven audited Measures match `calculateThTax` to the satang for each one.
 
 ## Commands
 

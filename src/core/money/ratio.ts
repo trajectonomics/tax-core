@@ -2,7 +2,12 @@ import { validateRate } from "./validate"
 
 /**
  * Exact non-negative integer fraction `num / den` with `den` at least 1.
- * Units: dimensionless rate ratio (0.35 is 35/100); no currency.
+ *
+ * Purpose: Carries a statutory rate as integers into exact rational arithmetic.
+ * Math: `num / den` equals the rate; the fraction is not reduced.
+ * Units: Dimensionless rate ratio (0.35 is 35/100); no currency.
+ * Throws: Nothing; construction happens in {@link rateFraction}.
+ * @statute Jurisdiction-neutral arithmetic type; no statutory citation.
  */
 export interface RateFraction {
 	/** Numerator, equal to the rate's decimal digits without the point. */

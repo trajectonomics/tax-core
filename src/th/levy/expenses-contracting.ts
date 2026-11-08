@@ -9,6 +9,7 @@ import type { ThLevyTallies } from "./tallies"
 /**
  * Emits the Section 40(7) contracting expense: standard 60%, or actual capped at the income.
  *
+ * Purpose: Mirrors the contracting expense deduction and its actual-expense election.
  * Math: `floor(s7 * 0.6)` or `min(actual, s7)`.
  * Units: Integer satang Measures.
  * Throws: TaxValidationError if the elected actual expense is invalid.

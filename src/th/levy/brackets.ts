@@ -7,7 +7,15 @@ import { sumMeasures } from "./graph-rates"
 import { ThLevyRounding } from "./graph-types"
 import { ThLevyMeasureId } from "./measure-ids"
 
-/** Section 48(2) minimum gross tax Measures. */
+/**
+ * Section 48(2) minimum gross tax Measures.
+ *
+ * Purpose: Separates the calculated tax from the portion that actually applies.
+ * Math: No arithmetic; ids only.
+ * Units: The referenced Measures are integer satang.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Section 48(2).
+ */
 export interface ThMinimumTaxMeasures {
 	/** 0.5% of Section 40(2)–(8) income when it reaches 120,000 THB, else zero. */
 	readonly calculated: string
@@ -18,9 +26,11 @@ export interface ThMinimumTaxMeasures {
 /**
  * Emits progressive Section 48(1) tax as one slice per bracket tier.
  *
+ * Purpose: Reproduces `evaluateBrackets` slice by slice as Measures.
  * Math: For tier `[lo, hi)` at rate `r`, tax += `round_half_up(min(max(x - lo, 0), hi - lo) * r)`;
  * the unbounded top tier omits the upper cap. Slices match `evaluateBrackets` exactly.
  * Units: Taxable income and tax are integer satang Measures; rates are dimensionless.
+ * Throws: TaxValidationError if a bracket bound or rate is invalid.
  *
  * @param graph Measure graph being built.
  * @param taxable Net taxable income Measure.
@@ -48,9 +58,11 @@ export function addProgressiveTax(
 /**
  * Emits the Section 48(2) minimum gross tax and its applicability test.
  *
+ * Purpose: Encodes both statutory thresholds as `pick` Measures.
  * Math: `calculated = gross >= 120,000 ? round_half_up(gross * 0.5%) : 0`;
  * `applicable = calculated > 5,000 ? calculated : 0`.
  * Units: Integer satang Measures; the threshold comparison uses satang.
+ * Throws: TaxValidationError if the rate or a threshold is invalid.
  *
  * @param graph Measure graph being built.
  * @param grossNonEmployment Section 40(2)–(8) gross income Measure.
@@ -82,8 +94,10 @@ export function addMinimumGrossTax(
 /**
  * Emits the regular-schedule tax: the larger of progressive tax and applicable minimum gross tax.
  *
+ * Purpose: Encodes Section 48(2)'s "payable only if it exceeds" rule as `max`.
  * Math: `max(progressive, applicableMinimum)`.
  * Units: Integer satang Measures.
+ * Throws: Nothing.
  *
  * @param graph Measure graph being built.
  * @param progressive Progressive bracket tax Measure.

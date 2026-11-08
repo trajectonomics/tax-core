@@ -10,7 +10,15 @@ import { ThLevyMeasureId } from "./measure-ids"
 import type { ThLevySection40_4Elections } from "./profile-types"
 import type { ThLevyTallies } from "./tallies"
 
-/** Section 40(4) Measures: included income, final withholding tax, and the Section 47 bis credit. */
+/**
+ * Section 40(4) Measures: included income, final withholding tax, and the Section 47 bis credit.
+ *
+ * Purpose: Names every output of the Section 40(4) election split.
+ * Math: No arithmetic; ids only.
+ * Units: The referenced Measures are integer satang.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Sections 40(4), 47 bis, 50(2)(g), 57 ter.
+ */
 export interface ThSection40_4Measures {
 	/** Included sources plus the dividend gross-up, added to Section 40(4) assessable income. */
 	readonly assessable: string
@@ -30,6 +38,7 @@ function withheld(graph: ThLevyGraph, tally: string, rate: number): string {
  * withholding tax; included sources join Section 40(4) income, and included dividends also earn
  * the Section 47 bis gross-up credit.
  *
+ * Purpose: Applies each source's emit-time election and builds the Section 47 bis credit.
  * Math: Final tax = `round_half_up(amount * rate)`; credit = `round_half_up(dividend * r / (1-r))`;
  * assessable = sum of included sources + credit.
  * Units: Integer satang Measures; rates are dimensionless.

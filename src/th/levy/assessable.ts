@@ -5,7 +5,15 @@ import { ThLevyMeasureId } from "./measure-ids"
 import type { ThSection40_4Measures } from "./regimes"
 import type { ThLevyTallies } from "./tallies"
 
-/** Assessable income Measures: the Section 40 total and the Section 48(2) eligible subtotal. */
+/**
+ * Assessable income Measures: the Section 40 total and the Section 48(2) eligible subtotal.
+ *
+ * Purpose: Names the two assessable-income Measures the later stages consume.
+ * Math: No arithmetic; ids only.
+ * Units: The referenced Measures are integer satang.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Sections 40(1)–(8), 48(2).
+ */
 export interface ThAssessableMeasures {
 	/** Section 40(1)–(8) assessable income after the Section 40(4) split. */
 	readonly total: string
@@ -16,9 +24,11 @@ export interface ThAssessableMeasures {
 /**
  * Emits the Section 40 assessable income totals.
  *
+ * Purpose: Sums every Section 40 class after the Section 40(4) election split.
  * Math: total = 40(1) + 40(2) + 40(3) + 40(4) assessable + 40(5) + 40(6) + 40(7) + 40(8);
  * gross non-employment = the same sum without Section 40(1).
  * Units: Integer satang Measures.
+ * Throws: Nothing; every input is a caller-supplied tally Measure.
  *
  * @param graph Measure graph being built.
  * @param tallies Income tally ids.

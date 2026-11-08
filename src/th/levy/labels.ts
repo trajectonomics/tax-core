@@ -1,8 +1,11 @@
 /**
- * Tally labels a TH 2026 Levy reads from income Flows (`gross` basis): one per assessable income
- * class under Section 40(1)–(8), with Section 40(4) split per source because each source carries
- * its own final-withholding election fixed at emit time.
+ * Tally labels a TH 2026 Levy reads from income Flows (`gross` basis).
  *
+ * Purpose: One label per assessable income class under Section 40(1)–(8), with Section 40(4)
+ * split per source because each source carries its own final-withholding election at emit time.
+ * Math: No arithmetic; the label selects which tally a Measure reads.
+ * Units: Dimensionless label string; the tallied amount is integer satang.
+ * Throws: Nothing.
  * @statute Thailand Revenue Code Sections 40(1)–(8), 40(4), 50(2)(g).
  */
 export const ThLevyIncomeLabel = {
@@ -52,13 +55,22 @@ export const ThLevyIncomeLabel = {
 	Section40_8Entertainer: "income.section40_8.entertainer",
 } as const
 
-/** Union of {@link ThLevyIncomeLabel} values. */
+/**
+ * Union of {@link ThLevyIncomeLabel} values.
+ *
+ * Purpose: Narrow type for the labels a caller may put on an income Flow.
+ * Units: Dimensionless label string.
+ * Throws: Nothing.
+ */
 export type ThLevyIncomeLabel = (typeof ThLevyIncomeLabel)[keyof typeof ThLevyIncomeLabel]
 
 /**
- * Tally labels a TH 2026 Levy reads from contribution Flows (`funded` basis): one per
- * contribution-driven retirement allowance.
+ * Tally labels a TH 2026 Levy reads from contribution Flows (`funded` basis).
  *
+ * Purpose: One label per contribution-driven retirement allowance.
+ * Math: No arithmetic; the label selects which tally a Measure reads.
+ * Units: Dimensionless label string; the tallied amount is integer satang.
+ * Throws: Nothing.
  * @statute Thailand Revenue Code Section 47; Ministerial Regulations No. 126, 390.
  */
 export const ThLevyContributionLabel = {
@@ -78,11 +90,23 @@ export const ThLevyContributionLabel = {
 	ThaiEsg: "allowance.thai_esg",
 } as const
 
-/** Union of {@link ThLevyContributionLabel} values. */
+/**
+ * Union of {@link ThLevyContributionLabel} values.
+ *
+ * Purpose: Narrow type for the labels a caller may put on a contribution Flow.
+ * Units: Dimensionless label string.
+ * Throws: Nothing.
+ */
 export type ThLevyContributionLabel =
 	(typeof ThLevyContributionLabel)[keyof typeof ThLevyContributionLabel]
 
-/** Every income tally label the emitter reads, in Section 40 order. */
+/**
+ * Every income tally label the emitter reads, in Section 40 order.
+ *
+ * Purpose: Ordered contract a caller can iterate to label or audit income Flows.
+ * Units: Dimensionless label strings.
+ * Throws: Nothing.
+ */
 export const TH_LEVY_INCOME_LABELS: readonly ThLevyIncomeLabel[] = [
 	ThLevyIncomeLabel.Section40_1,
 	ThLevyIncomeLabel.Section40_2,
@@ -108,7 +132,13 @@ export const TH_LEVY_INCOME_LABELS: readonly ThLevyIncomeLabel[] = [
 	ThLevyIncomeLabel.Section40_8Entertainer,
 ]
 
-/** Every contribution tally label the emitter reads, in retirement-cluster order. */
+/**
+ * Every contribution tally label the emitter reads, in retirement-cluster order.
+ *
+ * Purpose: Ordered contract a caller can iterate to label or audit contribution Flows.
+ * Units: Dimensionless label strings.
+ * Throws: Nothing.
+ */
 export const TH_LEVY_CONTRIBUTION_LABELS: readonly ThLevyContributionLabel[] = [
 	ThLevyContributionLabel.Rmf,
 	ThLevyContributionLabel.Ssf,

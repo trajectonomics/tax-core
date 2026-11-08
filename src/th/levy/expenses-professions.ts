@@ -10,6 +10,7 @@ import type { ThLevyTallies } from "./tallies"
  * Emits the Section 40(6) liberal profession expense: 60% for medical, 30% for every other
  * profession; actual expenses cap at their class income.
  *
+ * Purpose: Mirrors each profession class's standard percentage or actual-expense election.
  * Math: Per class, `floor(income * rate)` with medical 60% and the rest 30%.
  * Units: Integer satang Measures.
  * Throws: TaxValidationError if an elected actual expense is invalid.

@@ -9,6 +9,7 @@ import type { ThLevyTallies } from "./tallies"
 /**
  * Emits the Section 40(5) rental expense across the five property classes.
  *
+ * Purpose: Mirrors each rental class's standard percentage or actual-expense election.
  * Math: Per class, `floor(income * rate)` with building 30%, agricultural land 20%,
  * non-agricultural land 15%, vehicles 30%, other 10%; actual expenses cap at their class income.
  * Units: Integer satang Measures.

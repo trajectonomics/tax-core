@@ -33,6 +33,7 @@ function addEntertainerExpense(
  * Emits the Section 40(8) business expense: general income at 60%, entertainer income on the
  * 60%/40% two-tier schedule capped at 600,000 THB; actual expenses cap at their income.
  *
+ * Purpose: Mirrors both Section 40(8) expense schedules and their actual-expense elections.
  * Math: General `floor(income * 0.6)`. Entertainer
  * `min(floor(min(income, 300000) * 0.6) + floor(max(income - 300000, 0) * 0.4), 600000)`.
  * Units: Integer satang Measures.
