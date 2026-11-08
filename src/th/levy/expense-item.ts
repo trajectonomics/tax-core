@@ -30,6 +30,7 @@ export interface ThLevyExpenseLine {
 /**
  * Emits the actual-expense branch: `min(actual, income)`, matching `clampCap(actual, income)`.
  *
+ * Purpose: Shared actual-expense Measure for every electable Section 40 item.
  * Math: `min(tally, actualExpense)` in satang.
  * Units: Actual expense is THB major units in, satang Measures out.
  * Throws: TaxValidationError if the actual expense is negative, NaN, or non-finite.
@@ -54,6 +55,7 @@ export function addActualExpense(
 /**
  * Emits one Section 40 expense deduction, either actual-capped-at-income or the standard percentage.
  *
+ * Purpose: Selects the election branch and applies the item's statutory formula.
  * Math: Actual election gives `min(actual, income)`; otherwise `min(floor(income * rate), cap)`
  * expressed in whole baht, reproducing the calculator's `Math.floor(major * rate)` step.
  * Units: Measures are integer satang; `rate` is dimensionless.
@@ -74,6 +76,7 @@ export function addItemExpense(graph: ThLevyGraph, line: ThLevyExpenseLine): str
 /**
  * Emits and sums a list of expense lines, one per Section 40 item or sub-category.
  *
+ * Purpose: Keeps multi-class categories such as rentals and professions readable.
  * Math: `sum(addItemExpense(line))`; an empty list is zero.
  * Units: Integer satang Measures.
  * Throws: TaxValidationError if an elected actual expense is invalid.

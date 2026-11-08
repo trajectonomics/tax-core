@@ -12,7 +12,9 @@ import type { ThLevyMonthDay } from "./graph-types"
  * Purpose: These allowances depend only on the taxpayer profile, so the emitter bakes them as
  * fixed Measures. Contribution-driven allowances (RMF, SSF, PVD, GPF, NSF, pension life insurance,
  * ThaiESG) are excluded on purpose: they arrive as `funded` Flow tallies instead.
+ * Math: Sums the calculator's family and insurance stages into one fixed Measure.
  * Units: THB major units, except counts (children, parents, disabled persons).
+ * Throws: TaxValidationError at emit time for a negative or non-finite amount or an invalid count.
  * @statute Thailand Revenue Code Section 47.
  */
 export type ThLevyAllowances = Pick<
@@ -131,6 +133,7 @@ export interface ThLevyIdentity {
  * Purpose: Holds everything that must be fixed at emit time: filing status, fixed allowances,
  * expense elections, Section 40(4) elections, and the Levy identity. Income and contribution
  * amounts are not part of the profile; they arrive as Flow tallies at evaluation time.
+ * Math: No arithmetic; every monetary amount is an emit-time constant.
  * Units: Monetary profile amounts are THB major units.
  * Throws: TaxValidationError at emit time for any invalid allowance, donation, expense, or rate.
  * @statute Thailand Revenue Code Sections 40, 42 bis, 47, 47 bis, 48(1)–(2), 56.

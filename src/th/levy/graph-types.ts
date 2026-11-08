@@ -14,7 +14,15 @@ export const ThLevyTallyBasis = {
 	Funded: "funded",
 } as const
 
-/** Union of {@link ThLevyTallyBasis} values. */
+/**
+ * Union of {@link ThLevyTallyBasis} values.
+ *
+ * Purpose: Narrow type for the tally basis of an emitted Measure.
+ * Math: No arithmetic; a discriminator only.
+ * Units: Dimensionless.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Sections 40(1)–(8) (gross) and 47 (funded).
+ */
 export type ThLevyTallyBasis = (typeof ThLevyTallyBasis)[keyof typeof ThLevyTallyBasis]
 
 /**
@@ -32,7 +40,15 @@ export const ThLevyRounding = {
 	Ceil: "ceil",
 } as const
 
-/** Union of {@link ThLevyRounding} values. */
+/**
+ * Union of {@link ThLevyRounding} values.
+ *
+ * Purpose: Narrow type for a `scale` Measure's rounding policy.
+ * Math: No arithmetic; names `floor`, `ceil`, or ties-away-from-zero `halfUp`.
+ * Units: Dimensionless.
+ * Throws: Nothing.
+ * @statute Thailand Revenue Code Sections 47 bis, 48(1), 48(2).
+ */
 export type ThLevyRounding = (typeof ThLevyRounding)[keyof typeof ThLevyRounding]
 
 /**
@@ -99,6 +115,7 @@ export type ThLevyMeasure =
  * frozen at emit time, so one Levy describes one taxpayer.
  * Math: Every Measure is exact integer satang arithmetic over the closed sim-core operation set.
  * Units: All monetary Measure values are integer satang (THB minor units).
+ * Throws: Nothing at construction; {@link ThLevyGraph.build} validates the graph.
  * @statute Thailand Revenue Code Sections 40, 42 bis, 47, 47 bis, 48(1)–(2).
  */
 export interface ThLevy {

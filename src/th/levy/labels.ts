@@ -59,8 +59,10 @@ export const ThLevyIncomeLabel = {
  * Union of {@link ThLevyIncomeLabel} values.
  *
  * Purpose: Narrow type for the labels a caller may put on an income Flow.
+ * Math: No arithmetic.
  * Units: Dimensionless label string.
  * Throws: Nothing.
+ * @statute Thailand Revenue Code Sections 40(1)–(8), 40(4).
  */
 export type ThLevyIncomeLabel = (typeof ThLevyIncomeLabel)[keyof typeof ThLevyIncomeLabel]
 
@@ -94,8 +96,10 @@ export const ThLevyContributionLabel = {
  * Union of {@link ThLevyContributionLabel} values.
  *
  * Purpose: Narrow type for the labels a caller may put on a contribution Flow.
+ * Math: No arithmetic.
  * Units: Dimensionless label string.
  * Throws: Nothing.
+ * @statute Thailand Revenue Code Section 47; Ministerial Regulations No. 126, 390.
  */
 export type ThLevyContributionLabel =
 	(typeof ThLevyContributionLabel)[keyof typeof ThLevyContributionLabel]
@@ -104,8 +108,10 @@ export type ThLevyContributionLabel =
  * Every income tally label the emitter reads, in Section 40 order.
  *
  * Purpose: Ordered contract a caller can iterate to label or audit income Flows.
+ * Math: No arithmetic.
  * Units: Dimensionless label strings.
  * Throws: Nothing.
+ * @statute Thailand Revenue Code Sections 40(1)–(8), 40(4).
  */
 export const TH_LEVY_INCOME_LABELS: readonly ThLevyIncomeLabel[] = [
 	ThLevyIncomeLabel.Section40_1,
@@ -136,8 +142,10 @@ export const TH_LEVY_INCOME_LABELS: readonly ThLevyIncomeLabel[] = [
  * Every contribution tally label the emitter reads, in retirement-cluster order.
  *
  * Purpose: Ordered contract a caller can iterate to label or audit contribution Flows.
+ * Math: No arithmetic.
  * Units: Dimensionless label strings.
  * Throws: Nothing.
+ * @statute Thailand Revenue Code Section 47; Ministerial Regulations No. 126, 390.
  */
 export const TH_LEVY_CONTRIBUTION_LABELS: readonly ThLevyContributionLabel[] = [
 	ThLevyContributionLabel.Rmf,

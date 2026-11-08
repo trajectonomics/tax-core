@@ -16,6 +16,9 @@ export interface RateFraction {
 	readonly den: number
 }
 
+/** Diagnostic field name for a statutory rate ratio, shared by every rate consumer. */
+export const RATE_FIELD = "rate"
+
 /**
  * Converts a statutory rate ratio into the exact integer fraction it was written as.
  *
@@ -30,7 +33,7 @@ export interface RateFraction {
  * @statute Jurisdiction-neutral exact arithmetic helper; Thailand Revenue Code Sections 47 bis,
  * 48(1), 48(2) are the first consumers.
  */
-export function rateFraction(rate: number, field = "rate"): RateFraction {
+export function rateFraction(rate: number, field: string = RATE_FIELD): RateFraction {
 	validateRate(rate, field)
 	const text = rate.toString().includes("e")
 		? rate.toFixed(10).replace(/\.?0+$/, "")

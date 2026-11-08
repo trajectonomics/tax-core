@@ -44,6 +44,7 @@ export function fixedAllowanceSatang(
 /**
  * Emits the Section 47 fixed allowance total as one const Measure.
  *
+ * Purpose: Freezes the profile-only allowances into a single named Measure.
  * Math: `const(fixedAllowanceSatang(...))`.
  * Units: Integer satang.
  * Throws: TaxValidationError if a profile allowance amount is invalid.

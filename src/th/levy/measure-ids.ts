@@ -1,6 +1,10 @@
 /**
  * Diagnostic field identifiers for values passed to the Levy measure builder.
  *
+ * Purpose: Names the invalid input on every emit-time validation error.
+ * Math: No arithmetic; diagnostic paths only.
+ * Units: Dimensionless field paths.
+ * Throws: Nothing; consumed by `TaxValidationError`.
  * @statute Jurisdiction-neutral input bound (AGENTS rule 8); no statutory citation.
  */
 export enum ThLevyField {
@@ -12,9 +16,13 @@ export enum ThLevyField {
 }
 
 /**
- * Audited Measure ids a TH 2026 Levy exposes by name, so callers and tests can compare each
- * intermediate statutory figure without knowing the emit order.
+ * Audited Measure ids a TH 2026 Levy exposes by name.
  *
+ * Purpose: Lets callers and tests compare each intermediate statutory figure without knowing
+ * the emit order.
+ * Math: No arithmetic; Measure ids only.
+ * Units: The referenced Measures are integer satang.
+ * Throws: Nothing.
  * @statute Thailand Revenue Code Sections 40, 42 bis, 47, 47 bis, 48(1)–(2).
  */
 export enum ThLevyMeasureId {

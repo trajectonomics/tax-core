@@ -17,6 +17,7 @@ export {
 	ThLevyContributionLabel,
 	ThLevyIncomeLabel,
 	ThLevyMeasureId,
+	ThLevyRounding,
 	ThLevyTallyBasis,
 } from "./levy"
 export { TH_2026_PARAMETERS } from "./parameters"

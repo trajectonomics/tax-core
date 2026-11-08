@@ -26,6 +26,7 @@ export interface ThAllowanceMeasures {
 /**
  * Emits every Section 47 allowance and derives net taxable income.
  *
+ * Purpose: Orders the fixed, retirement, ThaiESG, and donation rules into one pipeline.
  * Math: `netBefore = max(0, assessable - expenses - fixed - cluster - ThaiESG)`, then donations
  * are capped against that net; `netTaxable = max(0, netBefore - allowed donations)`.
  * Units: Integer satang Measures.
