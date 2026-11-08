@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { TaxValidationError } from "./errors"
-import { rateFraction } from "./ratio"
+import { rateBigFraction, rateFraction } from "./ratio"
 
 describe("rateFraction", () => {
 	it("keeps the decimal digits of a statutory rate as numerator over scale", () => {
@@ -16,6 +16,18 @@ describe("rateFraction", () => {
 
 	it("expands exponent notation into a plain decimal", () => {
 		expect(rateFraction(1e-7)).toEqual({ num: 1, den: 10_000_000 })
+	})
+
+	it("keeps a long decimal expansion exact as a BigInt fraction", () => {
+		const longRate = Number("0.12345678901234567")
+		expect(rateBigFraction(longRate)).toEqual({
+			num: 12345678901234566n,
+			den: 100_000_000_000_000_000n,
+		})
+	})
+
+	it("rejects a rate whose digits exceed the safe integer range", () => {
+		expect(() => rateFraction(Number("0.12345678901234567"))).toThrow(TaxValidationError)
 	})
 
 	it("rejects rates outside the statutory ratio range", () => {

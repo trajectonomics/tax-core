@@ -1,5 +1,5 @@
 import { TaxValidationError } from "./errors"
-import { rateFraction } from "./ratio"
+import { rateBigFraction } from "./ratio"
 import { type ValidateAmountOptions, validateIntegerMinorUnits, validateRate } from "./validate"
 
 /**
@@ -21,11 +21,6 @@ export function roundHalfUp(value: number): number {
 		return res + 0
 	}
 	return Math.round(value) + 0
-}
-
-function rateRational(rate: number): { num: bigint; den: bigint } {
-	const { num, den } = rateFraction(rate)
-	return { num: BigInt(num), den: BigInt(den) }
 }
 
 /**
@@ -50,7 +45,7 @@ export function applyPercentage(
 	options?: ValidateAmountOptions,
 ): number {
 	validateIntegerMinorUnits(minorUnits, "minorUnits", options)
-	const { num, den } = rateRational(rate)
+	const { num, den } = rateBigFraction(rate)
 	const m = BigInt(minorUnits)
 	const prod = m * num
 
@@ -90,7 +85,7 @@ export function applyGrossUp(minorUnits: number, rate: number, field = "minorUni
 	if (rate >= 1) {
 		throw new TaxValidationError("rate", rate, "Gross-up rate must be strictly less than 1")
 	}
-	const { num, den } = rateRational(rate)
+	const { num, den } = rateBigFraction(rate)
 	const divisor = den - num
 	const result = Number((BigInt(minorUnits) * num * 2n + divisor) / (divisor * 2n)) + 0
 	if (!Number.isSafeInteger(result)) {
