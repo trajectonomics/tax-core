@@ -1,6 +1,7 @@
 import type { TaxBracket } from "../../../core/brackets"
 import type { UsFilingStatus, UsStateCode, UsStateTaxType } from "../../types"
 import type { UsStatePhaseOut } from "./phase-out-types"
+import type { UsStateVerification } from "./verification"
 
 /** Lower-bound and rate tuple for a state bracket tier, in major dollars and rate ratio. */
 export type UsStateBracketTier = readonly [lowerDollars: number, rate: number]
@@ -42,6 +43,8 @@ export interface UsStateDefinition {
 	readonly standardDeductionPhaseOut?: UsStatePhaseOut
 	/** Income-based disallowance of the dependent exemption. */
 	readonly dependentExemptionPhaseOut?: UsStatePhaseOut
+	/** How far the figures were verified against an official document. */
+	readonly verification: UsStateVerification
 }
 
 /** Complete statutory parameter table for one state's 2026 individual income tax. */
@@ -58,4 +61,5 @@ export interface UsStateParameters {
 	readonly surtax?: UsStateSurtax
 	readonly standardDeductionPhaseOut?: UsStatePhaseOut
 	readonly dependentExemptionPhaseOut?: UsStatePhaseOut
+	readonly verification: UsStateVerification
 }

@@ -6,11 +6,15 @@ export type UsStatePerStatus = Readonly<Record<UsFilingStatus, number>>
 /**
  * Linear phase-out to zero: the allowed share falls from 1 to 0 as federal AGI rises from
  * `start` to `start + width` (Maine standard deduction, 36 M.R.S. § 5124-C(2)).
+ *
+ * When `reductionStep` is set, the removed amount is rounded down to that multiple in major
+ * dollars before subtraction (South Carolina SCIAD, S.C. Code § 12-6-1140(15)(c)).
  */
 export interface UsStateLinearPhaseOut {
 	readonly kind: "linear"
 	readonly start: UsStatePerStatus
 	readonly width: UsStatePerStatus
+	readonly reductionStep?: number
 }
 
 /**

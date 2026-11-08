@@ -104,6 +104,7 @@ export function defineState(def: UsStateDefinition): UsStateParameters {
 		personalCredit: exemptionAmounts(personalCredit[0], personalCredit[1], personalCredit[2]),
 		dependentExemption: def.dependentExemption ?? 0,
 		dependentCredit: def.dependentCredit ?? 0,
+		verification: def.verification,
 		...optionalRules(def),
 	}
 }

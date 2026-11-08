@@ -3,14 +3,17 @@ import type { UsStateParameters } from "../types"
 /**
  * 2026 California individual income tax parameters.
  *
- * FTB 2026 indexed schedules, deduction ($5,900/$11,800) and exemption credits ($158/$316,
- * $491 per dependent). 1% mental health services surtax above $1,000,000.
+ * FTB 2026 rate schedules for all three filing statuses. The 2026 standard deduction
+ * ($5,900/$11,800) and exemption credits ($158/$316, $491 per dependent) are still the
+ * 2025 values x 1.034 because FTB has not published the 2026 index. 1% mental health services
+ * surtax above $1,000,000.
  *
  * @statute Cal. Rev. & Tax. Code § 17041
  */
 export const US_2026_STATE_CA: UsStateParameters = defineState({
 	code: "CA",
 	name: "California",
+	verification: "partial",
 	type: "progressive",
 	single: [
 		[0, 0.01],

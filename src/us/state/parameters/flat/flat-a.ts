@@ -11,6 +11,7 @@ import type { UsStateParameters } from "../types"
 const ARIZONA: UsStateParameters = defineState({
 	code: "AZ",
 	name: "Arizona",
+	verification: "unconfirmed",
 	type: "flat",
 	single: [[0, 0.025]],
 	mfj: [[0, 0.025]],
@@ -26,6 +27,7 @@ const ARIZONA: UsStateParameters = defineState({
 const COLORADO: UsStateParameters = defineState({
 	code: "CO",
 	name: "Colorado",
+	verification: "unconfirmed",
 	type: "flat",
 	single: [[0, 0.044]],
 	mfj: [[0, 0.044]],
@@ -43,6 +45,7 @@ const COLORADO: UsStateParameters = defineState({
 const GEORGIA: UsStateParameters = defineState({
 	code: "GA",
 	name: "Georgia",
+	verification: "official",
 	type: "flat",
 	single: [[0, 0.0499]],
 	mfj: [[0, 0.0499]],
@@ -60,6 +63,7 @@ const GEORGIA: UsStateParameters = defineState({
 const IDAHO: UsStateParameters = defineState({
 	code: "ID",
 	name: "Idaho",
+	verification: "reported",
 	type: "flat",
 	single: [[4_811, 0.053]],
 	mfj: [[9_622, 0.053]],
@@ -74,6 +78,7 @@ const IDAHO: UsStateParameters = defineState({
 const ILLINOIS: UsStateParameters = defineState({
 	code: "IL",
 	name: "Illinois",
+	verification: "reported",
 	type: "flat",
 	single: [[0, 0.0495]],
 	mfj: [[0, 0.0495]],
@@ -90,6 +95,7 @@ const ILLINOIS: UsStateParameters = defineState({
 const INDIANA: UsStateParameters = defineState({
 	code: "IN",
 	name: "Indiana",
+	verification: "reported",
 	type: "flat",
 	single: [[0, 0.0295]],
 	mfj: [[0, 0.0295]],
@@ -106,6 +112,7 @@ const INDIANA: UsStateParameters = defineState({
 const IOWA: UsStateParameters = defineState({
 	code: "IA",
 	name: "Iowa",
+	verification: "official",
 	type: "flat",
 	single: [[0, 0.038]],
 	mfj: [[0, 0.038]],

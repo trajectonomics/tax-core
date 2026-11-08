@@ -12,6 +12,7 @@ import type { UsStateParameters } from "../types"
 const LOUISIANA: UsStateParameters = defineState({
 	code: "LA",
 	name: "Louisiana",
+	verification: "official",
 	type: "flat",
 	single: [[0, 0.03]],
 	mfj: [[0, 0.03]],
@@ -28,6 +29,7 @@ const LOUISIANA: UsStateParameters = defineState({
 const OHIO: UsStateParameters = defineState({
 	code: "OH",
 	name: "Ohio",
+	verification: "partial",
 	type: "flat",
 	single: [[26_050, 0.0275]],
 	mfj: [[26_050, 0.0275]],

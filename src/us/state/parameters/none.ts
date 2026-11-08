@@ -11,6 +11,7 @@ function noTaxState(code: UsStateCode, name: string): UsStateParameters {
 	return defineState({
 		code,
 		name,
+		verification: "official",
 		type: "none",
 		single: [[0, 0]],
 		mfj: [[0, 0]],

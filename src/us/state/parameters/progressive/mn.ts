@@ -14,6 +14,7 @@ import type { UsStateParameters } from "../types"
 export const US_2026_STATE_MN: UsStateParameters = defineState({
 	code: "MN",
 	name: "Minnesota",
+	verification: "official",
 	type: "progressive",
 	single: [
 		[0, 0.0535],
