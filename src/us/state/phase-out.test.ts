@@ -39,8 +39,8 @@ describe("state phase-out reduction rounding", () => {
 		expect(applyUsStatePhaseOut(AMOUNT, 6_001_999, "single", rule(10), "USD")).toBe(955_000)
 	})
 
-	it("removes the whole amount at the end of the band", () => {
-		expect(applyUsStatePhaseOut(AMOUNT, 9_500_000, "single", rule(10), "USD")).toBe(0)
+	it("removes the whole amount at the end of the band, even off the step grid", () => {
+		expect(applyUsStatePhaseOut(AMOUNT + 37, 9_500_000, "single", rule(10), "USD")).toBe(0)
 	})
 
 	it("rejects a zero reduction step", () => {

@@ -1,5 +1,6 @@
 import { defineState } from "../helpers"
-import type { UsStateParameters } from "../types"
+import type { UsStateBracketTiers, UsStateParameters } from "../types"
+
 /**
  * 2026 South Carolina individual income tax parameters.
  *
@@ -11,23 +12,25 @@ import type { UsStateParameters } from "../types"
  * $30,000 joint, reduced by (federal AGI - start) / width and floored to $10.
  *
  * The $30,000 bracket is indexed under § 12-6-520 and the $4,930 dependent exemption is a
- * 2026 indexed amount; neither is published, so the table is recorded as partial.
+ * 2026 indexed amount; neither is published, so the table is recorded as partial. The act also
+ * raised the earned income tax credit to 125% of the federal credit capped at $200; no state
+ * EITC is modelled in this engine.
  *
  * @statute S.C. Code §§ 12-6-510(C) (as amended by Act 110 of 2026), 12-6-1140(15)
  */
+/** Both filing-status axes share one table: the act taxes South Carolina taxable income the same way. */
+const SC_TIERS: UsStateBracketTiers = [
+	[0, 0.0199],
+	[30_000, 0.0521],
+]
+
 export const US_2026_STATE_SC: UsStateParameters = defineState({
 	code: "SC",
 	name: "South Carolina",
 	verification: "partial",
 	type: "progressive",
-	single: [
-		[0, 0.0199],
-		[30_000, 0.0521],
-	],
-	mfj: [
-		[0, 0.0199],
-		[30_000, 0.0521],
-	],
+	single: SC_TIERS,
+	mfj: SC_TIERS,
 	std: [15_000, 30_000, 22_500],
 	dependentExemption: 4_930,
 	standardDeductionPhaseOut: {

@@ -104,7 +104,7 @@ describe("US State Parameter Registry", () => {
 		for (const state of Object.values(US_2026_STATE_PARAMETERS)) {
 			tally[state.verification] = (tally[state.verification] ?? 0) + 1
 		}
-		expect(tally).toEqual({ official: 22, partial: 5, reported: 6, unconfirmed: 18 })
+		expect(tally).toEqual({ official: 22, partial: 6, reported: 6, unconfirmed: 17 })
 	})
 
 	it("calculates every state through the public US tax seam", () => {

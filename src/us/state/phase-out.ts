@@ -1,5 +1,10 @@
-import { applyPercentage, type TaxSupportedCurrency, toMinorUnits } from "../../core/money"
-import { validateSafeIntegerCount } from "../../core/money/validate"
+import {
+	applyPercentage,
+	type TaxSupportedCurrency,
+	TaxValidationError,
+	toMinorUnits,
+	validateMonetaryAmount,
+} from "../../core/money"
 import type { UsFilingStatus } from "../types"
 import { UsStateField } from "../types/state-fields"
 import type {
@@ -18,9 +23,16 @@ function cents(
 	return toMinorUnits(amounts[status], currency, UsStateField.PhaseOutThreshold)
 }
 
-function stepCents(step: number, currency: TaxSupportedCurrency): number {
+function reductionStepCents(step: number, currency: TaxSupportedCurrency): number {
+	validateMonetaryAmount(step, UsStateField.PhaseOutReductionStep)
 	const centsPerStep = toMinorUnits(step, currency, UsStateField.PhaseOutReductionStep)
-	validateSafeIntegerCount(centsPerStep, UsStateField.PhaseOutReductionStep, 1)
+	if (centsPerStep < 1) {
+		throw new TaxValidationError(
+			UsStateField.PhaseOutReductionStep,
+			step,
+			"Reduction step must be at least one minor unit",
+		)
+	}
 	return centsPerStep
 }
 
@@ -32,9 +44,13 @@ function linearReduction(
 	currency: TaxSupportedCurrency,
 ): number {
 	const widthCents = cents(rule.width, status, currency)
-	const step = rule.reductionStep === undefined ? 0 : stepCents(rule.reductionStep, currency)
-	if (excessCents >= widthCents) return step ? Math.floor(amountCents / step) * step : amountCents
-	if (!step) return Math.round((amountCents * excessCents) / widthCents)
+	// At or beyond the end of the band the whole amount is disallowed; the step only
+	// rounds the partial share removed inside the band.
+	if (excessCents >= widthCents) return amountCents
+	if (rule.reductionStep === undefined) {
+		return Math.round((amountCents * excessCents) / widthCents)
+	}
+	const step = reductionStepCents(rule.reductionStep, currency)
 	return Math.floor((amountCents * excessCents) / (widthCents * step)) * step
 }
 
@@ -71,8 +87,10 @@ function tieredReduction(
  * (capped at 100%); tiered removes rate x (AGI up to second - start) + secondRate x (AGI -
  * second), capped at maxShare of the amount. Nothing is removed at or below the start
  * threshold.
- * Units: AGI and amounts are integer cents; thresholds are major dollars converted to cents.
- * Throws: TaxValidationError if a threshold cannot be represented as safe integer cents.
+ * Units: AGI and amounts are integer cents; thresholds and any reduction step are major dollars
+ * converted to cents.
+ * Throws: TaxValidationError if a threshold cannot be represented as safe integer cents, or if
+ * a reduction step is negative or below one minor unit.
  *
  * @param amountCents Deduction or exemption before the phase-out, in integer cents.
  * @param agiCents Federal adjusted gross income in integer cents.

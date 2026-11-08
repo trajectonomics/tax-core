@@ -37,8 +37,8 @@ Each state's parameter table carries the same level as its row here
   the official document could not be read.
 - **unconfirmed** — no official document and no agreeing report was read.
 
-Tally: 22 official (13 documented states plus the 9 no-tax states), 5 partial, 6 reported,
-18 unconfirmed. `src/us/tests/state-parameters.test.ts` fails if the tally drifts without this
+Tally: 22 official (13 documented states plus the 9 no-tax states), 6 partial, 6 reported,
+17 unconfirmed. `src/us/tests/state-parameters.test.ts` fails if the tally drifts without this
 table being updated.
 
 ## Official: every applied figure confirmed
@@ -70,29 +70,32 @@ New Hampshire and Tennessee repealed their interest and dividends taxes.
 
 | State | Local file | Source URL | Read | Confirmed / not yet published |
 | --- | --- | --- | --- | --- |
-| SC | `SC-2026-H4216-Act110.htm`, `SC-2026-WH1603F.pdf` | https://www.scstatehouse.gov/sess126_2025-2026/bills/4216.htm | 2026-11-08 | **fixed**: Act 110 of 2026 (H.4216, ratified R 117, signed 2026-03-30), taxable years beginning after 2025 — 1.99% to $30,000, 5.21% above ("5.21% x amount - $966"), and the SCIAD of $15,000 / $30,000 / $22,500 phased out over $40,000 / $80,000 / $60,000 by $55,000 / $110,000 / $82,500 with each reduction floored to $10 (§ 12-6-1140(15)(c)). **Not published**: the § 12-6-520 indexation of the $30,000 bracket for 2026, and the 2026 dependent exemption (engine keeps 2025's $4,930). The DOR WH-1603F (Rev. 11/4/25) predates the act and still prints 0 / 3 / 6% |
+| SC | `SC-2026-H4216-Act110.htm`, `SC-2026-WH1603F.pdf` | https://www.scstatehouse.gov/sess126_2025-2026/bills/4216.htm | 2026-11-08 | **fixed**: Act 110 of 2026 (H.4216, ratified R 117, signed 2026-03-30), taxable years beginning after 2025 — 1.99% to $30,000, 5.21% above ("5.21% x amount - $966"), and the SCIAD of $15,000 / $30,000 / $22,500 phased out over $40,000 / $80,000 / $60,000 by $55,000 / $110,000 / $82,500 with each reduction floored to $10 (§ 12-6-1140(15)(c)). **Not published**: the § 12-6-520 indexation of the $30,000 bracket for 2026, and the 2026 dependent exemption (engine keeps 2025's $4,930). The DOR WH-1603F (Rev. 11/4/25) predates the act and still prints 0 / 3 / 6%. The act also raised the earned income tax credit to 125% of the federal credit, capped at $200; this engine models no state EITC |
 | CA | `CA-2026-540-tax-rate-schedules.pdf`, `CA-2026-540-ES-instructions.pdf` | https://www.ftb.ca.gov/forms/2026/2026-540-tax-rate-schedules.pdf | 2026-11-08 | **confirmed**: all three bracket schedules. **Not published**: 2026 standard deduction and exemption credits — the 540-ES instructions still send filers to the 2025 instructions, so $5,900 / $11,800, $158 / $316 and $491 remain 2025 x 1.034 estimates |
 | NY | `NY-2026-NYS-50-T-NYS.pdf` | https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys.pdf | 2026-11-01 | single brackets and the 3.9 / 4.4 / 5.15 / 5.4 / 5.9% rates match; **not printed**: married and HoH brackets |
 | MT | `MT-2026-publication-1.pdf` | https://revenuefiles.mt.gov/files/Forms/Publication-1/Publication-1-2026.pdf | 2026-11-01 | 5.65% top rate confirmed; **not printed**: bracket thresholds and the $16,100 / $32,200 deduction |
 | OH | `OH-2026-percentage-method.pdf`, `OH-2026-optional-computer-formula.pdf` | https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/employer_withholding/2026%20Withholding%20Tables/WHT_PercentageMethod_2026.pdf | 2026-11-01 | $26,050 zero-bracket threshold confirmed; **not the statutory rate**: the withholding rates are 1.6 / 2.99 / 3.4%, not 2.75% |
+| AR | `AR-2026-Withholding-Tax-Formula.pdf` | https://www.dfa.arkansas.gov/wp-content/uploads/Withholding-Tax-Formula.pdf (same PDF as `whformula_2026.pdf`) | 2026-11-08 | **confirmed**: the formula as revised 2026-05-30 prints 0% to $5,599, then 2%, 3%, 3.4% to $26,399 and **3.70%** above, with the $2,470 deduction and the $29 per-exemption credit — so the 3.7% top rate is backed by the DFA document rather than by reports. An earlier read of the first page only saw the pre-revision 3.90% and wrongly recorded a conflict. **Not printed**: the joint bracket table, which the engine sets equal to the single thresholds |
 
 ## Reported: only secondary sources agree
 
-| State | Figures | Report | Read |
-| --- | --- | --- | --- |
-| MA | 5%, $4,400 / $8,800 / $6,800, 4% surtax at $1,107,750 | 2026 Form 1-ES instructions (`mass.gov` returns 403) | 2026-11-01 |
-| MI | 4.25%, $5,900 exemption | Form 446 of 2026 (`michigan.gov` returns 403) | 2026-11-01 |
-| IL | 4.95%, $2,925 exemption | DOR 2026 publications (timed out) | 2026-11-01 |
-| IN | 2.95%, $1,000 exemption | DOR 2026 publications (timed out) | 2026-11-01 |
-| ID | 5.3%, $4,811 zero-bracket threshold | DOR 2026 publications (timed out) | 2026-11-01 |
-| VA | $8,750 / $17,500 deduction for 2025 and 2026 | 2026 Form 760 instructions (timed out) | 2026-11-01 |
+| State | Figures | Document to request | Report | Read |
+| --- | --- | --- | --- | --- |
+| MA | 5%, $4,400 / $8,800 / $6,800, 4% surtax at $1,107,750 | 2026 Form 1-ES instructions (`mass.gov` returns 403) | 2026 Form 1-ES instructions, seen only through search snippets | 2026-11-01 |
+| MI | 4.25%, $5,900 exemption | Form 446 of 2026 (`michigan.gov` returns 403) | Form 446 reports | 2026-11-01 |
+| IL | 4.95%, $2,925 exemption | 2026 IL-1040 instructions (`tax.illinois.gov`, timed out) | DOR 2026 publication summaries | 2026-11-01 |
+| IN | 2.95%, $1,000 exemption | 2026 IT-40 instructions (`in.gov/dor`, timed out) | DOR 2026 publication summaries | 2026-11-01 |
+| ID | 5.3%, $4,811 zero-bracket threshold | 2026 Form 40 instructions (`tax.idaho.gov`, timed out) | DOR 2026 publication summaries | 2026-11-01 |
+| VA | $8,750 / $17,500 deduction for 2025 and 2026 | 2026 Form 760 instructions (`tax.virginia.gov`, timed out) | 2026 Form 760 reports | 2026-11-01 |
+
+None of these six has a local file: no URL for them is recorded because none was downloaded, and
+a guessed deep link would be worse than none. The host and form name are what a browser needs.
 
 ## Unconfirmed
 
 | State | Figure awaiting a document | What was tried | Checked |
 | --- | --- | --- | --- |
 | AL | 2 / 4 / 5% at $500 / $3,000, deduction $3,000 / $8,500 / $5,200, exemption $1,500 | No 2026 rate schedule found; the 2026 forms were not published | 2026-11-01 |
-| AR | **Conflict**: engine uses a 3.7% top rate on the strength of H.B. 1001 (EY, Bloomberg Tax), but the DFA formula prints 3.90% | Both https://www.dfa.arkansas.gov/wp-content/uploads/whformula_2026.pdf and https://www.dfa.arkansas.gov/wp-content/uploads/Withholding-Tax-Formula.pdf read again: "Effective 01/01/2026", top bracket 3.90%; the 2026-05-29 revision is not linked from any reachable DFA page and `arkleg.state.ar.us` timed out. Brackets 2 / 3 / 3.4% and the $2,470 deduction match | 2026-11-08 |
 | AZ | 2.5%, $16,100 / $32,200 federal-conforming deduction | No 2026 document read | 2026-11-01 |
 | CO | 4.4%, $16,100 / $32,200 | `CO-2026-DR0004.pdf` is the allowance form only and states no rate | 2026-11-01 |
 | DC | 4% to 10.75% seven-band schedule, $16,100 / $32,200 / $24,150 | No 2026 document read | 2026-11-01 |
@@ -129,12 +132,15 @@ New Hampshire and Tennessee repealed their interest and dividends taxes.
 | 2026-11-03 | LA | HoH deduction is the joint $25,750, not 1.5x single |
 | 2026-11-05 | UT | 4.45% (was 4.5%) under S.B. 60 |
 | 2026-11-08 | SC | 1.99% / 5.21% schedule and the phased-out $15,000 / $30,000 / $22,500 SCIAD replace 0 / 3 / 6% on the former $16,100 deduction |
+| 2026-11-08 | AR | manifest corrected: the revised DFA formula prints 3.70%, so the 3.7% top rate is confirmed; the joint table remains unverified |
 
 ## Open items
 
 1. Every **unconfirmed** state needs a 2026 document once the state publishes it. The blocked
    hosts (MA, MI, NE, ND, PA, RI) need a browser on a US network.
-2. AR needs H.B. 1001 of 2026 or the revised DFA formula to settle 3.7% versus 3.90%.
+2. AR's joint bracket table is not printed in the DFA formula, which is a single-employee
+   formula; the engine applies the single thresholds to married filers and the 2026 AR1000
+   schedule needs to be read before either is changed.
 3. SC's bracket table is indexed under § 12-6-520; no 2026 indexed amount is published, so the
    engine uses the act's own $30,000 threshold, and the $4,930 dependent exemption is 2025's.
 4. ME's head-of-household phase-out range is derived from the single and joint starts rather than

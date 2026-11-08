@@ -66,6 +66,25 @@ const EXAMPLES: readonly OfficialExample[] = [
 		filingStatus: "married_filing_jointly",
 	},
 	{
+		// South Carolina Act 110 separate filers use the single band: same 9,550 SCIAD and
+		// the same 1.99% / 5.21% split as the single filer.
+		state: "SC",
+		wages: 60_000,
+		expectedTax: 1662.45,
+		label: "SC separate filer on the single band",
+		filingStatus: "married_filing_separately",
+	},
+	{
+		// South Carolina Act 110 head of household: reduction 22,500 x 40,000 / 82,500 =
+		// 10,909.09 floored to 10,900, so 100,000 - 11,600 = 88,400 taxable:
+		// 1.99% x 30,000 + 5.21% x 58,400.
+		state: "SC",
+		wages: 100_000,
+		expectedTax: 3639.64,
+		label: "SC head of household SCIAD phase-out",
+		filingStatus: "head_of_household",
+	},
+	{
 		// Utah S.B. 60 (2026 GS): rate 4.45% (was 4.5%). Single 100,000 wages:
 		// 4.45% x 100,000 = 4,450 tax before credit, less 966 personal credit = 3,484.
 		state: "UT",
