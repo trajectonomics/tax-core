@@ -7,6 +7,7 @@
       "devDependencies": {
         "@arethetypeswrong/cli": "^0.18.5",
         "@biomejs/biome": "2.6.3",
+        "@trajectonomics/sim": "0.2.0-alpha.4",
         "@trajectonomics/tooling": "1.1.0",
         "@types/bun": "^1.4.4",
         "publint": "^0.3.25",
@@ -89,6 +90,8 @@
     "@rolldown/pluginutils": ["@rolldown/pluginutils@1.0.1", "", {}, "sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw=="],
 
     "@sindresorhus/is": ["@sindresorhus/is@4.6.0", "", {}, "sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw=="],
+
+    "@trajectonomics/sim": ["@trajectonomics/sim@0.2.0-alpha.4", "", { "peerDependencies": { "@trajectonomics/tax": ">=0.0.0" }, "optionalPeers": ["@trajectonomics/tax"] }, "sha512-kZUsoHfeofWeruFC1hxCpWUj6O0/2neHz8OjFLpurdh4H3V/i9p3dJUMDDrEK4inxQ/m03NXE/AmkMFsT5Lg5Q=="],
 
     "@trajectonomics/tooling": ["@trajectonomics/tooling@1.1.0", "", {}, "sha512-AqKQYsyPN+EosNtxLUaKipA+ocXl2tEWizJ0eXOtSn+C4Lge82ZXCKDbyPYwdsjMiLknnFWfwGeyhKYPTTAl7g=="],
 
