@@ -11,8 +11,9 @@ import type { UsStateBracketTiers, UsStateParameters } from "../types"
  * Adjusted Deduction (SCIAD) of $15,000 single and separate, $22,500 head of household,
  * $30,000 joint, reduced by (federal AGI - start) / width and floored to $10.
  *
- * The $30,000 bracket is indexed under § 12-6-520 and the $4,930 dependent exemption is a
- * 2026 indexed amount; neither is published, so the table is recorded as partial. The act also
+ * The $30,000 bracket is indexed under § 12-6-520 and the dependent exemption is indexed
+ * annually; neither 2026 amount is published, so the $4,930 exemption is carried forward
+ * without a 2026 source and the table is recorded as partial. The act also
  * raised the earned income tax credit to 125% of the federal credit capped at $200; no state
  * EITC is modelled in this engine.
  *
