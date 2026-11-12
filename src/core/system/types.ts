@@ -18,17 +18,17 @@ export interface TaxResult<
 	readonly taxYear: number
 	/** Currency used in this calculation. */
 	readonly currency: C
-	/** Gross income assessed in minor units. */
+	/** Gross income assessed, in major units. */
 	readonly grossIncome: Money<C>
-	/** Taxable income after allowable deductions in minor units. */
+	/** Taxable income after allowable deductions, in major units. */
 	readonly taxableIncome: Money<C>
-	/** Total progressive tax liability computed before credits. */
+	/** Total progressive tax liability computed before credits, in major units. */
 	readonly totalTax: Money<C>
 	/** Effective tax rate ratio (totalTax / grossIncome). */
 	readonly effectiveRate: number
 	/** Marginal tax rate on the next unit of ordinary income. */
 	readonly marginalRate: number
-	/** Net tax payable after credits and withholding in minor units. */
+	/** Net tax payable after credits and withholding, in major units. */
 	readonly netTaxPayable: Money<C>
 	/** Jurisdiction-specific detailed breakdown for auditability. */
 	readonly breakdown: TBreakdown
