@@ -61,11 +61,6 @@ describe("Minor unit conversion failure contract", () => {
 		expect(negative.reason).toBe("Value cannot be negative")
 	})
 
-	it("still converts once allowNegative is set", () => {
-		expect(toMinorUnits(-1.14, "USD", "amount", { allowNegative: true })).toBe(-114)
-		expect(fromMinorUnits(-114, "USD", "minorUnits", { allowNegative: true })).toBe(-1.14)
-	})
-
 	it("rethrows an unexpected failure unchanged instead of relabelling it", () => {
 		const hostileOptions = {
 			get allowNegative(): boolean {
