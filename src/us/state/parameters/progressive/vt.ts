@@ -36,7 +36,7 @@ export const US_2026_STATE_VT: UsStateParameters = defineState({
 		[284_150, 0.0875],
 	],
 	mfs: "half-mfj",
-	std: [7650, 15300],
-	personalExemption: [5300, 10600],
+	std: [7650, 15300, 11_475],
+	personalExemption: [5300, 10600, 5_300],
 	dependentExemption: 5_300,
 })

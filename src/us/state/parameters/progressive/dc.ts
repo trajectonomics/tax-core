@@ -1,3 +1,4 @@
+import { US_2026_STANDARD_DEDUCTION as FEDERAL_STD } from "../../../parameters/constants"
 import { defineState } from "../helpers"
 import type { UsStateParameters } from "../types"
 /**
@@ -32,5 +33,5 @@ export const US_2026_STATE_DC: UsStateParameters = defineState({
 		[500_000, 0.0975],
 		[1_000_000, 0.1075],
 	],
-	std: [16100, 32200, 24150],
+	std: [FEDERAL_STD.single, FEDERAL_STD.married_filing_jointly, FEDERAL_STD.head_of_household],
 })

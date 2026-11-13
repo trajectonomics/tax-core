@@ -97,8 +97,8 @@ const EXAMPLES: readonly OfficialExample[] = [
 	{
 		// Delaware 2026 PIT-EST instructions: 6.6% above 60,000. 96,750 taxable after the
 		// 3,250 standard deduction: 66 + 195 + 480 + 260 + 5.55% x 35,000 + 6.6% x 36,750
-		// = 5,369.00, less the 110 personal credit. The department's table truncates its
-		// base amounts to whole dollars (2,943.00 vs 2,943.50), so the engine is 0.50 higher.
+		// = 5,369.00, less the 110 personal credit. The department prints a 2,943.00 base at
+		// 60,000 where the bands sum to 2,943.50, so the engine is 0.50 higher.
 		state: "DE",
 		wages: 100_000,
 		expectedTax: 5259,
@@ -126,8 +126,9 @@ const EXAMPLES: readonly OfficialExample[] = [
 	},
 	{
 		// Vermont 2026 IN-114 joint schedule: 3.35% to 84,700, 6.6% to 204,750, then 7.6%.
-		// 250,000 less 15,300 and 10,600 = 224,100 taxable: 2,837.45 + 6.6% x 120,050
-		// + 7.6% x 19,350 = 2,837.45 + 7,923.30 + 1,470.60.
+		// The 15,300 deduction and 10,600 exemption are not printed in the document. 250,000
+		// less them = 224,100 taxable: 2,837.45 + 6.6% x 120,050 + 7.6% x 19,350. The printed
+		// 2,837.00 base at 84,700 makes the department's own table 0.45 lower.
 		state: "VT",
 		wages: 250_000,
 		expectedTax: 12231.35,
