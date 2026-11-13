@@ -1,10 +1,10 @@
-import { US_2026_STANDARD_DEDUCTION as FEDERAL_STD } from "../../../parameters/constants"
 import { defineState } from "../helpers"
 import type { UsStateParameters } from "../types"
 /**
  * 2026 District of Columbia individual income tax parameters.
  *
- * Math: seven progressive bands from 4% to 10.75%, the same schedule for every filing status.
+ * Math: seven progressive bands from 4% to 10.75%, the same schedule for every filing status;
+ * the standard deduction is carried as data because the rate page does not print it.
  * Units: major dollars in the definition; `defineState` emits bracket bounds in integer cents.
  * Throws: TaxValidationError when a threshold is not representable as safe integer cents.
  *
@@ -33,5 +33,5 @@ export const US_2026_STATE_DC: UsStateParameters = defineState({
 		[500_000, 0.0975],
 		[1_000_000, 0.1075],
 	],
-	std: [FEDERAL_STD.single, FEDERAL_STD.married_filing_jointly, FEDERAL_STD.head_of_household],
+	std: [16100, 32200, 24_150],
 })

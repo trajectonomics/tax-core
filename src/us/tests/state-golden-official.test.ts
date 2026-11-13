@@ -106,7 +106,8 @@ const EXAMPLES: readonly OfficialExample[] = [
 	},
 	{
 		// Montana Publication 1 (2026) head of household: 4.7% to 71,250 (not the single
-		// 47,500), then 5.65%. 100,000 - 24,150 standard deduction = 75,850 taxable:
+		// 47,500), then 5.65%. 100,000 less the 24,150 federal standard deduction the
+		// publication adopts by reference but does not print = 75,850 taxable:
 		// 4.7% x 71,250 + 5.65% x 4,600 = 3,348.75 + 259.90.
 		state: "MT",
 		wages: 100_000,
@@ -118,7 +119,8 @@ const EXAMPLES: readonly OfficialExample[] = [
 		// Vermont 2026 IN-114 rates: 3.35% to 50,750, then 6.6%. 100,000 less the 7,650
 		// standard deduction and 5,300 exemption carried by the parameter table (the
 		// document does not print them) = 87,050 taxable: 1,700.125 + 6.6% x 36,300 =
-		// 4,095.925. The schedule prints a 1,700.00 base (it truncates to whole dollars).
+		// 4,095.925. The schedule prints a 1,700.00 base at 50,750 where 3.35% gives
+		// 1,700.125 and rounds each base to whole dollars.
 		state: "VT",
 		wages: 100_000,
 		expectedTax: 4095.93,
@@ -138,8 +140,9 @@ const EXAMPLES: readonly OfficialExample[] = [
 	{
 		// Vermont 2026 IN-114 head-of-household schedule: 3.35% to 68,000, then 6.6% to
 		// 175,500. The 83,225 taxable is 100,000 less the 11,475 head-of-household standard
-		// deduction the helper derives from the 7,650 single amount (the document does not
-		// print it) and the 5,300 exemption: 3.35% x 68,000 + 6.6% x 15,225 = 2,278 + 1,004.85.
+		// deduction carried as data next to the 7,650 single amount (the document does not
+		// print either) and the 5,300 exemption: 3.35% x 68,000 + 6.6% x 15,225 = 2,278 +
+		// 1,004.85.
 		state: "VT",
 		wages: 100_000,
 		expectedTax: 3282.85,

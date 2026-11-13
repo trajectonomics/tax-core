@@ -4,8 +4,8 @@ import type { UsStateParameters } from "../types"
 /**
  * 2026 Montana individual income tax parameters.
  *
- * House Bill 337 raised the 2026 bracket thresholds and kept the 4.7% / 5.65% rates. Head of
- * household has its own threshold of 71,250, not the single one.
+ * House Bill 337 lowered the top marginal rate to 5.65% and raised the 2026 bracket
+ * thresholds. Head of household has its own threshold of 71,250, not the single one.
  *
  * Math: two progressive bands per filing status (4.7% then 5.65%); the standard deduction is
  * the federal amount, which the publication adopts by reference without printing it.
