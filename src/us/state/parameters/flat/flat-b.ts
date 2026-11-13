@@ -95,7 +95,7 @@ const NORTH_CAROLINA: UsStateParameters = defineState({
 const PENNSYLVANIA: UsStateParameters = defineState({
 	code: "PA",
 	name: "Pennsylvania",
-	verification: "unconfirmed",
+	verification: "official",
 	type: "flat",
 	single: [[0, 0.0307]],
 	mfj: [[0, 0.0307]],

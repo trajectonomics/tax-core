@@ -5,7 +5,9 @@ import type { UsFilingStatus, UsStateCode } from "../types"
 /**
  * Hand-computed worked examples for values corrected against official 2026 state documents
  * (see references/SOURCES.md): the DFA Arkansas formula, Hawaii Announcement 2024-03,
- * Louisiana RIB 26-005, South Carolina Act 110 of 2026 (H.4216) and Utah S.B. 60.
+ * Louisiana RIB 26-005, South Carolina Act 110 of 2026 (H.4216), Utah S.B. 60, the 2026
+ * Delaware PIT-EST instructions, the 2026 Montana Publication 1 and the 2026 Vermont
+ * Form IN-114 instructions.
  */
 interface OfficialExample {
 	readonly state: UsStateCode
@@ -91,6 +93,45 @@ const EXAMPLES: readonly OfficialExample[] = [
 		wages: 100_000,
 		expectedTax: 3484,
 		label: "UT 4.45% statutory rate with personal credit",
+	},
+	{
+		// Delaware 2026 PIT-EST instructions: 6.6% above 60,000. 96,750 taxable after the
+		// 3,250 standard deduction: 66 + 195 + 480 + 260 + 5.55% x 35,000 + 6.6% x 36,750
+		// = 5,369.00, less the 110 personal credit. The department's table truncates its
+		// base amounts to whole dollars (2,943.00 vs 2,943.50), so the engine is 0.50 higher.
+		state: "DE",
+		wages: 100_000,
+		expectedTax: 5259,
+		label: "DE six-band schedule above the 60,000 band",
+	},
+	{
+		// Montana Publication 1 (2026) head of household: 4.7% to 71,250 (not the single
+		// 47,500), then 5.65%. 100,000 - 24,150 standard deduction = 75,850 taxable:
+		// 4.7% x 71,250 + 5.65% x 4,600 = 3,348.75 + 259.90.
+		state: "MT",
+		wages: 100_000,
+		expectedTax: 3608.65,
+		label: "MT head-of-household 71,250 threshold",
+		filingStatus: "head_of_household",
+	},
+	{
+		// Vermont 2026 IN-114 rates: 3.35% to 50,750, then 6.6%. 100,000 less the 7,650
+		// standard deduction and 5,300 exemption = 87,050 taxable: 1,700.125 + 6.6% x 36,300
+		// = 4,095.925. The schedule prints a 1,700.00 base (it truncates to whole dollars).
+		state: "VT",
+		wages: 100_000,
+		expectedTax: 4095.93,
+		label: "VT 2026 single thresholds",
+	},
+	{
+		// Vermont 2026 IN-114 head-of-household schedule: 3.35% to 68,000, then 6.6% to
+		// 175,500. 100,000 - 11,475 standard deduction - 5,300 exemption = 83,225 taxable:
+		// 3.35% x 68,000 + 6.6% x 15,225 = 2,278 + 1,004.85.
+		state: "VT",
+		wages: 100_000,
+		expectedTax: 3282.85,
+		label: "VT 2026 head-of-household schedule",
+		filingStatus: "head_of_household",
 	},
 ]
 

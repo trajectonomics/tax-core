@@ -96,11 +96,11 @@ const FILING_STATUS_EXAMPLES: readonly WorkedExample[] = [
 		filingStatus: "married_filing_separately",
 	},
 	{
-		// Vermont MFS thresholds are half the joint amounts: 87,050 taxable.
-		// 41,250 x 3.35% + 45,800 x 6.6%.
+		// Vermont MFS thresholds are half the 2026 joint amounts (42,350 / 102,375):
+		// 87,050 taxable, 42,350 x 3.35% + 44,700 x 6.6% = 1,418.725 + 2,950.20.
 		state: "VT",
 		wages: 100_000,
-		expectedTax: 4404.675,
+		expectedTax: 4368.925,
 		label: "VT separate return on half-joint thresholds",
 		filingStatus: "married_filing_separately",
 		precision: 1,

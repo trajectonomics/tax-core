@@ -104,15 +104,19 @@ describe("US State Parameter Registry", () => {
 		for (const state of Object.values(US_2026_STATE_PARAMETERS)) {
 			tally[state.verification] = (tally[state.verification] ?? 0) + 1
 		}
-		expect(tally).toEqual({ official: 22, partial: 6, reported: 6, unconfirmed: 17 })
+		expect(tally).toEqual({ official: 25, partial: 7, reported: 6, unconfirmed: 13 })
 		const level = (code: keyof typeof US_2026_STATE_PARAMETERS) =>
 			US_2026_STATE_PARAMETERS[code].verification
 		expect(level("CT")).toBe("official")
+		expect(level("DE")).toBe("official")
+		expect(level("MT")).toBe("official")
+		expect(level("PA")).toBe("official")
 		expect(level("SC")).toBe("partial")
 		expect(level("AR")).toBe("partial")
 		expect(level("CA")).toBe("partial")
+		expect(level("DC")).toBe("partial")
+		expect(level("VT")).toBe("partial")
 		expect(level("MA")).toBe("reported")
-		expect(level("VT")).toBe("unconfirmed")
 	})
 
 	it("calculates every state through the public US tax seam", () => {
