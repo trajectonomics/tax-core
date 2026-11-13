@@ -3,8 +3,12 @@ import type { UsStateParameters } from "../types"
 /**
  * 2026 Vermont individual income tax parameters.
  *
- * The 2026 thresholds are the 2025 ones indexed by about 2.7%; head of household keeps its
- * own schedule and separate filers use half the joint thresholds.
+ * The 2026 thresholds are about 2.7% above the 2025 ones; head of household keeps its own
+ * schedule and separate filers use half the joint thresholds.
+ *
+ * Math: four progressive bands per filing status (3.35 / 6.6 / 7.6 / 8.75%).
+ * Units: major dollars in the definition; `defineState` emits bracket bounds in integer cents.
+ * Throws: TaxValidationError when a threshold is not representable as safe integer cents.
  *
  * @statute Vt. Stat. Ann. tit. 32, § 5822
  */

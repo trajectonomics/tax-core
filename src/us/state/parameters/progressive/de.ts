@@ -3,6 +3,11 @@ import type { UsStateParameters } from "../types"
 /**
  * 2026 Delaware individual income tax parameters.
  *
+ * Math: six progressive bands from 2.2% to 6.6% over an untaxed first 2,000, plus a flat 110
+ * personal credit per federal exemption.
+ * Units: major dollars in the definition; `defineState` emits bracket bounds in integer cents.
+ * Throws: TaxValidationError when a threshold is not representable as safe integer cents.
+ *
  * @statute Del. Code Ann. tit. 30, § 1102
  */
 export const US_2026_STATE_DE: UsStateParameters = defineState({

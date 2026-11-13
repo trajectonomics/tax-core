@@ -71,7 +71,7 @@ Each state's parameter table carries the same level as its row here
   the official document could not be read.
 - **unconfirmed** — no official document and no agreeing report was read.
 
-Tally: 25 official (16 documented states plus the 9 no-tax states), 7 partial, 6 reported,
+Tally: 24 official (15 documented states plus the 9 no-tax states), 8 partial, 6 reported,
 13 unconfirmed. `src/us/tests/state-parameters.test.ts` fails if the tally drifts without this
 table being updated.
 
@@ -92,8 +92,7 @@ table being updated.
 | IA | `IA-2026-withholding-formula.pdf` | https://revenue.iowa.gov/media/53/download | 2026-11-01 | match: 3.80%; $16,100 deduction and $40 credit are federal-conforming |
 | LA | `LA-2026-RIB-26-005.pdf` | https://dam.ldr.la.gov/lawspolicies/RIB%2026-005-Updated%20Withholding%20Tables.pdf | 2026-11-03 | **fixed**: deduction $12,875 / $25,750, joint size for HoH and surviving spouse. The bulletin is a CPI-U estimate as of 2025-12-01 |
 | UT | `UT-2026-SB0060-enrolled.pdf` | https://le.utah.gov/Session/2026/bills/enrolled/SB0060.pdf (web.archive.org snapshot 20261008030309) | 2026-11-05 | **fixed**: 4.45% under Utah Code § 59-10-104(2)(b) as amended by S.B. 60, retroactive to 2026-01-01 |
-| DE | `DE-2026-PIT-EST-instructions.pdf` | https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-EST_Instructions_2026-01.pdf | 2026-11-13 | match: 2.2% to $5,000, 3.9% to $10,000, 4.8% to $20,000, 5.2% to $25,000, 5.55% to $60,000 and 6.6% above, so the first $2,000 is untaxed; standard deduction $3,250 / $6,500; $110 personal credit per federal exemption. The printed base amounts are truncated to whole dollars |
-| MT | `MT-2026-Publication-1.pdf` | https://revenuefiles.mt.gov/files/Forms/Publication-1/Publication-1-2026.pdf | 2026-11-13 | **fixed**: head-of-household threshold $71,250 (the engine applied the single $47,500); 4.7% to $47,500 / $95,000 / $71,250 and 5.65% above, for single (and separate) / joint / HoH; the standard deduction is the federal amount. House Bill 337 set the 2026 brackets |
+| DE | `DE-2026-PIT-EST-instructions.pdf` | https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-EST_Instructions_2026-01.pdf | 2026-11-13 | match: 2.2% to $5,000, 3.9% to $10,000, 4.8% to $20,000, 5.2% to $25,000, 5.55% to $60,000 and 6.6% above, so the first $2,000 is untaxed; standard deduction $3,250 / $6,500; $110 personal credit per federal exemption. The printed base amounts are truncated to whole dollars, so a filer at $96,750 computes $0.50 above the table ($2,943.50 actual vs $2,943.00 printed). **Not modeled**: the $2,500 additional deduction at 65+ or blind, the pension exclusion and the age-60 exemption credit |
 | PA | `PA-2026-personal-income-tax.html` | https://www.pa.gov/agencies/revenue/resources/tax-types-and-information/personal-income-tax | 2026-11-13 | match: 3.07% on taxable income, and the page states the tax provides no standard deduction or personal exemption, which is the whole table. The rate is statutory and has no indexed 2026 amount |
 
 ### No wage income tax: 9 states
@@ -110,7 +109,8 @@ New Hampshire and Tennessee repealed their interest and dividends taxes.
 | SC | `SC-2026-H4216-Act110.htm`, `SC-2026-WH1603F.pdf` | https://www.scstatehouse.gov/sess126_2025-2026/bills/4216.htm | 2026-11-08 | **fixed**: Act 110 of 2026 (H.4216, ratified R 117, signed 2026-03-30), taxable years beginning after 2025 — 1.99% to $30,000, 5.21% above ("5.21% x amount - $966"), and the SCIAD of $15,000 / $30,000 / $22,500 phased out over $40,000 / $80,000 / $60,000 by $55,000 / $110,000 / $82,500 with each reduction floored to $10 (§ 12-6-1140(15)(c)). **Not published**: the § 12-6-520 indexation of the $30,000 bracket for 2026, and the 2026 dependent exemption (the engine carries $4,930 forward from the previous table; neither the act nor WH-1603F states a 2026 amount). The DOR WH-1603F (Rev. 11/4/25) predates the act and still prints 0 / 3 / 6%. The act also raised the earned income tax credit to 125% of the federal credit, capped at $200; this engine models no state EITC |
 | CA | `CA-2026-540-tax-rate-schedules.pdf`, `CA-2026-540-ES-instructions.pdf` | https://www.ftb.ca.gov/forms/2026/2026-540-tax-rate-schedules.pdf | 2026-11-08 | **confirmed**: all three bracket schedules. **Not published**: 2026 standard deduction and exemption credits — the 540-ES instructions still send filers to the 2025 instructions, so $5,900 / $11,800, $158 / $316 and $491 remain 2025 x 1.034 estimates |
 | NY | `NY-2026-NYS-50-T-NYS.pdf` | https://www.tax.ny.gov/pdf/publications/withholding/nys50_t_nys.pdf | 2026-11-01 | single brackets and the 3.9 / 4.4 / 5.15 / 5.4 / 5.9% rates match; **not printed**: married and HoH brackets |
-| DC | `DC-2026-individual-income-tax-rates.html` | https://otr.cfo.dc.gov/page/dc-individual-and-fiduciary-income-tax-rates | 2026-11-13 | **confirmed**: the seven-band schedule (4 / 6 / 6.5 / 8.5 / 9.25 / 9.75 / 10.75% at $10,000 / $40,000 / $60,000 / $250,000 / $500,000 / $1,000,000) for tax years beginning after 2021. **Not printed**: the $16,100 / $32,200 / $24,150 standard deduction, which follows the federal amount |
+| DC | `DC-2026-individual-income-tax-rates.html` | https://otr.cfo.dc.gov/page/dc-individual-and-fiduciary-income-tax-rates | 2026-11-13 | **confirmed**: the seven-band schedule (4 / 6 / 6.5 / 8.5 / 9.25 / 9.75 / 10.75% at $10,000 / $40,000 / $60,000 / $250,000 / $500,000 / $1,000,000) for tax years beginning after 2021. **Not printed**: the $16,100 / $32,200 / $24,150 standard deduction the engine applies; this page does not state it |
+| MT | `MT-2026-Publication-1.pdf` | https://revenuefiles.mt.gov/files/Forms/Publication-1/Publication-1-2026.pdf | 2026-11-13 | **fixed**: head-of-household threshold $71,250 (the engine applied the single $47,500); 4.7% to $47,500 / $95,000 / $71,250 and 5.65% above, for single (and separate) / joint / HoH. House Bill 337 set the 2026 brackets. **Not printed**: the $16,100 / $32,200 / $24,150 standard deduction, which the publication adopts by reference ("the same as your federal standard deduction") without stating an amount, so the row stays partial |
 | VT | `VT-2026-IN-114-Instructions.pdf` | https://tax.vermont.gov/sites/tax/files/documents/IN-114-Instr-2026.pdf | 2026-11-13 | **fixed**: 2026 thresholds 3.35 / 6.6 / 7.6 / 8.75% at $50,750 / $122,850 / $256,300 (single), $84,700 / $204,750 / $312,050 (joint), $68,000 / $175,500 / $284,150 (HoH) and half of joint for separate filers, where the engine still carried the 2025 $49,400 / $119,700 / $249,700, the joint $82,500 / $199,450 / $304,000 and the single schedule for HoH. **Not printed**: the $7,650 / $15,300 standard deduction and the $5,300 personal exemption; the rates are labelled "2026 Preliminary" |
 | OH | `OH-2026-percentage-method.pdf`, `OH-2026-optional-computer-formula.pdf` | https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/employer_withholding/2026%20Withholding%20Tables/WHT_PercentageMethod_2026.pdf | 2026-11-01 | $26,050 zero-bracket threshold confirmed; **not the statutory rate**: the withholding rates are 1.6 / 2.99 / 3.4%, not 2.75% |
 | AR | `AR-2026-Withholding-Tax-Formula.pdf` | https://www.dfa.arkansas.gov/wp-content/uploads/Withholding-Tax-Formula.pdf (same PDF as `whformula_2026.pdf`) | 2026-11-08 | **confirmed**: the formula now served on that URL (PDF modified 2026-05-30; the revision the issue dates 2026-05-29) prints 0% to $5,599, then 2%, 3%, 3.4% to $26,399 and **3.70%** above, with the $2,470 deduction and the $29 per-exemption credit, so the 3.7% top rate rests on the DFA document and not on reports. **Not printed**: the joint bracket table, which the engine sets equal to the single thresholds |
@@ -168,7 +168,7 @@ a guessed deep link would be worse than none. The host and form name are what a 
 | 2026-11-08 | SC | 1.99% / 5.21% schedule and the phased-out $15,000 / $30,000 / $22,500 SCIAD replace 0 / 3 / 6% on the former $16,100 deduction |
 | 2026-11-08 | AR | manifest corrected: the revised DFA formula prints 3.70%, so the 3.7% top rate is confirmed; the joint table remains unverified |
 | 2026-11-13 | DE | six-band schedule, $3,250 / $6,500 standard deduction and $110 credit read from the 2026 PIT-EST instructions; `unconfirmed` to `official` |
-| 2026-11-13 | MT | HoH threshold $71,250 instead of the single $47,500, from 2026 Publication 1; `partial` to `official` |
+| 2026-11-13 | MT | HoH threshold $71,250 instead of the single $47,500, from 2026 Publication 1; stays `partial` because the standard deduction is adopted by reference, not printed |
 | 2026-11-13 | PA | 3.07% with no standard deduction or personal exemption confirmed on the department's personal income tax page; `unconfirmed` to `official` |
 | 2026-11-13 | VT | 2026 thresholds $50,750 / $122,850 / $256,300 single, $84,700 / $204,750 / $312,050 joint and a separate HoH schedule (was 2025 values and the single schedule for HoH), from the 2026 IN-114 instructions; `unconfirmed` to `partial` |
 | 2026-11-13 | DC | seven-band schedule confirmed on the OTR rate page; `unconfirmed` to `partial` because the standard deduction is not printed there |
@@ -180,12 +180,14 @@ a guessed deep link would be worse than none. The host and form name are what a 
    KS, NE, RI and the ND PDFs still need a browser on a US network (MA and MI too).
 2. DC's and VT's standard deductions are the remaining unprinted figures; both need the 2026
    return instructions, which the departments have not published.
-2. AR's joint bracket table is not printed in the DFA formula, which is a single-employee
+3. AR's joint bracket table is not printed in the DFA formula, which is a single-employee
    formula; the engine applies the single thresholds to married filers and the 2026 AR1000
    schedule needs to be read before either is changed.
-3. SC's bracket table is indexed under § 12-6-520; no 2026 indexed amount is published, so the
+4. SC's bracket table is indexed under § 12-6-520; no 2026 indexed amount is published, so the
    engine uses the act's own $30,000 threshold, and the $4,930 dependent exemption is carried
    forward from the previous table without a 2026 source.
-4. ME's head-of-household phase-out range is derived from the single and joint starts rather than
+5. ME's head-of-household phase-out range is derived from the single and joint starts rather than
    printed in a document.
-5. CA's 2026 standard deduction and exemption credits are still 2025 x 1.034 estimates.
+6. CA's 2026 standard deduction and exemption credits are still 2025 x 1.034 estimates.
+7. MT's standard deduction is adopted by reference from the federal return, and VT's is carried
+   forward from 2025: neither is printed in a 2026 state document.

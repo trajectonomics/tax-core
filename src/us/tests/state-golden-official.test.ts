@@ -116,17 +116,29 @@ const EXAMPLES: readonly OfficialExample[] = [
 	},
 	{
 		// Vermont 2026 IN-114 rates: 3.35% to 50,750, then 6.6%. 100,000 less the 7,650
-		// standard deduction and 5,300 exemption = 87,050 taxable: 1,700.125 + 6.6% x 36,300
-		// = 4,095.925. The schedule prints a 1,700.00 base (it truncates to whole dollars).
+		// standard deduction and 5,300 exemption carried by the parameter table (the
+		// document does not print them) = 87,050 taxable: 1,700.125 + 6.6% x 36,300 =
+		// 4,095.925. The schedule prints a 1,700.00 base (it truncates to whole dollars).
 		state: "VT",
 		wages: 100_000,
 		expectedTax: 4095.93,
 		label: "VT 2026 single thresholds",
 	},
 	{
+		// Vermont 2026 IN-114 joint schedule: 3.35% to 84,700, 6.6% to 204,750, then 7.6%.
+		// 250,000 less 15,300 and 10,600 = 224,100 taxable: 2,837.45 + 6.6% x 120,050
+		// + 7.6% x 19,350 = 2,837.45 + 7,923.30 + 1,470.60.
+		state: "VT",
+		wages: 250_000,
+		expectedTax: 12231.35,
+		label: "VT 2026 joint thresholds into the 7.6% band",
+		filingStatus: "married_filing_jointly",
+	},
+	{
 		// Vermont 2026 IN-114 head-of-household schedule: 3.35% to 68,000, then 6.6% to
-		// 175,500. 100,000 - 11,475 standard deduction - 5,300 exemption = 83,225 taxable:
-		// 3.35% x 68,000 + 6.6% x 15,225 = 2,278 + 1,004.85.
+		// 175,500. The 83,225 taxable is 100,000 less the 11,475 head-of-household standard
+		// deduction the helper derives from the 7,650 single amount (the document does not
+		// print it) and the 5,300 exemption: 3.35% x 68,000 + 6.6% x 15,225 = 2,278 + 1,004.85.
 		state: "VT",
 		wages: 100_000,
 		expectedTax: 3282.85,
