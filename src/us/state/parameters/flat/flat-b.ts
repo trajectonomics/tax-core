@@ -90,12 +90,18 @@ const NORTH_CAROLINA: UsStateParameters = defineState({
 /**
  * 2026 Pennsylvania individual income tax parameters.
  *
+ * Math: one flat 3.07% rate on taxable income, with no standard deduction and no personal
+ * exemption; the rate has no indexed 2026 amount. Marked partial while the department's page,
+ * which carries no tax year, is the only document read.
+ * Units: major dollars in the definition; `defineState` emits bracket bounds in integer cents.
+ * Throws: TaxValidationError when a threshold is not representable as safe integer cents.
+ *
  * @statute 72 Pa. Cons. Stat. § 7302
  */
 const PENNSYLVANIA: UsStateParameters = defineState({
 	code: "PA",
 	name: "Pennsylvania",
-	verification: "unconfirmed",
+	verification: "partial",
 	type: "flat",
 	single: [[0, 0.0307]],
 	mfj: [[0, 0.0307]],

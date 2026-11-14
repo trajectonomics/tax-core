@@ -87,6 +87,18 @@ describe("US State Parameter Registry", () => {
 		expect(US_2026_STATE_PARAMETERS.CA.surtax).toEqual({ threshold: 1_000_000, rate: 0.01 })
 	})
 
+	it("gives Wisconsin separate filers their own 2026 thresholds", () => {
+		const wi = US_2026_STATE_PARAMETERS.WI
+		expect(wi.standardDeduction.married_filing_separately).toBe(12_280)
+		expect(wi.standardDeduction.head_of_household).toBe(18_030)
+		expect(wi.brackets.married_filing_separately.map((bracket) => bracket.upTo)).toEqual([
+			1_008_000,
+			3_463_000,
+			22_182_000,
+			null,
+		])
+	})
+
 	it("records a verification level for every state", () => {
 		for (const state of Object.values(US_2026_STATE_PARAMETERS)) {
 			expect(US_STATE_VERIFICATION_LEVELS).toContain(state.verification)
@@ -104,15 +116,20 @@ describe("US State Parameter Registry", () => {
 		for (const state of Object.values(US_2026_STATE_PARAMETERS)) {
 			tally[state.verification] = (tally[state.verification] ?? 0) + 1
 		}
-		expect(tally).toEqual({ official: 22, partial: 6, reported: 6, unconfirmed: 17 })
+		expect(tally).toEqual({ official: 23, partial: 10, reported: 6, unconfirmed: 12 })
 		const level = (code: keyof typeof US_2026_STATE_PARAMETERS) =>
 			US_2026_STATE_PARAMETERS[code].verification
 		expect(level("CT")).toBe("official")
+		expect(level("DE")).toBe("official")
 		expect(level("SC")).toBe("partial")
 		expect(level("AR")).toBe("partial")
 		expect(level("CA")).toBe("partial")
+		expect(level("DC")).toBe("partial")
+		expect(level("MT")).toBe("partial")
+		expect(level("PA")).toBe("partial")
+		expect(level("VT")).toBe("partial")
+		expect(level("WI")).toBe("partial")
 		expect(level("MA")).toBe("reported")
-		expect(level("VT")).toBe("unconfirmed")
 	})
 
 	it("calculates every state through the public US tax seam", () => {

@@ -96,11 +96,11 @@ const FILING_STATUS_EXAMPLES: readonly WorkedExample[] = [
 		filingStatus: "married_filing_separately",
 	},
 	{
-		// Vermont MFS thresholds are half the joint amounts: 87,050 taxable.
-		// 41,250 x 3.35% + 45,800 x 6.6%.
+		// Vermont MFS thresholds are half the 2026 joint amounts (42,350 / 102,375):
+		// 87,050 taxable, 42,350 x 3.35% + 44,700 x 6.6% = 1,418.725 + 2,950.20.
 		state: "VT",
 		wages: 100_000,
-		expectedTax: 4404.675,
+		expectedTax: 4368.925,
 		label: "VT separate return on half-joint thresholds",
 		filingStatus: "married_filing_separately",
 		precision: 1,
@@ -133,14 +133,15 @@ const FILING_STATUS_EXAMPLES: readonly WorkedExample[] = [
 		precision: 1,
 	},
 	{
-		// Wisconsin MFS thresholds are half the joint table: 86,380 taxable.
-		// 10,075 x 3.5% + 24,555 x 4.4% + 51,750 x 5.3%.
+		// Wisconsin 2026 MFS has its own table (10,080 / 34,630 / 221,820) and a 12,280
+		// deduction. 100,000 - 12,280 - 700 = 87,020 taxable: 352.80 + 4.4% x 24,550
+		// + 5.3% x 52,390. The 2026 instructions phase the deduction to zero by 75,869
+		// (about 4,860.51 here), which the engine does not model.
 		state: "WI",
 		wages: 100_000,
-		expectedTax: 4175.795,
-		label: "WI separate return on half-joint thresholds",
+		expectedTax: 4209.67,
+		label: "WI separate return on its own 2026 thresholds",
 		filingStatus: "married_filing_separately",
-		precision: 1,
 	},
 	{
 		// Minnesota head of household: 77,000 taxable after the 23,000 deduction.

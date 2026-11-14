@@ -1,7 +1,16 @@
+import { US_2026_STANDARD_DEDUCTION as FEDERAL_STD } from "../../../parameters/constants"
 import { defineState } from "../helpers"
 import type { UsStateParameters } from "../types"
 /**
  * 2026 Montana individual income tax parameters.
+ *
+ * House Bill 337 lowered the top marginal rate to 5.65% and raised the 2026 bracket
+ * thresholds. Head of household has its own threshold of 71,250, not the single one.
+ *
+ * Math: two progressive bands per filing status (4.7% then 5.65%); the standard deduction is
+ * the federal amount, which the publication adopts by reference without printing it.
+ * Units: major dollars in the definition; `defineState` emits bracket bounds in integer cents.
+ * Throws: TaxValidationError when a threshold is not representable as safe integer cents.
  *
  * @statute Mont. Code Ann. § 15-30-2103
  */
@@ -18,5 +27,9 @@ export const US_2026_STATE_MT: UsStateParameters = defineState({
 		[0, 0.047],
 		[95_000, 0.0565],
 	],
-	std: [16100, 32200],
+	hoh: [
+		[0, 0.047],
+		[71_250, 0.0565],
+	],
+	std: [FEDERAL_STD.single, FEDERAL_STD.married_filing_jointly, FEDERAL_STD.head_of_household],
 })

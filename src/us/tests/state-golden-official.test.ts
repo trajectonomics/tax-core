@@ -5,7 +5,9 @@ import type { UsFilingStatus, UsStateCode } from "../types"
 /**
  * Hand-computed worked examples for values corrected against official 2026 state documents
  * (see references/SOURCES.md): the DFA Arkansas formula, Hawaii Announcement 2024-03,
- * Louisiana RIB 26-005, South Carolina Act 110 of 2026 (H.4216) and Utah S.B. 60.
+ * Louisiana RIB 26-005, South Carolina Act 110 of 2026 (H.4216), Utah S.B. 60, the 2026
+ * Delaware PIT-EST instructions, the 2026 Montana Publication 1, the 2026 Vermont
+ * Form IN-114 instructions and the 2026 Wisconsin Form 1-ES instructions.
  */
 interface OfficialExample {
 	readonly state: UsStateCode
@@ -91,6 +93,81 @@ const EXAMPLES: readonly OfficialExample[] = [
 		wages: 100_000,
 		expectedTax: 3484,
 		label: "UT 4.45% statutory rate with personal credit",
+	},
+	{
+		// Delaware 2026 PIT-EST instructions: 6.6% above 60,000. 96,750 taxable after the
+		// 3,250 standard deduction: 66 + 195 + 480 + 260 + 5.55% x 35,000 + 6.6% x 36,750
+		// = 5,369.00, less the 110 personal credit. The department prints a 2,943.00 base at
+		// 60,000 where the bands sum to 2,943.50, so the engine is 0.50 higher.
+		state: "DE",
+		wages: 100_000,
+		expectedTax: 5259,
+		label: "DE six-band schedule above the 60,000 band",
+	},
+	{
+		// Montana Publication 1 (2026) head of household: 4.7% to 71,250 (not the single
+		// 47,500), then 5.65%. 100,000 less the 24,150 federal standard deduction the
+		// publication adopts by reference but does not print = 75,850 taxable:
+		// 4.7% x 71,250 + 5.65% x 4,600 = 3,348.75 + 259.90.
+		state: "MT",
+		wages: 100_000,
+		expectedTax: 3608.65,
+		label: "MT head-of-household 71,250 threshold",
+		filingStatus: "head_of_household",
+	},
+	{
+		// Vermont 2026 IN-114 rates: 3.35% to 50,750, then 6.6%. 100,000 less the 7,650
+		// standard deduction and 5,300 exemption carried by the parameter table (the
+		// document does not print them) = 87,050 taxable: 1,700.125 + 6.6% x 36,300 =
+		// 4,095.925. The schedule prints a 1,700.00 base at 50,750 where 3.35% gives
+		// 1,700.125 and rounds each base to whole dollars.
+		state: "VT",
+		wages: 100_000,
+		expectedTax: 4095.93,
+		label: "VT 2026 single thresholds",
+	},
+	{
+		// Vermont 2026 IN-114 joint schedule: 3.35% to 84,700, 6.6% to 204,750, then 7.6%.
+		// The 15,300 deduction and 10,600 exemption are not printed in the document. 250,000
+		// less them = 224,100 taxable: 2,837.45 + 6.6% x 120,050 + 7.6% x 19,350. The printed
+		// 2,837.00 base at 84,700 makes the department's own table 0.45 lower.
+		state: "VT",
+		wages: 250_000,
+		expectedTax: 12231.35,
+		label: "VT 2026 joint thresholds into the 7.6% band",
+		filingStatus: "married_filing_jointly",
+	},
+	{
+		// Vermont 2026 IN-114 head-of-household schedule: 3.35% to 68,000, then 6.6% to
+		// 175,500. The 83,225 taxable is 100,000 less the 11,475 head-of-household standard
+		// deduction carried as data next to the 7,650 single amount (the document does not
+		// print either) and the 5,300 exemption: 3.35% x 68,000 + 6.6% x 15,225 = 2,278 +
+		// 1,004.85.
+		state: "VT",
+		wages: 100_000,
+		expectedTax: 3282.85,
+		label: "VT 2026 head-of-household schedule",
+		filingStatus: "head_of_household",
+	},
+	{
+		// Wisconsin 2026 Form 1-ES instructions, head of household: 19,500 less the 18,030
+		// head-of-household deduction (the engine carried 17,950) and the 700 exemption =
+		// 770 taxable at 3.5%, below the 20,119 point where the deduction starts to phase out.
+		state: "WI",
+		wages: 19_500,
+		expectedTax: 26.95,
+		label: "WI 2026 head-of-household deduction",
+		filingStatus: "head_of_household",
+	},
+	{
+		// Wisconsin 2026 Form 1-ES instructions, separate filer: 13,500 less the 12,280
+		// separate deduction (was half of joint, 12,920) and the 700 exemption = 520 taxable
+		// at 3.5%, below the 13,779 point where the deduction starts to phase out.
+		state: "WI",
+		wages: 13_500,
+		expectedTax: 18.2,
+		label: "WI 2026 separate-filer deduction",
+		filingStatus: "married_filing_separately",
 	},
 ]
 
