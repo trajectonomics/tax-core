@@ -6,8 +6,8 @@ import type { UsFilingStatus, UsStateCode } from "../types"
  * Hand-computed worked examples for values corrected against official 2026 state documents
  * (see references/SOURCES.md): the DFA Arkansas formula, Hawaii Announcement 2024-03,
  * Louisiana RIB 26-005, South Carolina Act 110 of 2026 (H.4216), Utah S.B. 60, the 2026
- * Delaware PIT-EST instructions, the 2026 Montana Publication 1 and the 2026 Vermont
- * Form IN-114 instructions.
+ * Delaware PIT-EST instructions, the 2026 Montana Publication 1, the 2026 Vermont
+ * Form IN-114 instructions and the 2026 Wisconsin Form 1-ES instructions.
  */
 interface OfficialExample {
 	readonly state: UsStateCode
@@ -150,13 +150,24 @@ const EXAMPLES: readonly OfficialExample[] = [
 		filingStatus: "head_of_household",
 	},
 	{
-		// Wisconsin 2026 Form 1-ES instructions, Schedule A: 3.5% to 15,110. 18,000 less the
-		// 13,960 standard deduction and the 700 exemption = 3,340 taxable, below the 20,119
-		// point where the document starts phasing the deduction out (not modeled).
+		// Wisconsin 2026 Form 1-ES instructions, head of household: 19,500 less the 18,030
+		// head-of-household deduction (the engine carried 17,950) and the 700 exemption =
+		// 770 taxable at 3.5%, below the 20,119 point where the deduction starts to phase out.
 		state: "WI",
-		wages: 18_000,
-		expectedTax: 116.9,
-		label: "WI 2026 single schedule below the deduction phase-out",
+		wages: 19_500,
+		expectedTax: 26.95,
+		label: "WI 2026 head-of-household deduction",
+		filingStatus: "head_of_household",
+	},
+	{
+		// Wisconsin 2026 Form 1-ES instructions, separate filer: 13,500 less the 12,280
+		// separate deduction (was half of joint, 12,920) and the 700 exemption = 520 taxable
+		// at 3.5%, below the 13,779 point where the deduction starts to phase out.
+		state: "WI",
+		wages: 13_500,
+		expectedTax: 18.2,
+		label: "WI 2026 separate-filer deduction",
+		filingStatus: "married_filing_separately",
 	},
 ]
 

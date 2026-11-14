@@ -8,7 +8,8 @@ import type { UsStateParameters } from "../types"
  *
  * Math: four progressive bands per filing status (3.5 / 4.4 / 5.3 / 7.65%) over the standard
  * deduction and a 700 exemption per person. The document phases the deduction out above
- * 20,119 / 29,039 / 13,779 (22.515% and 19.778% steps), which this table does not model.
+ * 20,119 / 29,039 / 13,779 at 12% (single), 19.778% (joint and separate) and 22.515% then 12%
+ * (head of household), and adds 250 at 65+, none of which this table models.
  * Units: major dollars in the definition; `defineState` emits bracket bounds in integer cents.
  * Throws: TaxValidationError when a threshold is not representable as safe integer cents.
  *
