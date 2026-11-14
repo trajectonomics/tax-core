@@ -29,8 +29,9 @@ On 2026-11-13 a second host resolved every other state department by name and re
 reachable authority), the department's site at `www.pa.gov/agencies/revenue` answers instead,
 `www.ksrevenue.gov` times out on connect, and `mass.gov`, `michigan.gov`, `tax.ri.gov` and the
 `tax.nd.gov` PDFs still refuse this host. The per-state result of that sweep is the 2026-11-13
-table below; each index page it names was saved here on that date as `<ST>-2026-index.html`, and
-the lookup uses:
+table below. Every page that returned content was saved here on that date as
+`<ST>-2026-index.html`; the KS, NE and RI rows record the error itself, not a page. The lookup
+uses:
 
 ```bash
 ip=$(curl -s -H 'accept: application/dns-json' \
@@ -51,18 +52,18 @@ instruction; the state keeps the level its row has below rather than a guessed f
 | DC | `otr.cfo.dc.gov` | 200; the income tax rate page prints the seven-band schedule. **Read** |
 | DE | `revenuefiles.delaware.gov` | 200; 2026 PIT-EST instructions print the whole schedule. **Read** |
 | KS | `www.ksrevenue.gov` | DNS answers 165.201.125.251, `curl` exits 28 (connect timeout) on 443. No document |
-| MS | `www.dor.ms.gov` | 200; no 2026 Form 80-105 instructions; the 2026 weekly table states no rate. No 2026 document |
+| MS | `www.dor.ms.gov` | 200; the saved page (`MS-2026-index.html`) is the site home page, not an individual-forms index, so whether a 2026 Form 80-105 exists is **not established**; the 2026 weekly table states no rate |
 | MT | `revenuefiles.mt.gov` | 200; 2026 Publication 1 prints the 2026 tax tables. **Read** |
-| ND | `www.tax.nd.gov` | HTML 200, every PDF 403 with the body "The requested resource is inaccessible due to geographical restrictions"; only ND-1ES 2026 and the 2026 withholding rates booklet are published. No 2026 rate booklet |
+| ND | `www.tax.nd.gov` | HTML 200 (`ND-2026-index.html`), every PDF 403 with the body "The requested resource is inaccessible due to geographical restrictions"; the saved forms page lists ND-1ES 2026 and the 2026 withholding rates booklet and no 2026 rate booklet. No 2026 document |
 | NE | `revenue.nebraska.gov` | DNS has no A record; the public resolver answers `EDE(22): No Reachable Authority at delegation nebraska.gov`. No document |
-| NJ | `www.nj.gov/treasury/taxation` | 200; no 2026 NJ-1040 instructions or rate schedule. No 2026 document |
-| NM | `www.tax.newmexico.gov` | 200; no 2026 PIT-1 instructions or rate schedule. No 2026 document |
-| OK | `www.tax.ok.gov` | 200; no 2026 Form 511 instructions or rate schedule. No 2026 document |
-| OR | `www.oregon.gov/dor` | 200; no 2026 OR-40 or rate chart; the 2026 withholding formula still prints the 2025 amounts. No 2026 document |
+| NJ | `www.nj.gov/treasury/taxation` | 200; the saved forms index (`NJ-2026-index.html`) is a library shell whose list is rendered in the browser, so no NJ-1040 entry was visible: **not established** |
+| NM | `www.tax.newmexico.gov` | 200; the saved forms page (`NM-2026-index.html`) renders its list in the browser, so no PIT-1 entry was visible: **not established** |
+| OK | `www.tax.ok.gov` | 200, but the saved page (`OK-2026-index.html`) is the business withholding page, not the individual forms index: **not established** |
+| OR | `www.oregon.gov/dor` | 200; the saved forms page (`OR-2026-index.html`) is a script-driven shell with no OR-40 entry, and the 2026 withholding formula still prints the 2025 amounts: **not established** |
 | PA | `www.pa.gov` | 200; the department's personal income tax page states the 3.07% rate and that there is no standard deduction or personal exemption. **Read**, and left partial because the page carries no tax year |
 | RI | `tax.ri.gov` | 403 to every request. No document |
 | VT | `tax.vermont.gov` | 200; 2026 Form IN-114 instructions print all four 2026 schedules. **Read** |
-| WI | `www.revenue.wi.gov` | 200; the 2026 forms index links no 2026 instruction or rate schedule. No 2026 document |
+| WI | `www.revenue.wi.gov` | 200; the saved page (`WI-2026-index.html`) is titled "2026 Individual Income Tax Forms" but renders its list in the browser, so the static copy shows none: **not established** |
 
 **Important limit.** Most official documents here are *employer withholding* publications. They
 prove rates, brackets and standard deductions only where the withholding method is the statutory
@@ -148,15 +149,15 @@ a guessed deep link would be worse than none. The host and form name are what a 
 | AZ | 2.5%, $16,100 / $32,200 federal-conforming deduction | No 2026 document read | 2026-11-01 |
 | CO | 4.4%, $16,100 / $32,200 | `CO-2026-DR0004.pdf` is the allowance form only and states no rate | 2026-11-01 |
 | KS | 5.2 / 5.58% at $23,000 / $46,000 | No 2026 document read; `ksrevenue.gov` does not answer this host | 2026-11-13 |
-| MS | 4% above $10,000, $2,300 / $4,600 | `MS-2026-weekly-table.pdf` is a lookup keyed by exemption amount and states neither the rate nor the deduction; the individual income tax page lists no 2026 Form 80-105 instructions | 2026-11-13 |
+| MS | 4% above $10,000, $2,300 / $4,600 | `MS-2026-weekly-table.pdf` is a lookup keyed by exemption amount and states neither the rate nor the deduction; no 2026 Form 80-105 instructions were found, but the saved page is not an individual-forms index (`MS-2026-index.html`) | 2026-11-13 |
 | ND | 1.95 / 2.5% at $48,475 / $244,825 (single), $80,975 / $298,075 (joint) — probably 2025 values | `tax.nd.gov` serves "geographical restrictions" to this host; the 2026 withholding zero band ($57,625 single / $57,500 married) does not map to our statutory figures | 2026-11-08 |
 | NE | 2.46 / 3.51 / 4.55%, $8,850 / $17,700 | `revenue.nebraska.gov` has no DNS answer from this host | 2026-11-13 |
-| NJ | 1.4% to 10.75% eight-band schedule, $1,000 exemption, no deduction | The division's forms index answers but lists no 2026 NJ-1040 instructions or rate schedule | 2026-11-13 |
-| NM | 1.5% to 5.9% six-band schedule | The department's index answers but lists no 2026 PIT-1 instructions or rate schedule | 2026-11-13 |
-| OK | 2.5 / 3.5 / 4.5%, deduction $6,350 / $12,700 / $9,350 | The Tax Commission's index answers but lists no 2026 Form 511 instructions or rate schedule | 2026-11-13 |
-| OR | 4.75% to 9.9% at $4,550 / $11,400 / $125,000, $2,910 / $5,820 deduction, $256 credit | No 2026 OR-40 or rate chart is published; `OR-2026-withholding-tax-formulas.pdf` still prints the 2025 amounts, which happen to match the engine, so **no 2026 amount is confirmed** | 2026-11-13 |
+| NJ | 1.4% to 10.75% eight-band schedule, $1,000 exemption, no deduction | The division's forms index is a library shell rendered in the browser (`NJ-2026-index.html`), so no 2026 NJ-1040 entry was visible: not established | 2026-11-13 |
+| NM | 1.5% to 5.9% six-band schedule | The department's forms page renders its list in the browser (`NM-2026-index.html`), so no 2026 PIT-1 entry was visible: not established | 2026-11-13 |
+| OK | 2.5 / 3.5 / 4.5%, deduction $6,350 / $12,700 / $9,350 | The saved page is the business withholding page (`OK-2026-index.html`), not the individual forms index: not established | 2026-11-13 |
+| OR | 4.75% to 9.9% at $4,550 / $11,400 / $125,000, $2,910 / $5,820 deduction, $256 credit | The saved forms page (`OR-2026-index.html`) is a script-driven shell with no OR-40 entry; `OR-2026-withholding-tax-formulas.pdf` still prints the 2025 amounts, which happen to match the engine, so **no 2026 amount is confirmed** | 2026-11-13 |
 | RI | 3.75 / 4.75 / 5.99% at $82,050 / $186,450, $11,200 deduction | `tax.ri.gov` returns 403 | 2026-11-13 |
-| WI | 3.5 / 4.4 / 5.3 / 7.65% at $15,110 / $51,950 / $332,720, $13,960 / $25,840 deduction | The 2026 forms index answers but links no 2026 instruction or rate schedule | 2026-11-13 |
+| WI | 3.5 / 4.4 / 5.3 / 7.65% at $15,110 / $51,950 / $332,720, $13,960 / $25,840 deduction | The saved "2026 Individual Income Tax Forms" page (`WI-2026-index.html`) renders its list in the browser: not established | 2026-11-13 |
 
 ## Modeled statutory rules
 
@@ -187,9 +188,10 @@ a guessed deep link would be worse than none. The host and form name are what a 
 ## Open items
 
 1. Every **unconfirmed** state needs a 2026 document once the state publishes it. On 2026-11-13
-   AL, MS, NJ, NM, OK, OR and WI answered but list no 2026 individual income tax schedule yet;
-   AR's 2026 AR1000 schedule is also not published; KS, NE, RI and the ND PDFs still need a
-   browser on a US network (MA and MI too).
+   AL's forms archive listed no 2026 individual return, and for MS, NJ, NM, OK, OR and WI the
+   forms list is rendered in the browser, so whether they publish a 2026 schedule is not
+   established; AR's 2026 AR1000 schedule is also not published; KS, NE, RI and the ND PDFs
+   still need a browser on a US network (MA and MI too).
 2. DC's and VT's standard deductions are the remaining unprinted figures; both need the 2026
    return instructions, which the departments have not published.
 3. AR's joint bracket table is not printed in the DFA formula, which is a single-employee

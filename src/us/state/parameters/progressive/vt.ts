@@ -6,7 +6,9 @@ import type { UsStateParameters } from "../types"
  * The 2026 thresholds are about 2.7% above the 2025 ones; head of household keeps its own
  * schedule and separate filers use half the joint thresholds.
  *
- * Math: four progressive bands per filing status (3.35 / 6.6 / 7.6 / 8.75%).
+ * Math: four progressive bands per filing status (3.35 / 6.6 / 7.6 / 8.75%); the
+ * head-of-household deduction (11,475) and exemption (5,300) are 1.5x and 1x the single
+ * amounts, which the 2026 IN-114 instructions do not print.
  * Units: major dollars in the definition; `defineState` emits bracket bounds in integer cents.
  * Throws: TaxValidationError when a threshold is not representable as safe integer cents.
  *
@@ -36,7 +38,7 @@ export const US_2026_STATE_VT: UsStateParameters = defineState({
 		[284_150, 0.0875],
 	],
 	mfs: "half-mfj",
-	std: [7650, 15300, 11_475],
-	personalExemption: [5300, 10600, 5_300],
+	std: [7_650, 15_300, 11_475],
+	personalExemption: [5_300, 10_600, 5_300],
 	dependentExemption: 5_300,
 })

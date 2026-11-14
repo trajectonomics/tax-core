@@ -33,5 +33,5 @@ export const US_2026_STATE_DC: UsStateParameters = defineState({
 		[500_000, 0.0975],
 		[1_000_000, 0.1075],
 	],
-	std: [16100, 32200, 24_150],
+	std: [16_100, 32_200, 24_150],
 })
