@@ -133,12 +133,15 @@ const FILING_STATUS_EXAMPLES: readonly WorkedExample[] = [
 		precision: 1,
 	},
 	{
-		// Wisconsin MFS thresholds are half the joint table: 86,380 taxable.
-		// 10,075 x 3.5% + 24,555 x 4.4% + 51,750 x 5.3%.
+		// Wisconsin 2026 MFS has its own table (10,080 / 34,630 / 221,820) and a 12,280
+		// deduction, where the engine used to halve the joint thresholds and the joint
+		// deduction. 100,000 - 12,280 - 700 = 87,020 taxable: 352.80 + 4.4% x 24,550
+		// + 5.3% x 52,390. The 2026 instructions phase the deduction out above 13,779,
+		// which the engine does not model.
 		state: "WI",
 		wages: 100_000,
-		expectedTax: 4175.795,
-		label: "WI separate return on half-joint thresholds",
+		expectedTax: 4209.67,
+		label: "WI separate return on its own 2026 thresholds",
 		filingStatus: "married_filing_separately",
 		precision: 1,
 	},

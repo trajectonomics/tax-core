@@ -149,6 +149,15 @@ const EXAMPLES: readonly OfficialExample[] = [
 		label: "VT 2026 head-of-household schedule",
 		filingStatus: "head_of_household",
 	},
+	{
+		// Wisconsin 2026 Form 1-ES instructions, Schedule A: 3.5% to 15,110. 18,000 less the
+		// 13,960 standard deduction and the 700 exemption = 3,340 taxable, below the 20,119
+		// point where the document starts phasing the deduction out (not modeled).
+		state: "WI",
+		wages: 18_000,
+		expectedTax: 116.9,
+		label: "WI 2026 single schedule below the deduction phase-out",
+	},
 ]
 
 describe("US state tax corrected against official documents", () => {

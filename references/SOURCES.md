@@ -11,10 +11,11 @@ here on 2026-11-08 are `SC-2026-H4216-Act110.htm`, `SC-2026-WH1603F.pdf`,
 `AR-2026-Withholding-Tax-Formula.pdf`, `CA-2026-540-tax-rate-schedules.pdf`,
 `CA-2026-540-ES-instructions.pdf` and `VT-2026-GB-1210.pdf`. The files stored here on 2026-11-13
 are `DE-2026-PIT-EST-instructions.pdf`, `MT-2026-Publication-1.pdf`,
-`VT-2026-IN-114-Instructions.pdf`, `DC-2026-individual-income-tax-rates.html`,
-`PA-2026-personal-income-tax.html` and the eight index copies `AL-2026-index.html`,
-`AR-2026-index.html`, `MS-2026-index.html`, `NJ-2026-index.html`, `NM-2026-index.html`,
-`OK-2026-index.html`, `OR-2026-index.html` and `WI-2026-index.html`.
+`VT-2026-IN-114-Instructions.pdf`, `WI-2026-Form1-ES-Instructions.pdf`,
+`DC-2026-individual-income-tax-rates.html`, `PA-2026-personal-income-tax.html` and the index
+copies `AL-2026-index.html`, `AR-2026-index.html`, `MS-2026-index.html`, `ND-2026-index.html`,
+`NJ-2026-index.html`, `NM-2026-index.html`, `OK-2026-index.html`, `OR-2026-index.html` and
+`WI-2026-index.html`.
 
 Download with `curl -L -A "Mozilla/5.0 Chrome/126" <url>`. Hosts that refuse automated clients on
 2026-11-08: `mass.gov`, `michigan.gov` and `tax.ri.gov` return 403, `revenue.nebraska.gov` and
@@ -29,9 +30,8 @@ On 2026-11-13 a second host resolved every other state department by name and re
 reachable authority), the department's site at `www.pa.gov/agencies/revenue` answers instead,
 `www.ksrevenue.gov` times out on connect, and `mass.gov`, `michigan.gov`, `tax.ri.gov` and the
 `tax.nd.gov` PDFs still refuse this host. The per-state result of that sweep is the 2026-11-13
-table below. Every page that returned content was saved here on that date as
-`<ST>-2026-index.html`; the KS, NE and RI rows record the error itself, not a page. The lookup
-uses:
+table below. Every page it cites was saved here on that date, as the file its row names; the
+KS, NE and RI rows record the error itself, not a page. The lookup uses:
 
 ```bash
 ip=$(curl -s -H 'accept: application/dns-json' \
@@ -47,8 +47,8 @@ instruction; the state keeps the level its row has below rather than a guessed f
 
 | State | Host | Result |
 | --- | --- | --- |
-| AL | `revenue.alabama.gov` | 200; the forms index lists no 2026 individual income tax form or rate schedule (only the 2026 A-1, A-3 and A-6 forms). No 2026 document |
-| AR | `www.dfa.arkansas.gov` | 200; the individual income tax page lists no 2026 AR1000 or joint bracket table. `arkleg.state.ar.us` times out. No 2026 document |
+| AL | `revenue.alabama.gov` | 200; the saved "Forms Archive" page (`AL-2026-index.html`) is page 1 of a paginated list and shows only the 2026 A-1, A-3 and A-6 forms, so whether a 2026 individual return exists is **not established** |
+| AR | `www.dfa.arkansas.gov` | 200; the saved individual income tax page (`AR-2026-index.html`) links the 2025 tax forms and nothing newer, so no 2026 AR1000 was fetched rather than shown absent. `arkleg.state.ar.us` times out |
 | DC | `otr.cfo.dc.gov` | 200; the income tax rate page prints the seven-band schedule. **Read** |
 | DE | `revenuefiles.delaware.gov` | 200; 2026 PIT-EST instructions print the whole schedule. **Read** |
 | KS | `www.ksrevenue.gov` | DNS answers 165.201.125.251, `curl` exits 28 (connect timeout) on 443. No document |
@@ -63,7 +63,7 @@ instruction; the state keeps the level its row has below rather than a guessed f
 | PA | `www.pa.gov` | 200; the department's personal income tax page states the 3.07% rate and that there is no standard deduction or personal exemption. **Read**, and left partial because the page carries no tax year |
 | RI | `tax.ri.gov` | 403 to every request. No document |
 | VT | `tax.vermont.gov` | 200; 2026 Form IN-114 instructions print all four 2026 schedules. **Read** |
-| WI | `www.revenue.wi.gov` | 200; the saved page (`WI-2026-index.html`) is titled "2026 Individual Income Tax Forms" but renders its list in the browser, so the static copy shows none: **not established** |
+| WI | `www.revenue.wi.gov` | 200; the saved page (`WI-2026-index.html`) carries its form list as embedded JSON, which names `TaxForms2026/2026-Form1-ES-Inst.pdf`; that PDF prints all three 2026 schedules. **Read** |
 
 **Important limit.** Most official documents here are *employer withholding* publications. They
 prove rates, brackets and standard deductions only where the withholding method is the statutory
@@ -83,8 +83,8 @@ Each state's parameter table carries the same level as its row here
   the official document could not be read.
 - **unconfirmed** — no official document and no agreeing report was read.
 
-Tally: 23 official (14 documented states plus the 9 no-tax states), 9 partial, 6 reported,
-13 unconfirmed. `src/us/tests/state-parameters.test.ts` fails if the tally drifts without this
+Tally: 23 official (14 documented states plus the 9 no-tax states), 10 partial, 6 reported,
+12 unconfirmed. `src/us/tests/state-parameters.test.ts` fails if the tally drifts without this
 table being updated.
 
 ## Official: every applied figure confirmed
@@ -124,6 +124,7 @@ New Hampshire and Tennessee repealed their interest and dividends taxes.
 | PA | `PA-2026-personal-income-tax.html` | https://www.pa.gov/agencies/revenue/resources/tax-types-and-information/personal-income-tax | 2026-11-13 | match: 3.07% on taxable income, and the page states the tax provides no standard deduction or personal exemption. **Partial** because the page carries no tax year (the rate is statutory and has no indexed 2026 amount) and it lists deductions this engine does not model: medical savings account, health savings account and 529 contributions, and unreimbursed employee expenses |
 | MT | `MT-2026-Publication-1.pdf` | https://revenuefiles.mt.gov/files/Forms/Publication-1/Publication-1-2026.pdf | 2026-11-13 | **fixed**: head-of-household threshold $71,250 (the engine applied the single $47,500); 4.7% to $47,500 / $95,000 / $71,250 and 5.65% above, for single (and separate) / joint / HoH. House Bill 337 lowered the top rate to 5.65% and raised the 2026 brackets. **Not printed**: the $16,100 / $32,200 / $24,150 standard deduction, which the publication adopts by reference ("the same as your federal standard deduction") without stating an amount. **Not modeled**: the 3% / 4.1% net long-term capital gains schedule and the $5,660 subtraction at 65 and older, so the row stays partial |
 | VT | `VT-2026-IN-114-Instructions.pdf` | https://tax.vermont.gov/sites/tax/files/documents/IN-114-Instr-2026.pdf | 2026-11-13 | **fixed**: 2026 thresholds 3.35 / 6.6 / 7.6 / 8.75% at $50,750 / $122,850 / $256,300 (single), $84,700 / $204,750 / $312,050 (joint), $68,000 / $175,500 / $284,150 (HoH) and half of joint for separate filers, where the engine still carried the 2025 $49,400 / $119,700 / $249,700, the joint $82,500 / $199,450 / $304,000 and the single schedule for HoH. **Not printed**: the $7,650 / $15,300 standard deduction and the $5,300 personal exemption; the rates are labelled "2026 Preliminary" |
+| WI | `WI-2026-Form1-ES-Instructions.pdf` | https://www.revenue.wi.gov/TaxForms2026/2026-Form1-ES-Inst.pdf | 2026-11-13 | **fixed**: Schedules A / B / C give 3.5 / 4.4 / 5.3 / 7.65% at $15,110 / $51,950 / $332,720 (single and HoH), $20,150 / $69,260 / $443,630 (joint) and $10,080 / $34,630 / $221,820 (separate), where the engine halved the joint thresholds to 10,075 / 34,630 / 221,815; standard deduction $13,960 / $25,840 / $18,030 for HoH / $12,280 for separate, where the engine carried 17,950 for HoH and half of joint for separate; $700 exemption per person. **Not modeled**: the income-based standard-deduction phase-out above $20,119 / $29,039 / $13,779 (22.515% and 19.778% steps) |
 | OH | `OH-2026-percentage-method.pdf`, `OH-2026-optional-computer-formula.pdf` | https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/employer_withholding/2026%20Withholding%20Tables/WHT_PercentageMethod_2026.pdf | 2026-11-01 | $26,050 zero-bracket threshold confirmed; **not the statutory rate**: the withholding rates are 1.6 / 2.99 / 3.4%, not 2.75% |
 | AR | `AR-2026-Withholding-Tax-Formula.pdf` | https://www.dfa.arkansas.gov/wp-content/uploads/Withholding-Tax-Formula.pdf (same PDF as `whformula_2026.pdf`) | 2026-11-08 | **confirmed**: the formula now served on that URL (PDF modified 2026-05-30; the revision the issue dates 2026-05-29) prints 0% to $5,599, then 2%, 3%, 3.4% to $26,399 and **3.70%** above, with the $2,470 deduction and the $29 per-exemption credit, so the 3.7% top rate rests on the DFA document and not on reports. **Not printed**: the joint bracket table, which the engine sets equal to the single thresholds. Re-checked 2026-11-13 (`AR-2026-index.html`): the individual income tax page still lists no 2026 AR1000 schedule, so the joint table stays unread |
 
@@ -150,14 +151,13 @@ a guessed deep link would be worse than none. The host and form name are what a 
 | CO | 4.4%, $16,100 / $32,200 | `CO-2026-DR0004.pdf` is the allowance form only and states no rate | 2026-11-01 |
 | KS | 5.2 / 5.58% at $23,000 / $46,000 | No 2026 document read; `ksrevenue.gov` does not answer this host | 2026-11-13 |
 | MS | 4% above $10,000, $2,300 / $4,600 | `MS-2026-weekly-table.pdf` is a lookup keyed by exemption amount and states neither the rate nor the deduction; no 2026 Form 80-105 instructions were found, but the saved page is not an individual-forms index (`MS-2026-index.html`) | 2026-11-13 |
-| ND | 1.95 / 2.5% at $48,475 / $244,825 (single), $80,975 / $298,075 (joint) — probably 2025 values | `tax.nd.gov` serves "geographical restrictions" to this host; the 2026 withholding zero band ($57,625 single / $57,500 married) does not map to our statutory figures | 2026-11-08 |
+| ND | 1.95 / 2.5% at $48,475 / $244,825 (single), $80,975 / $298,075 (joint) — probably 2025 values | `tax.nd.gov` serves "geographical restrictions" to this host (`ND-2026-index.html`: ND-1 for 2025, ND-1ES and the withholding rates booklet for 2026, no 2026 rate booklet); the 2026 withholding zero band ($57,625 single / $57,500 married) does not map to our statutory figures | 2026-11-13 |
 | NE | 2.46 / 3.51 / 4.55%, $8,850 / $17,700 | `revenue.nebraska.gov` has no DNS answer from this host | 2026-11-13 |
 | NJ | 1.4% to 10.75% eight-band schedule, $1,000 exemption, no deduction | The division's forms index is a library shell rendered in the browser (`NJ-2026-index.html`), so no 2026 NJ-1040 entry was visible: not established | 2026-11-13 |
 | NM | 1.5% to 5.9% six-band schedule | The department's forms page renders its list in the browser (`NM-2026-index.html`), so no 2026 PIT-1 entry was visible: not established | 2026-11-13 |
 | OK | 2.5 / 3.5 / 4.5%, deduction $6,350 / $12,700 / $9,350 | The saved page is the business withholding page (`OK-2026-index.html`), not the individual forms index: not established | 2026-11-13 |
 | OR | 4.75% to 9.9% at $4,550 / $11,400 / $125,000, $2,910 / $5,820 deduction, $256 credit | The saved forms page (`OR-2026-index.html`) is a script-driven shell with no OR-40 entry; `OR-2026-withholding-tax-formulas.pdf` still prints the 2025 amounts, which happen to match the engine, so **no 2026 amount is confirmed** | 2026-11-13 |
 | RI | 3.75 / 4.75 / 5.99% at $82,050 / $186,450, $11,200 deduction | `tax.ri.gov` returns 403 | 2026-11-13 |
-| WI | 3.5 / 4.4 / 5.3 / 7.65% at $15,110 / $51,950 / $332,720, $13,960 / $25,840 deduction | The saved "2026 Individual Income Tax Forms" page (`WI-2026-index.html`) renders its list in the browser: not established | 2026-11-13 |
 
 ## Modeled statutory rules
 
@@ -184,14 +184,15 @@ a guessed deep link would be worse than none. The host and form name are what a 
 | 2026-11-13 | PA | 3.07% with no standard deduction or personal exemption confirmed on the department's undated personal income tax page; `unconfirmed` to `partial` until a dated 2026 document is published |
 | 2026-11-13 | VT | 2026 thresholds $50,750 / $122,850 / $256,300 single, $84,700 / $204,750 / $312,050 joint and a separate HoH schedule (was 2025 values and the single schedule for HoH), from the 2026 IN-114 instructions; `unconfirmed` to `partial` |
 | 2026-11-13 | DC | seven-band schedule confirmed on the OTR rate page; `unconfirmed` to `partial` because the standard deduction is not printed there |
+| 2026-11-13 | WI | separate filers get their own 2026 thresholds (10,080 / 34,630 / 221,820, not half of joint), and the HoH deduction is 18,030 and the separate one 12,280 (was 17,950 and half of joint); `unconfirmed` to `partial` because the deduction phase-out is not modeled |
 
 ## Open items
 
 1. Every **unconfirmed** state needs a 2026 document once the state publishes it. On 2026-11-13
-   AL's forms archive listed no 2026 individual return, and for MS, NJ, NM, OK, OR and WI the
+   AL's saved forms archive is page 1 of a paginated list, and for MS, NJ, NM, OK and OR the
    forms list is rendered in the browser, so whether they publish a 2026 schedule is not
-   established; AR's 2026 AR1000 schedule is also not published; KS, NE, RI and the ND PDFs
-   still need a browser on a US network (MA and MI too).
+   established; AR's 2026 AR1000 schedule is not linked yet; KS, NE, RI and the ND PDFs still
+   need a browser on a US network (MA and MI too).
 2. DC's and VT's standard deductions are the remaining unprinted figures; both need the 2026
    return instructions, which the departments have not published.
 3. AR's joint bracket table is not printed in the DFA formula, which is a single-employee
@@ -209,3 +210,6 @@ a guessed deep link would be worse than none. The host and form name are what a 
    data, but they are the single amounts x 1.5 and x 1, not a printed 2026 figure.
 9. PA's 3.07% rate and its zero deduction are only confirmed on a page with no tax year; a
    dated 2026 PA-40 or PA-40 ES would close it.
+10. WI's standard-deduction phase-out is not modeled: the table applies the full 13,960 /
+    25,840 / 18,030 / 12,280 deduction at every income, where the 2026 instructions reduce it
+    above 20,119 / 29,039 (single and HoH / joint) and 13,779 for separate filers.
