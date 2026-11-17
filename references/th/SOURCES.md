@@ -57,7 +57,7 @@ then the row's result is `reported`.
 
 ## What this host could reach on 2026-11-17
 
-| Host | Answer | Used for |
+| URL | Answer | Used for |
 | --- | --- | --- |
 | `rd.go.th/english/37749.html` | 200, HTML | Code sections as enacted |
 | `rd.go.th/5937.html` | 200, HTML, updated 2023-11-14 | consolidated Section 47 |
