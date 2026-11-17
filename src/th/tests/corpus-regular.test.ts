@@ -2,9 +2,9 @@ import { describe, expect, it } from "bun:test"
 import { thb } from "../../core/money"
 import { runThaiCorpusCase } from "./corpus-harness"
 
-// Transcribed corpus, basis documented or derived. The arithmetic is written beside each
-// expectation so a reviewer can check the case without running it. Sources are recorded in
-// references/th/SOURCES.md; a figure that is unsourced there is asserted by no case.
+// Transcribed corpus for regular income and the Section 40 expense rates, whose figures are all
+// `match` or `derived` in references/th/SOURCES.md, as its Ticket asks. The arithmetic is written
+// beside each expectation so a reviewer can check the case without running it.
 describe("corpus: regular income and the Section 40 expense rates", () => {
 	it("taxes a salary: 50% expense capped at 100,000, 60,000 personal allowance", () => {
 		// documented: Act No. 44 (B.E. 2560) s.3 (42 bis) and s.5 (47(1)(a)); R.D. No. 470 s.4
@@ -15,16 +15,6 @@ describe("corpus: regular income and the Section 40 expense rates", () => {
 		// 150,000 at 0% + 150,000 at 5% (7,500) + 140,000 at 10% (14,000)
 		expect(res.totalTax).toBe(thb(21_500))
 		expect(res.marginalRate).toBe(0.1)
-	})
-
-	it("agrees with a 2026 published worked example: 600,000 salary and 10,500 social security", () => {
-		// reported: Raidaai tax year 2569 prints 20,450 for this case
-		const res = runThaiCorpusCase({
-			income: { section40_1: 600_000 },
-			allowances: { socialSecurity: 10_500 },
-		})
-		expect(res.breakdown.netTaxableIncome).toBe(429_500)
-		expect(res.totalTax).toBe(thb(20_450))
 	})
 
 	it("applies the Section 42 ter royalty expense: 50% capped at 100,000", () => {
@@ -60,13 +50,11 @@ describe("corpus: regular income and the Section 40 expense rates", () => {
 		expect(res.totalTax).toBe(thb(11_500))
 	})
 
-	it("applies the 30% building-rental expense and no standard deduction for 40(4)", () => {
-		// reported: R.D. No. 11 s.5 rate for a building; the Code grants 40(4) no expense
-		const res = runThaiCorpusCase({ income: { section40_5: { building: 500_000 } } })
-		expect(res.breakdown.expenseDeductions.section40_5.allowed).toBe(150_000)
-		expect(res.breakdown.netTaxableIncome).toBe(290_000)
-		expect(res.totalTax).toBe(thb(7_000))
-		const interest = runThaiCorpusCase({ income: { section40_4: 100_000 } })
-		expect(interest.breakdown.expenseDeductions.section40_4.allowed).toBe(0)
+	it("grants no standard deduction on Section 40(4) income", () => {
+		// derived: the Code's expense sections name only 40(1)-(3) and 40(5)-(8)
+		const res = runThaiCorpusCase({ income: { section40_4: 100_000 } })
+		expect(res.breakdown.expenseDeductions.section40_4.allowed).toBe(0)
+		expect(res.breakdown.netTaxableIncome).toBe(40_000)
+		expect(res.totalTax).toBe(thb(0))
 	})
 })
