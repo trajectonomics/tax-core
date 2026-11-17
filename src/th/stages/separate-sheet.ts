@@ -32,8 +32,7 @@ const EMPTY_INPUT: ThSeparateSheetInput = { amount: 0, yearsOfService: 0, lastDa
  * Throws: TaxValidationError for negative/non-finite money, a non-safe-integer/negative `yearsOfService`,
  * an unknown `paymentType`, or a wage/years value whose scaled satang amount exceeds safe integers.
  *
- * @statute Thailand Revenue Code Section 48(5). The severance exemption instrument is unsourced;
- * see references/th/SOURCES.md.
+ * @statute Thailand Revenue Code Section 48(5); Section 42(1) (severance exemption).
  */
 export function calculateSeparateSheet(
 	input: ThSeparateSheetInput = EMPTY_INPUT,

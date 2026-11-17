@@ -2,9 +2,10 @@ import { describe, expect, it } from "bun:test"
 import { thb } from "../../core/money"
 import { runThaiCorpusCase } from "./corpus-harness"
 
-// Transcribed corpus for regular income and the Section 40 expense rates, whose figures are all
-// `match` or `derived` in references/th/SOURCES.md, as its Ticket asks. The arithmetic is written
-// beside each expectation so a reviewer can check the case without running it.
+// Transcribed corpus for regular income and the Section 40 expense rates. Each comment names the
+// basis: `documented` where the document prints the answer, `derived` where it is hand arithmetic
+// over documented figures, `reported` where a secondary source states the 2026 figure. The
+// arithmetic sits beside each expectation so a reviewer can check the case without running it.
 describe("corpus: regular income and the Section 40 expense rates", () => {
 	it("taxes a salary: 50% expense capped at 100,000, 60,000 personal allowance", () => {
 		// documented: Act No. 44 (B.E. 2560) s.3 (42 bis) and s.5 (47(1)(a)); R.D. No. 470 s.4
@@ -65,6 +66,7 @@ describe("corpus: regular income and the Section 40 expense rates", () => {
 		const res = runThaiCorpusCase({ income: { section40_8: 1_000_000 } })
 		expect(res.breakdown.expenseDeductions.section40_8.allowed).toBe(600_000)
 		expect(res.breakdown.netTaxableIncome).toBe(340_000)
+		// 7,500 + 4,000
 		expect(res.totalTax).toBe(thb(11_500))
 	})
 
@@ -75,6 +77,26 @@ describe("corpus: regular income and the Section 40 expense rates", () => {
 		expect(res.breakdown.netTaxableIncome).toBe(5_840_000)
 		expect(res.totalTax).toBe(thb(1_559_000))
 		expect(res.marginalRate).toBe(0.35)
+	})
+
+	it("applies the 30% building-rental expense", () => {
+		// documented: the Revenue Department's English overview prints 30% for a building
+		const res = runThaiCorpusCase({ income: { section40_5: { building: 500_000 } } })
+		expect(res.breakdown.expenseDeductions.section40_5.allowed).toBe(150_000)
+		expect(res.breakdown.netTaxableIncome).toBe(290_000)
+		// 150,000 at 0% + 140,000 at 5% (7,000)
+		expect(res.totalTax).toBe(thb(7_000))
+	})
+
+	it("applies the 60% medical and 30% other-profession expenses", () => {
+		// documented: the same overview prints 60% for medicine and 30% otherwise
+		const medical = runThaiCorpusCase({ income: { section40_6: { medical: 1_000_000 } } })
+		expect(medical.breakdown.expenseDeductions.section40_6.allowed).toBe(600_000)
+		expect(medical.breakdown.netTaxableIncome).toBe(340_000)
+		// 7,500 + 4,000
+		expect(medical.totalTax).toBe(thb(11_500))
+		const other = runThaiCorpusCase({ income: { section40_6: { other: 500_000 } } })
+		expect(other.breakdown.expenseDeductions.section40_6.allowed).toBe(150_000)
 	})
 
 	it("grants no standard deduction on Section 40(4) income", () => {

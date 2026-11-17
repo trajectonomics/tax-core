@@ -90,8 +90,7 @@ export interface ThParameters {
 	 * Section 48(5) separate sheet for severance/retirement lump sums. Money in THB major units,
 	 * rates as ratios.
 	 *
-	 * @statute Thailand Revenue Code Section 48(5). The severance exemption instrument is unsourced;
-	 * see references/th/SOURCES.md.
+	 * @statute Thailand Revenue Code Section 48(5), Section 42(1).
 	 */
 	readonly separateSheet: {
 		/** Minimum completed years of service for eligibility (count). */

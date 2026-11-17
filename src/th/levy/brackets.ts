@@ -35,8 +35,7 @@ export interface ThMinimumTaxMeasures {
  * @param graph Measure graph being built.
  * @param taxable Net taxable income Measure.
  * @param brackets Ordered statutory bracket table in THB major units.
- * @statute Thailand Revenue Code Section 48(1); Act No. 44 (B.E. 2560) s.12 sets the tiers and
- * Royal Decree No. 470 (B.E. 2551) s.4 exempts the first 150,000 baht.
+ * @statute Thailand Revenue Code Section 48(1); Royal Decree No. 650.
  */
 export function addProgressiveTax(
 	graph: ThLevyGraph,

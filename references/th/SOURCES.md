@@ -82,12 +82,13 @@ No OCR is available on this host, so the two scans above stay unread; their rows
   asserts the rate.
 - **`digitalAssetRate` is unsourced** (OD6). No 2026 rate was read; the code keeps 15 per cent with
   its assumption comment, and no corpus case asserts it.
-- **Two citations in the code are wrong.** `src/th/parameters.ts` names Royal Decree No. 650 for the
-  bracket schedule, and `src/th/stages/separate-sheet.ts` names Section 42(1) for the severance
-  exemption. R.D. No. 650 is a 2017 flood-donation exemption, Section 42(1) is per-diem and
-  transport expenses, and the schedule's instruments are Act No. 44 section 12 plus R.D. No. 470
-  section 4. The eight TSDoc comments that carried those two citations were corrected without
-  changing a figure or a stage.
+- **Two citations in the code are wrong, and are recorded here rather than corrected.**
+  `src/th/parameters.ts` names Royal Decree No. 650 for the bracket schedule, and
+  `src/th/stages/separate-sheet.ts` names Section 42(1) for the severance exemption. R.D. No. 650
+  is a 2017 flood-donation exemption, Section 42(1) is per-diem and transport expenses, and the
+  schedule's instruments are Act No. 44 section 12 plus R.D. No. 470 section 4. Correcting those
+  comments is outside this Ticket's "no code changes" scope, so they stay for the owner or a later
+  Ticket; no figure and no stage changed.
 - **Gaps.** The Section 48(4) holding-year expense table (R.D. No. 165) and the Section 48(5)
   400-day / 600,000 baht severance exemption (the instrument that grants it) are image scans or
   unread instruments, so their rows are `unsourced`. The Section 48(5) five-year condition rests

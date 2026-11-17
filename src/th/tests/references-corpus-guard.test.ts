@@ -77,6 +77,41 @@ describe("findThCorpusImportViolations", () => {
 		])
 	})
 
+	it("finds a dynamic import written with a template string", () => {
+		const source = `const engine = await import(\`../calculate\`)`
+		const findings = findThCorpusImportViolations(corpus(source))
+		expect(findings).toHaveLength(1)
+		expect(findings[0]?.specifier).toBe("../calculate")
+	})
+
+	it("ignores a commented-out import, a block comment and a template that spells one", () => {
+		const source = [
+			'// import { calculateThTax } from "../calculate"',
+			'/* import { emitThLevy } from "../levy/emit" */',
+			'export const note = `from "../calculate"`',
+			"const text = `",
+			'import { $ } from "../fake"',
+			"`",
+			"const view = `",
+			'import { x } from "../other"',
+			"`",
+			'import { runThaiCorpusCase } from "./corpus-harness"',
+		].join("\n")
+		expect(findThCorpusImportViolations(corpus(source))).toEqual([])
+	})
+
+	it("does not let a comment hide the real specifier of a wrapped import", () => {
+		const source = [
+			"import {",
+			"\tcalculateThTax,",
+			'} from /* from "bun:test" */ "../calculate"',
+		].join("\n")
+		const findings = findThCorpusImportViolations(corpus(source))
+		expect(findings).toHaveLength(1)
+		expect(findings[0]?.line).toBe(1)
+		expect(findings[0]?.specifier).toBe("../calculate")
+	})
+
 	it("reports the file name and line of every violation", () => {
 		const findings = findThCorpusImportViolations([
 			{ file: "corpus-combined.test.ts", source: '\n\nimport { emitThLevy } from "../levy/emit"' },

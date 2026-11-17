@@ -66,6 +66,18 @@ describe("corpus: personal, spouse, child, parent and disabled allowances", () =
 		expect(res.breakdown.allowances.parents.allowed).toBe(120_000)
 	})
 
+	it("caps the social-security contribution at 10,500", () => {
+		// reported: 875 baht a month for 12 months; 1,000,000 - 100,000 - 70,500 = 829,500
+		const res = runThaiCorpusCase({
+			income: { section40_1: 1_000_000 },
+			allowances: { socialSecurity: 12_000 },
+		})
+		expect(res.breakdown.allowances.socialSecurity.allowed).toBe(10_500)
+		expect(res.breakdown.netTaxableIncome).toBe(829_500)
+		// 65,000 to 750,000 + 79,500 at 20% (15,900)
+		expect(res.totalTax).toBe(thb(80_900))
+	})
+
 	it("allows 60,000 for each disabled person cared for", () => {
 		// documented: Section 47(1)(k), as amended by Act No. 37 (B.E. 2552)
 		const res = runThaiCorpusCase({
