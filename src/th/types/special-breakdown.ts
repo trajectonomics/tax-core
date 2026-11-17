@@ -54,7 +54,8 @@ export interface ThDividendTaxCreditBreakdown {
 /**
  * Section 48(5) separate sheet audit trail. Units: THB major units.
  *
- * @statute Thailand Revenue Code Section 48(5), Section 42(1).
+ * @statute Thailand Revenue Code Section 48(5). The severance exemption instrument is unsourced;
+ * see references/th/SOURCES.md.
  */
 export interface ThSeparateSheetBreakdown {
 	readonly amount: number

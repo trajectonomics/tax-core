@@ -17,7 +17,8 @@ export const TH_2026_FINAL_WITHHOLDING: ThParameters["finalWithholding"] = {
  * Section 48(5) separate sheet parameters for Tax Year 2026: exemption, expenses, and schedule.
  * The schedule is the Section 48(1) ladder without its 0% tier (same upper bounds and rates).
  *
- * @statute Thailand Revenue Code Section 48(5), Section 42(1).
+ * @statute Thailand Revenue Code Section 48(5). The severance exemption instrument is unsourced;
+ * see references/th/SOURCES.md.
  */
 export const TH_2026_SEPARATE_SHEET: ThParameters["separateSheet"] = {
 	minYearsOfService: 5,

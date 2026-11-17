@@ -3,7 +3,8 @@ import type { TaxBracket } from "../core/brackets"
 /**
  * Section 48(1) progressive net-income brackets for Tax Year 2026 (THB major units, rates as ratios).
  *
- * @statute Thailand Revenue Code Section 48(1); Royal Decree No. 650.
+ * @statute Thailand Revenue Code Section 48(1); Act No. 44 (B.E. 2560) s.12 sets the tiers and
+ * Royal Decree No. 470 (B.E. 2551) s.4 exempts the first 150,000 baht.
  */
 export const TH_2026_BRACKETS: readonly TaxBracket[] = [
 	{ upTo: 150_000, rate: 0.0 },

@@ -9,3 +9,8 @@ coverage/
 # Raw official source documents (large, third-party); only the manifest is tracked
 references/*
 !references/SOURCES.md
+
+# The Thai source manifest, with its raw documents ignored (the US layout)
+!references/th/
+references/th/*
+!references/th/SOURCES.md

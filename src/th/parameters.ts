@@ -9,7 +9,8 @@ import type { ThParameters } from "./parameters-types"
 /**
  * Thailand Statutory Tax Parameters for Tax Year 2026 (Revenue Code ภ.ง.ด.90/91).
  *
- * @statute Thailand Revenue Code Sections 40, 42 bis, 47, 47 bis, 48(1)–(5); Royal Decrees No. 11, 650.
+ * @statute Thailand Revenue Code Sections 40, 42 bis, 47, 47 bis, 48(1)–(5); Royal Decrees
+ * No. 11, 470, 480, 629 and 634.
  */
 export const TH_2026_PARAMETERS: ThParameters = {
 	taxYear: 2026,

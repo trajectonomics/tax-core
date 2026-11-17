@@ -61,7 +61,8 @@ export interface ThSection40_4Input {
  * Plain `"severance"`/`"retirement"` strings are accepted wherever
  * {@link ThSeparateSheetPaymentType} is expected.
  *
- * @statute Thailand Revenue Code Section 48(5); Section 42(1) (severance exemption).
+ * @statute Thailand Revenue Code Section 48(5). The severance exemption instrument is unsourced;
+ * see references/th/SOURCES.md.
  */
 export const ThSeparateSheetPaymentType = {
 	Severance: "severance",
@@ -76,7 +77,8 @@ export type ThSeparateSheetPaymentType =
  * Section 48(5) one-time severance or retirement lump sum.
  * Units: THB major units; `yearsOfService` is a count.
  *
- * @statute Thailand Revenue Code Section 48(5), Section 42(1).
+ * @statute Thailand Revenue Code Section 48(5). The severance exemption instrument is unsourced;
+ * see references/th/SOURCES.md.
  */
 export interface ThSeparateSheetInput {
 	/** Lump sum received, in THB. */
