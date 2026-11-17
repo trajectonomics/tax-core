@@ -79,17 +79,27 @@ describe("corpus: regular income and the Section 40 expense rates", () => {
 		expect(res.marginalRate).toBe(0.35)
 	})
 
-	it("applies the 30% building-rental expense", () => {
-		// documented: the Revenue Department's English overview prints 30% for a building
+	it("applies each Section 40(5) rental rate the overview prints", () => {
+		// reported: 30% building and vehicles, 20% agricultural land, 15% other land, 10% other
+		const at = (input: object): number =>
+			runThaiCorpusCase({ income: { section40_5: input } }).breakdown.expenseDeductions.section40_5
+				.allowed
+		expect(at({ building: 500_000 })).toBe(150_000)
+		expect(at({ vehicles: 500_000 })).toBe(150_000)
+		expect(at({ agriculturalLand: 500_000 })).toBe(100_000)
+		expect(at({ nonAgriculturalLand: 500_000 })).toBe(75_000)
+		expect(at({ other: 500_000 })).toBe(50_000)
+	})
+
+	it("taxes a building rental after its 30% expense", () => {
+		// reported: 500,000 - 150,000 - 60,000 = 290,000; 150,000 at 0% + 140,000 at 5%
 		const res = runThaiCorpusCase({ income: { section40_5: { building: 500_000 } } })
-		expect(res.breakdown.expenseDeductions.section40_5.allowed).toBe(150_000)
 		expect(res.breakdown.netTaxableIncome).toBe(290_000)
-		// 150,000 at 0% + 140,000 at 5% (7,000)
 		expect(res.totalTax).toBe(thb(7_000))
 	})
 
 	it("applies the 60% medical and 30% other-profession expenses", () => {
-		// documented: the same overview prints 60% for medicine and 30% otherwise
+		// reported: the same overview prints 60% for medicine and 30% otherwise
 		const medical = runThaiCorpusCase({ income: { section40_6: { medical: 1_000_000 } } })
 		expect(medical.breakdown.expenseDeductions.section40_6.allowed).toBe(600_000)
 		expect(medical.breakdown.netTaxableIncome).toBe(340_000)
