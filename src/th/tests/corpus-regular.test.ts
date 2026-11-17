@@ -22,6 +22,7 @@ describe("corpus: regular income and the Section 40 expense rates", () => {
 		const res = runThaiCorpusCase({ income: { section40_3: 400_000 } })
 		expect(res.breakdown.expenseDeductions.section40_3.allowed).toBe(100_000)
 		expect(res.breakdown.netTaxableIncome).toBe(240_000)
+		// 150,000 at 0% + 90,000 at 5% (4,500)
 		expect(res.totalTax).toBe(thb(4_500))
 	})
 
@@ -48,6 +49,32 @@ describe("corpus: regular income and the Section 40 expense rates", () => {
 		expect(res.breakdown.expenseDeductions.section40_7.allowed).toBe(600_000)
 		expect(res.breakdown.netTaxableIncome).toBe(340_000)
 		expect(res.totalTax).toBe(thb(11_500))
+	})
+
+	it("applies the 50% salary expense below its ceiling", () => {
+		// documented: 50% of 100,000 = 50,000, under the 100,000 ceiling; the 60,000
+		// personal allowance then exceeds the 50,000 left, so the taxable income is 0
+		const res = runThaiCorpusCase({ income: { section40_1: 100_000 } })
+		expect(res.breakdown.expenseDeductions.section40_1_2.allowed).toBe(50_000)
+		expect(res.breakdown.netTaxableIncome).toBe(0)
+		expect(res.totalTax).toBe(thb(0))
+	})
+
+	it("applies the Section 40(8) general expense of 60%", () => {
+		// documented: R.D. No. 629 (B.E. 2560) s.4; 600,000 of 1,000,000, so 340,000 taxable
+		const res = runThaiCorpusCase({ income: { section40_8: 1_000_000 } })
+		expect(res.breakdown.expenseDeductions.section40_8.allowed).toBe(600_000)
+		expect(res.breakdown.netTaxableIncome).toBe(340_000)
+		expect(res.totalTax).toBe(thb(11_500))
+	})
+
+	it("reaches the 35% top bracket", () => {
+		// documented: Act No. 44 (B.E. 2560) s.12; 6,000,000 - 100,000 - 60,000 = 5,840,000;
+		// 1,265,000 to 5,000,000 + 840,000 at 35% (294,000)
+		const res = runThaiCorpusCase({ income: { section40_1: 6_000_000 } })
+		expect(res.breakdown.netTaxableIncome).toBe(5_840_000)
+		expect(res.totalTax).toBe(thb(1_559_000))
+		expect(res.marginalRate).toBe(0.35)
 	})
 
 	it("grants no standard deduction on Section 40(4) income", () => {

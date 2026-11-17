@@ -1,4 +1,9 @@
-/** Modules a transcribed corpus file may import: the test runner, the harness and money helpers. */
+/**
+ * Modules a transcribed corpus file may import: the test runner, the harness and money helpers.
+ *
+ * The harness is the only file that reaches the package's calculation entry points, so a corpus
+ * case cannot compute its own expectation.
+ */
 export const TH_CORPUS_IMPORT_ALLOWLIST: readonly string[] = [
 	"bun:test",
 	"./corpus-harness",
@@ -15,6 +20,7 @@ export interface ThCorpusFile {
 
 /** An import a corpus file must not have. */
 export interface ThCorpusImportFinding {
+	/** Path used in findings. */
 	readonly file: string
 	/** 1-based line number of the import. */
 	readonly line: number
@@ -23,10 +29,16 @@ export interface ThCorpusImportFinding {
 }
 
 const CORPUS_FILE_PATTERN = /(?:^|\/)corpus-[a-z0-9-]+\.test\.ts$/
-const IMPORT_FROM_PATTERN = /^\s*(?:import|export)\b[^"'`]*?\bfrom\s*["']([^"']+)["']/
-const IMPORT_BARE_PATTERN = /^\s*import\s*["']([^"']+)["']/
+const IMPORT_PATTERN =
+	/(?:^|\n)[ \t]*(?:import|export)\s+(?:type\s+)?(?:[\s\S]*?\bfrom\s*)?["']([^"']+)["']/g
+const DYNAMIC_IMPORT_PATTERN = /\bimport\s*\(\s*["']([^"']+)["']/g
 
-/** True for `corpus-<family>.test.ts`, the only files the guard reads. */
+/**
+ * Purpose: Recognizes `corpus-<family>.test.ts`, the only files the guard reads.
+ * Math: Path pattern, never a directory listing.
+ * Units: None.
+ * Throws: Never.
+ */
 export function isThCorpusFile(file: string): boolean {
 	return CORPUS_FILE_PATTERN.test(file)
 }
@@ -35,8 +47,9 @@ export function isThCorpusFile(file: string): boolean {
  * Purpose: Keeps a transcribed corpus independent of the package under test. A corpus file may
  * reach `calculateThTax` only through the shared harness, so it cannot compute its own
  * expectations; every other import is a violation.
- * Math: Line scan of each corpus file for `import`/`export ... from "<specifier>"`; a specifier
- * must be in {@link TH_CORPUS_IMPORT_ALLOWLIST}.
+ * Math: Whole-text scan for `import`/`export ... from "<specifier>"`, bare side-effect imports and
+ * dynamic `import("<specifier>")`; a specifier must be in {@link TH_CORPUS_IMPORT_ALLOWLIST}.
+ * The scan runs over the whole file, so a statement Biome wrapped across lines is still found.
  * Units: None.
  * Throws: Never.
  */
@@ -46,19 +59,25 @@ export function findThCorpusImportViolations(
 	const findings: ThCorpusImportFinding[] = []
 	for (const file of files) {
 		if (!isThCorpusFile(file.file)) continue
-		file.source.split("\n").forEach((text, index) => {
-			const specifier = importSpecifier(text)
-			if (specifier !== undefined && !TH_CORPUS_IMPORT_ALLOWLIST.includes(specifier)) {
-				findings.push({ file: file.file, line: index + 1, specifier })
-			}
-		})
+		findings.push(
+			...scanImports(file, IMPORT_PATTERN),
+			...scanImports(file, DYNAMIC_IMPORT_PATTERN),
+		)
 	}
 	return findings
 }
 
-function importSpecifier(line: string): string | undefined {
-	const from = IMPORT_FROM_PATTERN.exec(line)
-	if (from !== null) return from[1]
-	const bare = IMPORT_BARE_PATTERN.exec(line)
-	return bare?.[1]
+function scanImports(file: ThCorpusFile, pattern: RegExp): readonly ThCorpusImportFinding[] {
+	const findings: ThCorpusImportFinding[] = []
+	for (const match of file.source.matchAll(pattern)) {
+		const specifier = match[1] ?? ""
+		if (TH_CORPUS_IMPORT_ALLOWLIST.includes(specifier)) continue
+		const offset = match.index + (match[0].startsWith("\n") ? 1 : 0)
+		findings.push({ file: file.file, line: lineAt(file.source, offset), specifier })
+	}
+	return findings
+}
+
+function lineAt(source: string, index: number): number {
+	return source.slice(0, index).split("\n").length
 }

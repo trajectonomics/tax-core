@@ -4,11 +4,12 @@ import { runThaiCorpusCase } from "./corpus-harness"
 
 // Transcribed corpus for the Section 48(5) separate sheet. Every case is a `retirement` payment,
 // which receives no severance exemption: the instrument that grants that exemption is unsourced
-// (references/th/SOURCES.md), so no case asserts it.
+// (references/th/SOURCES.md), so no case asserts it. The five-year eligibility condition is
+// reported from the Revenue Department, so each case states that basis.
 describe("corpus: the Section 48(5) separate sheet", () => {
 	it("taxes an eligible lump sum separately: 7,000 a year, then 50% of the remainder", () => {
-		// documented: Section 48(5); 1,500,000 - 20 x 7,000 = 1,360,000, half is 680,000;
-		// 300,000 at 5% (15,000) + 200,000 at 10% (20,000) + 180,000 at 15% (27,000)
+		// reported: Section 48(5) five-year condition; 1,500,000 - 20 x 7,000 = 1,360,000, half
+		// is 680,000; 300,000 at 5% (15,000) + 200,000 at 10% (20,000) + 180,000 at 15% (27,000)
 		const res = runThaiCorpusCase({
 			separateSheet: {
 				amount: 1_500_000,
@@ -26,7 +27,7 @@ describe("corpus: the Section 48(5) separate sheet", () => {
 	})
 
 	it("returns an under-five-year payment to regular Section 40(1) income untaxed", () => {
-		// documented: Section 48(5) applies from five years; the code returns the remainder
+		// reported: the five-year condition; under it the code returns the remainder
 		const res = runThaiCorpusCase({
 			income: { section40_1: 600_000 },
 			separateSheet: {
@@ -45,7 +46,7 @@ describe("corpus: the Section 48(5) separate sheet", () => {
 	})
 
 	it("switches to the separate sheet at exactly five years", () => {
-		// documented: 500,000 - 35,000 = 465,000, half is 232,500, taxed at 5%
+		// reported: 500,000 - 5 x 7,000 = 465,000, half is 232,500, taxed at 5%
 		const res = runThaiCorpusCase({
 			separateSheet: {
 				amount: 500_000,
@@ -60,7 +61,7 @@ describe("corpus: the Section 48(5) separate sheet", () => {
 	})
 
 	it("never lets the fixed expense exceed the lump sum", () => {
-		// documented: 20 x 7,000 = 140,000, capped at the 100,000 remaining, so no tax
+		// derived: 20 x 7,000 = 140,000, capped at the 100,000 remaining, so no tax
 		const res = runThaiCorpusCase({
 			separateSheet: {
 				amount: 100_000,
@@ -76,7 +77,7 @@ describe("corpus: the Section 48(5) separate sheet", () => {
 	})
 
 	it("reaches the top of the separate schedule", () => {
-		// documented: 10,000,000 - 70,000 = 9,930,000, half is 4,965,000;
+		// reported: 10,000,000 - 70,000 = 9,930,000, half is 4,965,000;
 		// 15,000 + 20,000 + 37,500 + 50,000 + 250,000 + 2,965,000 at 30% (889,500)
 		const res = runThaiCorpusCase({
 			separateSheet: {

@@ -39,7 +39,7 @@ interface LocatedRows {
 }
 
 interface TableLine {
-	readonly text: string
+	readonly cells: readonly string[]
 	readonly line: number
 }
 
@@ -53,7 +53,7 @@ function collectRows(located: LocatedRows): ThSourceManifest {
 	const rows: ThSourceManifestRow[] = []
 	const issues: ThSourceManifestIssue[] = []
 	for (const entry of tableLines(located)) {
-		const parsed: ParsedManifestRow = parseManifestRow(splitCells(entry.text), entry.line)
+		const parsed: ParsedManifestRow = parseManifestRow(entry.cells, entry.line)
 		if ("issue" in parsed) issues.push(parsed.issue)
 		else rows.push(parsed.row)
 	}
@@ -65,7 +65,8 @@ function tableLines(located: LocatedRows): readonly TableLine[] {
 	for (let index = located.start; index < located.lines.length; index++) {
 		const text = located.lines[index] ?? ""
 		if (endsTable(text, table.length)) break
-		if (isTableRow(text)) table.push({ text, line: index + 1 })
+		const cells = tableRowCells(text)
+		if (cells !== undefined) table.push({ cells, line: index + 1 })
 	}
 	return table
 }
@@ -75,10 +76,10 @@ function endsTable(text: string, count: number): boolean {
 	return count > 0 && !text.startsWith("|")
 }
 
-function isTableRow(text: string): boolean {
-	if (!text.startsWith("|")) return false
+function tableRowCells(text: string): readonly string[] | undefined {
+	if (!text.startsWith("|")) return undefined
 	const cells = splitCells(text)
-	return !isHeader(cells) && !isSeparator(cells)
+	return isHeader(cells) || isSeparator(cells) ? undefined : cells
 }
 
 function splitCells(line: string): readonly string[] {

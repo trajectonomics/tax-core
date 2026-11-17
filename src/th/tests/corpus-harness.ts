@@ -2,7 +2,7 @@ import type { TaxResult } from "../../core/system"
 import { calculateThTax } from "../calculate"
 import type { ThBreakdown, ThTaxInput } from "../types"
 
-/** The full result a transcribed corpus case asserts against. */
+/** The full result a transcribed corpus case asserts against, in THB major units. */
 export type ThCorpusResult = TaxResult<"THB", ThBreakdown>
 
 /**

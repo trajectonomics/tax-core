@@ -13,6 +13,7 @@ describe("corpus: the retirement cluster and Thai ESG", () => {
 		})
 		expect(res.breakdown.allowances.retirementCluster.rmf.allowed).toBe(300_000)
 		expect(res.breakdown.netTaxableIncome).toBe(540_000)
+		// 7,500 + 20,000 + 40,000 at 15% (6,000)
 		expect(res.totalTax).toBe(thb(33_500))
 	})
 

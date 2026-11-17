@@ -67,7 +67,7 @@ describe("corpus: personal, spouse, child, parent and disabled allowances", () =
 	})
 
 	it("allows 60,000 for each disabled person cared for", () => {
-		// documented: Section 47(1)(h), as amended by Act No. 37 (B.E. 2552)
+		// documented: Section 47(1)(k), as amended by Act No. 37 (B.E. 2552)
 		const res = runThaiCorpusCase({
 			income: { section40_1: 1_000_000 },
 			allowances: { disabledCareCount: 2 },

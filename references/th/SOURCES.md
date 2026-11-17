@@ -88,16 +88,17 @@ No OCR is available on this host, so the two scans above stay unread; their rows
   transport expenses, and the schedule's instruments are Act No. 44 section 12 plus R.D. No. 470
   section 4. The eight TSDoc comments that carried those two citations were corrected without
   changing a figure or a stage.
-- **Gaps.** The Section 48(4) holding-year expense table (R.D. No. 165), the Section 48(5)
-  five-year eligibility rule and its 400-day / 600,000 baht severance exemption (the instrument
-  that grants it), and the Section 40(5)/40(6) expense rates (R.D. No. 11) are unread. They need a
-  text copy of those instruments, which this host cannot reach.
+- **Gaps.** The Section 48(4) holding-year expense table (R.D. No. 165) and the Section 48(5)
+  400-day / 600,000 baht severance exemption (the instrument that grants it) are image scans or
+  unread instruments, so their rows are `unsourced`. The Section 48(5) five-year condition rests
+  on a Revenue Department news item, so it is `reported`. The Section 40(5)/40(6) expense rates
+  rest on the Department's English overview, so they too are `reported`.
 
 ## Correction log
 
 | Date | Figures | What changed |
 | --- | --- | --- |
-| 2026-11-17 | none (first sweep) | 71 rows written; 32 `match`, 6 `derived`, 27 `reported`, 6 `unsourced` |
+| 2026-11-17 | none (first sweep) | 71 rows written; 32 `match`, 6 `derived`, 28 `reported`, 5 `unsourced` |
 
 <!-- factory:th-source-rows v1 -->
 
@@ -172,5 +173,5 @@ No OCR is available on this host, so the two scans above stay unread; their rows
 | `separateSheet.exemptionCeiling` | not exceeding 600,000 baht | Severance exemption; the instrument that grants it was not read | https://www.rd.go.th/5937.html | 2026-11-17 | unsourced |
 | `separateSheet.exemptionWageDays` | 400 days of the last wage | Severance exemption; the instrument that grants it was not read | https://www.rd.go.th/5937.html | 2026-11-17 | unsourced |
 | `separateSheet.expensePerYearOfService` | 7,000 baht for each year of service | Section 48(5) | https://www.rd.go.th/5937.html | 2026-11-17 | match |
-| `separateSheet.minYearsOfService` | 5 years of service | Section 48(5) eligibility, in the rules the Director-General prescribes; rules not read | https://www.rd.go.th/5937.html | 2026-11-17 | unsourced |
+| `separateSheet.minYearsOfService` | 5 years of service | Section 48(5) eligibility; the Revenue Department states the five-year condition for the ภ.ง.ด.90/91 attachment | https://www.rd.go.th/region/08/chiangrai/265/4618.html | 2026-11-17 | reported (RD Chiang Rai news item, 30 March 2026) |
 | `separateSheet.remainderExpenseRate` | 50 per cent of the remainder | Section 48(5) | https://www.rd.go.th/5937.html | 2026-11-17 | match |

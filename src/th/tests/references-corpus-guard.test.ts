@@ -58,6 +58,25 @@ describe("findThCorpusImportViolations", () => {
 		expect(findings).toEqual([])
 	})
 
+	it("finds an import Biome wrapped across lines, at the line it starts on", () => {
+		const source = [
+			"const before = 1",
+			"import {",
+			"\tcalculateThTax",
+			'} from "../calculate"',
+		].join("\n")
+		expect(findThCorpusImportViolations(corpus(source))).toEqual([
+			{ file: "src/th/tests/corpus-regular.test.ts", line: 2, specifier: "../calculate" },
+		])
+	})
+
+	it("finds a dynamic import of the engine", () => {
+		const source = 'const engine = await import("../calculate")'
+		expect(findThCorpusImportViolations(corpus(source))).toEqual([
+			{ file: "src/th/tests/corpus-regular.test.ts", line: 1, specifier: "../calculate" },
+		])
+	})
+
 	it("reports the file name and line of every violation", () => {
 		const findings = findThCorpusImportViolations([
 			{ file: "corpus-combined.test.ts", source: '\n\nimport { emitThLevy } from "../levy/emit"' },
