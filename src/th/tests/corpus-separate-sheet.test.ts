@@ -76,6 +76,21 @@ describe("corpus: the Section 48(5) separate sheet", () => {
 		expect(res.totalTax).toBe(thb(0))
 	})
 
+	it("lands exactly on the first tier of the schedule, which has no 0% band", () => {
+		// reported: 635,000 - 5 x 7,000 = 600,000, half is 300,000, the first tier's top;
+		// 5% of it is 15,000 where a 0% band would have made it 7,500
+		const res = runThaiCorpusCase({
+			separateSheet: {
+				amount: 635_000,
+				yearsOfService: 5,
+				lastDailyWage: 1_000,
+				paymentType: "retirement",
+			},
+		})
+		expect(res.breakdown.separateSheet.netTaxable).toBe(300_000)
+		expect(res.breakdown.separateSheet.tax).toBe(15_000)
+	})
+
 	it("reaches the top of the separate schedule", () => {
 		// reported: 10,000,000 - 70,000 = 9,930,000, half is 4,965,000;
 		// 15,000 + 20,000 + 37,500 + 50,000 + 250,000 + 2,965,000 at 30% (889,500)

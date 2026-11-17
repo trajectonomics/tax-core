@@ -51,6 +51,20 @@ describe("corpus: the retirement cluster and Thai ESG", () => {
 		expect(res.totalTax).toBe(thb(250_000))
 	})
 
+	it("caps the government pension fund at 500,000 whatever rate applies", () => {
+		// reported: the ceiling binds at 30% of 4,000,000 (1,200,000) and would also bind at
+		// the 15% the same source prints (600,000), so the case stops at the ceiling and
+		// asserts no rate — the manifest records the rate disagreement (OD5)
+		const res = runThaiCorpusCase({
+			income: { section40_1: 4_000_000 },
+			allowances: { gpf: 1_000_000 },
+		})
+		expect(res.breakdown.allowances.retirementCluster.gpf.allowed).toBe(500_000)
+		expect(res.breakdown.allowances.retirementCluster.combined.allowed).toBe(500_000)
+		expect(res.breakdown.netTaxableIncome).toBe(3_340_000)
+		expect(res.totalTax).toBe(thb(767_000))
+	})
+
 	it("caps the National Savings Fund contribution at 30,000", () => {
 		// reported: nsf 40,000 requested, 30,000 allowed
 		const res = runThaiCorpusCase({

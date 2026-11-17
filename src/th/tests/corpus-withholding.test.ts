@@ -32,6 +32,18 @@ describe("corpus: final withholding and the dividend tax credit", () => {
 		expect(res.netTaxPayable).toBe(thb(0))
 	})
 
+	it("taxes the same interest in the brackets when it is not elected final", () => {
+		// documented: Section 48(3) is an election; 700,000 - 100,000 - 60,000 = 540,000;
+		// 7,500 + 20,000 + 40,000 at 15% (6,000)
+		const res = runThaiCorpusCase({
+			income: { section40_1: 600_000, section40_4: { interest: { amount: 100_000 } } },
+		})
+		expect(res.breakdown.assessableIncome.section40_4).toBe(100_000)
+		expect(res.breakdown.finalWithholding.totalTax).toBe(0)
+		expect(res.breakdown.netTaxableIncome).toBe(540_000)
+		expect(res.totalTax).toBe(thb(33_500))
+	})
+
 	it("grosses an included dividend up by 3/7 of itself at a 20% corporate rate", () => {
 		// documented: Section 47 bis: 100,000 x 0.2 / 0.8 = 25,000 credit; 125,000 assessable;
 		// less 60,000 personal leaves 65,000, tax 0, so the credit is refunded
