@@ -4,6 +4,14 @@ A pure, deterministic, multi-jurisdiction individual income tax calculation doma
 
 ## Core Concepts
 
+**Source Manifest**:
+The tracked table (`references/th/SOURCES.md`, `references/SOURCES.md`) recording, for each statutory figure a jurisdiction applies, the parameter path, the figure as its document prints it, the citation naming the section and the instrument that sets it, the document URL and anchor, the date it was read, and the result: the figure matched the engine, was derived by hand from documented figures, rests on a secondary source only, or is unsourced.
+_Avoid_: Bibliography, citation list, audit log
+
+**Transcribed Corpus**:
+Test cases whose expected figures come from a source document, or from hand arithmetic over documented figures written into the test, and never from the package under test, so a failure means the engine diverged from the statute rather than from itself.
+_Avoid_: Golden corpus, snapshot, fixture dump
+
 **Jurisdiction**:
 A sovereign country (identified by ISO 3166-1 alpha-2 code, such as `TH` or `US`) whose statutory tax code governs a tax calculation.
 _Avoid_: Locale, country code, region
