@@ -7,6 +7,8 @@ import { runThaiCorpusCase } from "./corpus-harness"
 // paid. Every component is asserted on its own before the combined liability.
 describe("corpus: one return combining every regime", () => {
 	it("adds the regular tax, the separate sheet, real estate, final withholding and a credit", () => {
+		// basis: documented (Sections 42 bis, 47, 48(3), 48(4)(a), 48(5), 47 bis) and derived (the
+		// no-0% ladders); the corporate rate and the withheld amount are the filer's inputs.
 		// regular: 600,000 salary + 80,000 dividend grossed to 100,000 = 700,000 assessable;
 		// less 100,000 expense, 60,000 personal and 9,000 social security leaves 531,000;
 		// 7,500 + 20,000 + 31,000 at 15% (4,650) = 32,150

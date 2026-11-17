@@ -32,13 +32,12 @@ const CORPUS_FILE_PATTERN = /(?:^|\/)corpus-[a-z0-9-]+\.test\.ts$/
 const BLOCK_COMMENT = /\/\*[\s\S]*?\*\//g
 const LINE_COMMENT = /^[ \t]*\/\/.*$/gm
 const TEMPLATE = /`[^`]*`/g
-const STATEMENT_START = "(?:^|\\n)[ \\t]*(?:import|export)[ \\t]+(?:type[ \\t]+)?"
-const DYNAMIC_IMPORT = /(?:^|[^\w$.])import[ \t]*\([ \t]*["'`]([^"'`]+)["'`]/g
-const FROM_IMPORT = new RegExp(
-	`${STATEMENT_START}(?:\\{[^}]*\\}|\\*[^"']*?|\\w+(?:[ \\t]*,[ \\t]*\\w+)*)?[ \\t]*from[ \\t]*["']([^"']+)["']`,
-	"g",
-)
-const BARE_IMPORT = /(?:^|\n)[ \t]*import[ \t]*["']([^"']+)["']/g
+const STATEMENT_START = "(?:^|[\\n;])[ \\t]*(?:import|export)[ \\t]+(?:type[ \\t]+)?"
+const FROM_IMPORT = new RegExp(`${STATEMENT_START}[^"';]*?from[ \\t]*["']([^"']+)["']`, "g")
+const BARE_IMPORT = /(?:^|[\n;])[ \t]*import[ \t]*["']([^"']+)["']/g
+const DYNAMIC_IMPORT = /(?:^|[^\w$.])import[ \t]*\([ \t\n]*["']([^"']+)["']/g
+const DYNAMIC_TEMPLATE = /(?:^|[^\w$.])import[ \t]*\([ \t\n]*`([^`]+)`/g
+const REQUIRE_CALL = /(?:^|[^\w$.])require[ \t]*\([ \t\n]*["']([^"']+)["']/g
 
 /**
  * Purpose: Recognizes `corpus-<family>.test.ts`, the only files the guard reads.
@@ -52,8 +51,11 @@ export function isThCorpusFile(file: string): boolean {
  * Purpose: Keeps a transcribed corpus independent of the package under test, so no case computes
  * its own expectation. Only {@link TH_CORPUS_IMPORT_ALLOWLIST} may be imported.
  * Math: Comments and template literals are blanked first, keeping every newline so line numbers
- * survive; then a whole-file scan finds `import`/`export ... from` statements (wrapped across
- * lines or not), bare imports and dynamic `import()` calls, quoted or not.
+ * survive; then a whole-file scan finds `import`/`export ... from` statements (default, named,
+ * namespace, wrapped across lines or after a semicolon), bare imports, `require()` and dynamic
+ * `import()` calls with a quoted specifier. A template-literal specifier is scanned on the raw text.
+ * This is a textual guard, not a parser: a specifier held in a variable, or a string containing
+ * `/*` that lets comment blanking run long, can evade it.
  * Units: None. Throws: Never.
  */
 export function findThCorpusImportViolations(
@@ -63,8 +65,13 @@ export function findThCorpusImportViolations(
 	for (const file of files) {
 		if (!isThCorpusFile(file.file)) continue
 		findings.push(
-			...findIn(file.file, blankNonCode(file.source), [FROM_IMPORT, BARE_IMPORT]),
-			...findIn(file.file, file.source, [DYNAMIC_IMPORT]),
+			...findIn(file.file, blankNonCode(file.source), [
+				FROM_IMPORT,
+				BARE_IMPORT,
+				DYNAMIC_IMPORT,
+				REQUIRE_CALL,
+			]),
+			...findIn(file.file, file.source, [DYNAMIC_TEMPLATE]),
 		)
 	}
 	return findings.sort((left, right) => left.line - right.line)

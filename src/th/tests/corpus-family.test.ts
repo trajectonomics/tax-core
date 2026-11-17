@@ -29,7 +29,7 @@ describe("corpus: personal, spouse, child, parent and disabled allowances", () =
 	})
 
 	it("gives the same child bonus whatever order the children arrive in", () => {
-		// ADR 0003 rule 4: the second-child bonus sorts by birth year first
+		// documented: Act No. 46 (B.E. 2561) s.3; ADR 0003 rule 4 sorts by birth year first
 		const children = [{ birthYear: 2019 }, { birthYear: 2015 }]
 		const res = runThaiCorpusCase({
 			income: { section40_1: 1_000_000 },

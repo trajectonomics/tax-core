@@ -100,6 +100,30 @@ describe("findThCorpusImportViolations", () => {
 		expect(findThCorpusImportViolations(corpus(source))).toEqual([])
 	})
 
+	it("finds a default import beside a named or namespace clause", () => {
+		const named = 'import name, { calculateThTax } from "../calculate"'
+		const namespace = 'import name, * as ns from "../calculate"'
+		expect(findThCorpusImportViolations(corpus(named))[0]?.specifier).toBe("../calculate")
+		expect(findThCorpusImportViolations(corpus(namespace))[0]?.specifier).toBe("../calculate")
+	})
+
+	it("finds a second import after a semicolon and an import with from on its own line", () => {
+		const sameLine = 'import { it } from "bun:test"; import { calculateThTax } from "../calculate"'
+		expect(findThCorpusImportViolations(corpus(sameLine))).toHaveLength(1)
+		const wrapped = 'import name\nfrom "../calculate"'
+		expect(findThCorpusImportViolations(corpus(wrapped))[0]?.specifier).toBe("../calculate")
+	})
+
+	it("finds a require call", () => {
+		const source = 'const engine = require("../calculate")'
+		expect(findThCorpusImportViolations(corpus(source))[0]?.specifier).toBe("../calculate")
+	})
+
+	it("does not flag a commented-out dynamic import", () => {
+		const source = ['/* import("../calculate") */', 'import { it } from "bun:test"'].join("\n")
+		expect(findThCorpusImportViolations(corpus(source))).toEqual([])
+	})
+
 	it("does not let a comment hide the real specifier of a wrapped import", () => {
 		const source = [
 			"import {",

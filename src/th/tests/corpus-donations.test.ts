@@ -39,7 +39,8 @@ describe("corpus: the Section 47(7) donation allowances", () => {
 	})
 
 	it("takes the 2x donation before the 1x donation, each on the remaining net", () => {
-		// documented: 2x 50,000 doubled to 100,000, capped at 84,000 leaves 756,000;
+		// reported (the 2x multiplier) and documented (the 10% cap): 2x 50,000 doubled to 100,000,
+		// capped at 84,000 leaves 756,000;
 		// 1x 100,000 capped at 75,600 of that; taxable 680,400
 		const res = runThaiCorpusCase({
 			income: { section40_1: 1_000_000 },

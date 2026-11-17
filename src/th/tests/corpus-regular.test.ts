@@ -28,7 +28,7 @@ describe("corpus: regular income and the Section 40 expense rates", () => {
 	})
 
 	it("taxes an entertainer: 60% of the first 300,000 and 40% above it", () => {
-		// documented: R.D. No. 629 (B.E. 2560) s.4(43): 180,000 + 280,000 = 460,000
+		// documented: R.D. No. 629 (B.E. 2560) s.4(43): 180,000 + 280,000 = 460,000; 7,500 + 18,000
 		const res = runThaiCorpusCase({ income: { section40_8: { entertainer: 1_000_000 } } })
 		expect(res.breakdown.expenseDeductions.section40_8.allowed).toBe(460_000)
 		expect(res.breakdown.netTaxableIncome).toBe(480_000)
@@ -45,7 +45,7 @@ describe("corpus: regular income and the Section 40 expense rates", () => {
 	})
 
 	it("applies the Section 40(7) contracting expense of 60%", () => {
-		// documented: R.D. No. 629 (B.E. 2560) s.3
+		// documented: R.D. No. 629 (B.E. 2560) s.3; 7,500 + 4,000
 		const res = runThaiCorpusCase({ income: { section40_7: 1_000_000 } })
 		expect(res.breakdown.expenseDeductions.section40_7.allowed).toBe(600_000)
 		expect(res.breakdown.netTaxableIncome).toBe(340_000)
