@@ -2,17 +2,66 @@
 
 Pure, deterministic statutory tax calculation engine with subpaths for Thailand (`@trajectonomics/tax/th`) and the United States (`@trajectonomics/tax/us`), covering 2026 federal tax plus all 50 state income tax systems and the District of Columbia.
 
+## Install
+
+```bash
+bun add @trajectonomics/tax
+npm install @trajectonomics/tax
+```
+
+## Quick start
+
+Thailand, from `@trajectonomics/tax/th`:
+
+```ts
+import { calculateThTax } from "@trajectonomics/tax/th"
+
+const { currency, taxableIncome, totalTax } = calculateThTax({
+	filingStatus: "single",
+	income: { section40_1: 800_000 },
+})
+
+console.log(currency, taxableIncome, totalTax)
+```
+
+```text
+THB 640000 48500
+```
+
+The United States, from `@trajectonomics/tax/us`, with the optional state layer:
+
+```ts
+import { calculateUsTax } from "@trajectonomics/tax/us"
+
+const { currency, taxableIncome, totalTax } = calculateUsTax({
+	filingStatus: "single",
+	income: { w2Wages: 85_000 },
+	state: "CA",
+})
+
+console.log(currency, taxableIncome, totalTax)
+```
+
+```text
+USD 68900 19888.36
+```
+
+Each call returns a Tax Result; its `breakdown` carries the itemized audit trail (allowances, bracket slices, credits) behind the summary figures above.
+
 ## United States State Tax
 
 `calculateUsTax` accepts an optional `state` code (`AL` through `WY` plus `DC`). When present, the result includes `breakdown.state` with state taxable income, bracket slices, personal/dependent credits, state withholding, and net state tax, and the state liability is folded into the top-level `totalTax` and `netTaxPayable`.
 
 - Nine no-income-tax states (`AK`, `FL`, `NV`, `NH`, `SD`, `TN`, `TX`, `WA`, `WY`) return zero state tax and zero state rates.
 - Sixteen flat-rate states (including `LA` and `OH`, which are single-rate in 2026) and twenty-five graduated-rate states plus `DC` use their 2026 standard deductions, personal/dependent exemptions, and statutory bracket tables.
-- `MA` includes the 4% millionaire surtax and `CA` includes the 1% mental health services surtax.
+- `MA` includes the 4% millionaire surtax, `CA` includes the 1% mental health services surtax, and `ME` includes the 2% high-income surcharge.
 - State inputs also include `stateDependents`, `stateWithholding`, and `stateCredits` (`nonRefundable` / `refundable`).
-- State calculations start from federal AGI and apply the state standard deduction, personal/dependent exemptions or credits, and the state bracket table. Top-level `marginalRate` is the federal ordinary rate plus the state marginal rate. Head-of-household uses the state's joint schedule in `NJ`, `OR`, and `OK` and the single schedule elsewhere unless a dedicated table is encoded (`CA`, `MN`, `NY`, `ME`); head-of-household and separate-filer standard deductions outside the federal-conforming states are derived (1.5x single, joint/2). Top-level `withholding` is federal-only: `breakdown.state.withholding` carries state withholding, and `netTaxPayable` subtracts both. `stateDependents`, `stateWithholding`, and `stateCredits` require a `state` code and throw otherwise. Separate filers use half the joint thresholds in `MN` and `WI`; `MO` joint returns use doubled single thresholds (each spouse taxed on half). Known gaps: Utah's credit phase-out, Connecticut/Illinois/Maryland/Oregon/Rhode Island/Wisconsin income-tested phase-outs, the Maryland capital-gains and Minnesota net-investment-income surtaxes, and Maine's 2026 high-income surcharge are not modeled; New York uses the 2025 return rate schedule; Nebraska head-of-household uses the single schedule; head-of-household brackets outside the states listed in the parameter tables fall back to the single schedule. Local/city income taxes, state itemized deductions, and income-tested phase-outs not encoded in the parameter tables are out of scope.
+- State calculations start from federal AGI and apply the state standard deduction, personal/dependent exemptions or credits, and the state bracket table. Top-level `marginalRate` is the federal ordinary rate plus the state marginal rate. Head-of-household uses the state's joint schedule in `NJ`, `OR`, and `OK` and the single schedule elsewhere unless a dedicated table is encoded (`CA`, `MN`, `NY`, `ME`); head-of-household and separate-filer standard deductions outside the federal-conforming states are derived (1.5x single, joint/2). Top-level `withholding` is federal-only: `breakdown.state.withholding` carries state withholding, and `netTaxPayable` subtracts both. `stateDependents`, `stateWithholding`, and `stateCredits` require a `state` code and throw otherwise. Separate filers use half the joint thresholds in `MN` and `WI`; `MO` joint returns use doubled single thresholds (each spouse taxed on half). Known gaps: Utah's credit phase-out, Connecticut/Illinois/Maryland/Oregon/Rhode Island/Wisconsin income-tested phase-outs, and the Maryland capital-gains and Minnesota net-investment-income surtaxes are not modeled; New York uses the 2025 return rate schedule; Nebraska head-of-household uses the single schedule; head-of-household brackets outside the states listed in the parameter tables fall back to the single schedule. Local/city income taxes, state itemized deductions, and income-tested phase-outs not encoded in the parameter tables are out of scope.
 
 ## Thailand Levy for sim-core
+
+> **Ships in 0.2.0.**
+> The release you install today has no `emitThLevy`; it reaches npm with `0.2.0`.
 
 `@trajectonomics/tax/th` exports `emitThLevy(profile)`, which freezes one TH 2026 taxpayer profile into a [sim-core](https://github.com/trajectonomics/sim-core) `Levy`. The emitted graph uses only `const`, `tally`, `add`, `sub`, `min`, `max`, `scale`, and `pick`, so sim-core evaluates it in exact integer satang without importing this package. The dependency points this way only: the package takes a dev-dependency on `@trajectonomics/sim` for its golden corpus. That dependency pins `0.2.0-alpha.4`, the first published version that exports `evaluateMeasures` (the stable `0.1.0` predates it); nothing in the built package imports it.
 
@@ -75,7 +124,8 @@ The golden corpus in `src/th/tests/levy-golden.test.ts` generates over 3,000 det
 
 ## Commands
 
-- `bun run check`: Complete verification suite (`lint`, `typecheck`, `test` with 100% coverage, `build`, `lint:package`).
+- `bun run check`: Complete verification suite (`lint`, `check:th-sources`, `typecheck`, `test` with 100% coverage, `build`, `check:readme`, `lint:package`).
+- `bun run check:readme`: Check this README against the built package. Every `ts` fence is a complete module: it is typechecked against the built declarations, run against the built runtime, and, when a `text` fence follows it, its stdout must equal that fence exactly. Every backticked name shaped like the public API must be exported by an entry point.
 - `bun run build`: Build ESM and CJS bundles via `tsdown`.
 - `bun test`: Run test suite with 100% coverage enforcement.
 - `bun run typecheck`: Run strict TypeScript compiler checks.
