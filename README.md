@@ -124,7 +124,8 @@ The golden corpus in `src/th/tests/levy-golden.test.ts` generates over 3,000 det
 
 ## Commands
 
-- `bun run check`: Complete verification suite (`lint`, `typecheck`, `test` with 100% coverage, `build`, `lint:package`).
+- `bun run check`: Complete verification suite (`lint`, `check:th-sources`, `typecheck`, `test` with 100% coverage, `build`, `check:readme`, `lint:package`).
+- `bun run check:readme`: Check this README against the built package. Every `ts` fence is a complete module: it is typechecked against the built declarations, run against the built runtime, and, when a `text` fence follows it, its stdout must equal that fence exactly. Every backticked name shaped like the public API must be exported by an entry point.
 - `bun run build`: Build ESM and CJS bundles via `tsdown`.
 - `bun test`: Run test suite with 100% coverage enforcement.
 - `bun run typecheck`: Run strict TypeScript compiler checks.
