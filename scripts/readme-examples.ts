@@ -1,10 +1,11 @@
 import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
+import type { ReadmeExample } from "../src/readme/examples"
+import { readmeExamples } from "../src/readme/examples"
 import type { ReadmeFence } from "../src/readme/fences"
 import type { ReadmeFinding } from "../src/readme/findings"
 import {
-	type Example,
 	exampleFileName,
 	exampleTsconfig,
 	executeExamples,
@@ -24,9 +25,7 @@ const ROOT = join(import.meta.dir, "..")
  * Throws: Only an unexpected filesystem or spawn error; a finding is returned, not thrown.
  */
 export function checkReadmeExamples(fences: readonly ReadmeFence[]): readonly ReadmeFinding[] {
-	const examples: readonly Example[] = fences
-		.map((fence, index) => ({ index, fence }))
-		.filter((example) => example.fence.language === "ts")
+	const examples: readonly ReadmeExample[] = readmeExamples(fences)
 	if (examples.length === 0) return []
 	const scratch = mkdtempSync(join(tmpdir(), "tax-readme-"))
 	try {

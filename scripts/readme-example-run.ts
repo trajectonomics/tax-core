@@ -1,17 +1,12 @@
 import { spawnSync } from "node:child_process"
 import { join } from "node:path"
+import type { ReadmeExample } from "../src/readme/examples"
+import { runFindings, typecheckFindings } from "../src/readme/examples"
 import type { ReadmeFence } from "../src/readme/fences"
 import type { ReadmeFinding } from "../src/readme/findings"
 
 const ROOT = join(import.meta.dir, "..")
 const TSC = join(ROOT, "node_modules", ".bin", "tsc")
-
-/** One `ts` example, and its position in the README's fence list. */
-export interface Example {
-	/** Index among all README fences, so the fence that follows may hold its stdout. */
-	readonly index: number
-	readonly fence: ReadmeFence
-}
 
 /**
  * Purpose: Names the file a README example is written to in the scratch directory.
@@ -30,7 +25,7 @@ export function exampleFileName(index: number): string {
  * Units: None.
  * Throws: Never.
  */
-export function exampleTsconfig(examples: readonly Example[]): string {
+export function exampleTsconfig(examples: readonly ReadmeExample[]): string {
 	return JSON.stringify({
 		compilerOptions: {
 			target: "ES2022",
@@ -47,74 +42,55 @@ export function exampleTsconfig(examples: readonly Example[]): string {
 
 /**
  * Purpose: Typechecks every README example against the built declarations in one `tsc` run.
- * Math: Each `example-<n>.ts(line,col)` diagnostic maps back to its fence's line plus the
- * diagnostic's line, so the finding points into README.md.
- * Units: 1-based README line numbers.
- * Throws: Never; a build error with no file diagnostic is reported as a finding.
+ * Math: Spawns `tsc` once over the scratch project and hands its output to the pure
+ * `typecheckFindings`.
+ * Units: None here; findings carry README line numbers.
+ * Throws: Never; a build error is a finding.
  */
 export function typecheckExamples(
 	scratch: string,
-	examples: readonly Example[],
+	examples: readonly ReadmeExample[],
 ): readonly ReadmeFinding[] {
-	const result = spawnSync(TSC, ["-p", join(scratch, "tsconfig.json")], { encoding: "utf8" })
+	const result = spawnSync(TSC, ["--pretty", "false", "-p", join(scratch, "tsconfig.json")], {
+		encoding: "utf8",
+	})
 	const output = `${result.stderr ?? ""}${result.stdout ?? ""}`
-	const findings: ReadmeFinding[] = []
-	for (const match of output.matchAll(/example-(\d+)\.ts\((\d+),\d+\): (error TS\d+: .*)/g)) {
-		const example = examples.find((candidate) => candidate.index === Number(match[1]))
-		if (example === undefined) continue
-		findings.push({
-			line: example.fence.line + Number(match[2]),
-			message: `does not typecheck: ${match[3] ?? ""}`,
-		})
-	}
-	if (findings.length === 0 && result.status !== 0) {
-		findings.push({
-			line: examples[0]?.fence.line ?? 1,
-			message: `typecheck failed: ${output.trim()}`,
-		})
-	}
-	return findings
+	return typecheckFindings(output, examples, result.status)
 }
 
 /**
- * Purpose: Runs each example with `bun` against the built runtime and compares its stdout with
- * the `text` fence that follows it in the README.
- * Math: Exit code must be zero; stdout with trailing newlines trimmed must equal the text
- * fence's content, so a parameter change that moves a figure fails here.
- * Units: 1-based README line numbers.
- * Throws: Never.
+ * Purpose: Runs each example with `bun` against the built runtime and hands each result to the
+ * pure `runFindings`, which compares it with the `text` fence that follows.
+ * Math: One process per example, in the scratch directory.
+ * Units: None here; findings carry README line numbers.
+ * Throws: Never; a non-zero exit is a finding.
  */
 export function executeExamples(
 	scratch: string,
-	examples: readonly Example[],
+	examples: readonly ReadmeExample[],
 	fences: readonly ReadmeFence[],
 ): readonly ReadmeFinding[] {
 	const findings: ReadmeFinding[] = []
 	for (const example of examples) {
-		const result = spawnSync("bun", ["run", join(scratch, exampleFileName(example.index))], {
-			cwd: scratch,
-			encoding: "utf8",
-		})
-		if (result.status !== 0) {
-			findings.push({
-				line: example.fence.line,
-				message: `example exited ${String(result.status)}: ${(result.stderr ?? "").trim()}`,
-			})
-			continue
-		}
-		const expected = fences[example.index + 1]
-		if (expected?.language !== "text") continue
-		const stdout = trimTrailingNewlines(result.stdout ?? "")
-		if (stdout !== trimTrailingNewlines(expected.content)) {
-			findings.push({
-				line: expected.line,
-				message: `text fence does not match the example's stdout: ${JSON.stringify(stdout)}`,
-			})
-		}
+		const result = spawnSync(
+			process.execPath,
+			["run", join(scratch, exampleFileName(example.index))],
+			{
+				cwd: scratch,
+				encoding: "utf8",
+			},
+		)
+		findings.push(
+			...runFindings(
+				{
+					example,
+					status: result.status,
+					stdout: result.stdout ?? "",
+					stderr: result.stderr ?? "",
+				},
+				fences[example.index + 1],
+			),
+		)
 	}
 	return findings
-}
-
-function trimTrailingNewlines(text: string): string {
-	return text.replace(/\n+$/, "")
 }
