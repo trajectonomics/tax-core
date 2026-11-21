@@ -60,9 +60,6 @@ Each call returns a Tax Result; its `breakdown` carries the itemized audit trail
 
 ## Thailand Levy for sim-core
 
-> **Ships in 0.2.0.**
-> The release you install today has no `emitThLevy`; it reaches npm with `0.2.0`.
-
 `@trajectonomics/tax/th` exports `emitThLevy(profile)`, which freezes one TH 2026 taxpayer profile into a [sim-core](https://github.com/trajectonomics/sim-core) `Levy`. The emitted graph uses only `const`, `tally`, `add`, `sub`, `min`, `max`, `scale`, and `pick`, so sim-core evaluates it in exact integer satang without importing this package. The dependency points this way only: the package takes a dev-dependency on `@trajectonomics/sim` for its golden corpus. That dependency pins `0.2.0-alpha.4`, the first published version that exports `evaluateMeasures` (the stable `0.1.0` predates it); nothing in the built package imports it.
 
 The profile fixes the filing status, the fixed allowances (personal, spouse, children, parents, disabled care, social security, life/health insurance, parent health insurance, spouse life insurance, mortgage interest, and donation requests), the standard-versus-actual expense elections, the Section 40(4) final-withholding elections with the Section 47 bis corporate rate, and the Levy identity (`id` defaults to `th-2026-pit`, period to 1 January, settlement to 31 March). Income, expense, and contribution amounts are not in the profile: they arrive as Flow tallies under the labels below.
